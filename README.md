@@ -8,12 +8,12 @@ VisClaw.jl is a Julia package of the Clawpack visualization tools (see http://ww
 This allows to draw figures and animations using the Julia language.   
 Please note that this package is unofficial and the author is not engaged in the Clawpack Development Team.   
 
-# Requirements
+## Requirements
 - [Julia](https://github.com/JuliaLang/julia) v1.3.0 or later
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
-# Installation  
-- If you want to plot using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl), 
+## Installation  
+- If you want to plot using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl),
 install the [GMT](https://github.com/GenericMappingTools/gmt) in advance.
 Note that GMT.jl does NOT install the GMT program.
 
@@ -22,7 +22,7 @@ Note that GMT.jl does NOT install the GMT program.
 pkg> add VisClaw
 ```
 
-# Usage  
+## Usage  
 - In preparation, run some of the Clawpack numerical simulations  
 (e.g., chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and  
 ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
@@ -44,70 +44,70 @@ julia> plt = plotstopo(topo)
 See [Examples_using_Plots.ipynb](https://github.com/hydrocoast/VisClaw.jl/blob/master/Examples_using_Plots.ipynb)
 and [Examples_using_GMT.ipynb](https://github.com/hydrocoast/VisClaw.jl/blob/master/Examples_using_GMT.ipynb) for more information.
 
-# Plot gallery
+## Plot gallery
 The following figures are generated with the Julia scripts in `example/` .  
 
-## using GMT.jl
+### using GMT.jl
 
-### sea surface elevation
+#### sea surface elevation
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/chile2010_eta_GMT.gif", width="375">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ike_eta_GMT.gif", width="425">
 </p>  
 
 
-### topography and bathymetry
+#### topography and bathymetry
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/chile2010_topo.png", width="350">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ike_topo.png", width="450">
 </p>  
 
-### seafloor deformation (dtopo)
+#### seafloor deformation (dtopo)
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/chile2010_dtopo.png", width="400">
 </p>  
 
-### wind and pressure fields
+#### wind and pressure fields
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ike_storm_GMT.gif", width="400">
 </p>  
 
 
-## using Plots.jl
+### using Plots.jl
 
-### sea surface elevation
+#### sea surface elevation
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/chile2010_eta.gif", width="400">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ike_eta.gif", width="400">
 </p>  
 
-### flow velocity
+#### flow velocity
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/chile2010_velo.gif", width="400">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ike_velo.gif", width="400">
 </p>  
 
-### topography and bathymetry
+#### topography and bathymetry
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/chile2010_topo.svg", width="400">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ike_topo.svg", width="400">
 </p>  
 
-### wave gauge
+#### wave gauge
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/chile2010_waveform_gauge.svg", width="400">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ike_waveform_gauge.svg", width="400">
 </p>  
 
-### fixed grid monitoring (fgmax)
+#### fixed grid monitoring (fgmax)
 <p align="center">
 <img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/fgmax4vars.svg", width="700">
 </p>  
 
 
-# License
+## License
 BSD 3-Clause  
 
-# Author
+## Author
 [Takuya Miyashita](https://hydrocoast.jp)   
 Disaster Prevention Research Institute, Kyoto University  
