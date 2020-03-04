@@ -1,4 +1,4 @@
-# VisClaw
+# VisClaw.jl
 
 [![Build Status](https://travis-ci.com/hydrocoast/VisClaw.jl.svg?branch=master)](https://travis-ci.com/hydrocoast/VisClaw.jl)
 [![Codecov](https://codecov.io/gh/hydrocoast/VisClaw.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/hydrocoast/VisClaw.jl)
@@ -109,5 +109,5 @@ The following figures are generated with the Julia scripts in `example/` .
 BSD 3-Clause  
 
 # Author
-[Takuya Miyashita](https://hydrocoast.jp) <miyashita(at)hydrocoast.jp>   
+[Takuya Miyashita](https://hydrocoast.jp)
 Disaster Prevention Research Institute, Kyoto University  
