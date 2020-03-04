@@ -4,3 +4,16 @@
 .DS_Store
 /Manifest.toml
 /dev/
+*~
+*.swp
+*.txt
+gmt.*
+*.nc
+*.grd
+*.png
+*.svg
+*.gif
+*.eps
+*.pdf
+.ipynb_*/
+!example/figure/*.*
