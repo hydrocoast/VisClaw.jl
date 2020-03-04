@@ -109,5 +109,5 @@ The following figures are generated with the Julia scripts in `example/` .
 BSD 3-Clause  
 
 # Author
-[Takuya Miyashita](https://hydrocoast.jp)
+[Takuya Miyashita](https://hydrocoast.jp)   
 Disaster Prevention Research Institute, Kyoto University  
