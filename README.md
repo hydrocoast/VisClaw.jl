@@ -28,16 +28,20 @@ pkg> add VisClaw
 ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
 
 - This package uses either GMT.jl or Plots.jl to plot results of the numerical simulation.
-Plots.jl is suitable for a quick check.
-For example, a spatial distribution of the sea surface height is plotted when you input as follows:
+Plots.jl is more suitable for a quick check.
+For example, the following codes generate a spatial distribution of the sea surface height:
 ```julia
 julia> using VisClaw
 julia> simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output");
+julia> plt = plotscheck(simdir; color=:balance, clims=(-0.5,0.5))
+input a number (1 to 19) =         # specify a checkpoint time
+```
+Topography data also can be easily plotted:
+```julia
 julia> topo = loadtopo(simdir)
 julia> plt = plotstopo(topo)
 ```
-
-See also [Examples_using_Plots.ipynb](https://github.com/hydrocoast/VisClaw.jl/blob/master/Examples_using_Plots.ipynb)
+See [Examples_using_Plots.ipynb](https://github.com/hydrocoast/VisClaw.jl/blob/master/Examples_using_Plots.ipynb)
 and [Examples_using_GMT.ipynb](https://github.com/hydrocoast/VisClaw.jl/blob/master/Examples_using_GMT.ipynb) for more information.
 
 # Plot gallery
@@ -105,7 +109,5 @@ The following figures are generated with the Julia scripts in `example/` .
 BSD 3-Clause  
 
 # Author
-Takuya Miyashita   
-miyashita(at)hydrocoast.jp  
-Doctoral student, Kyoto University  
-([personal web site](https://hydrocoast.jp))  
+[Takuya Miyashita](https://hydrocoast.jp) <miyashita(at)hydrocoast.jp>   
+Disaster Prevention Research Institute, Kyoto University  
