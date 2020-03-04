@@ -2,12 +2,51 @@
 language: julia
 os:
   - linux
-  - osx
 julia:
   - 1.3
-  - nightly
 notifications:
   email: false
+before_install:
+  ## Install GMT trunk
+  - pwd
+  - sudo apt-get install libgconf2-dev libgconf-2-4 libgtk-3-0 libxss1 libnss3 libasound2 libx11-xcb1
+  - sudo apt-get install build-essential libcurl4-gnutls-dev libnetcdf-dev libgdal1-dev libfftw3-dev libpcre3-dev liblapack-dev ghostscript 
+  - sudo apt-get install qt5-default qt5-image-formats-plugins qt5-qmake qt5-style-plugins
+  - sudo apt-get install libqt5widgets5 libqt5gui5 libqt5svg5-dev libxt6 libxrender1 libgl1-mesa-glx libqt5dbus5 libqt5network5 libqt5core5a
+  - git clone https://github.com/GenericMappingTools/gmt.git $HOME/gmt
+  - PATH="$HOME/gmt/bin:$PATH"
+  - export PATH
+  - echo 'export PATH="$HOME/gmt/bin:$PATH"' >>~/.bash_profile
+  - cd $HOME/gmt
+  - wget http://w3.ualg.pt/~jluis/ftp/gshhg-gmt-2.3.7.tar.gz
+  - tar -xvzf gshhg-gmt-2.3.7.tar.gz
+  - wget http://w3.ualg.pt/~jluis/ftp/dcw-gmt-1.1.4.tar.gz
+  - tar -xvzf dcw-gmt-1.1.4.tar.gz
+  - mkdir build
+  - cd build
+  - cmake --config Release .. -DSUPPORT_EXEC_IN_BINARY_DIR=TRUE -DGMT_OPENMP=ON -DCMAKE_INSTALL_PREFIX=$HOME/gmt -DGSHHG_ROOT=$HOME/gmt/gshhg-gmt-2.3.7
+  - make -j && make install
+  - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/gmt/lib"
+  ###  download clawpack output examples
+  - cd $HOME
+  - FILE_ID=1HlvUJQ1WbM-kR_EtbeNSiu5kIeO5JCAN
+  - FILE_NAME=clawpack-v5.6.1.tar.gz
+  - curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=${FILE_ID}" > /dev/null
+  - CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)"
+  - curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=${FILE_ID}" -o ${FILE_NAME}
+  - tar -zxvf clawpack-v5.6.1.tar.gz
+  - export CLAW="$HOME/clawpack-v5.6.1"
+before_script:
+  ### repo
+  - git clone --depth=50 --branch=dev https://github.com/hydrocoast/VisClaw.jl.git hydrocoast/VisClaw.jl
+  - cd hydrocoast/VisClaw.jl
+  - git checkout -f $TRAVIS_BRANCH
+  - export JULIA_PROJECT=@.
+  - julia --color=yes -e "VERSION >= v\"0.7.0-DEV.3630\" && using InteractiveUtils; versioninfo()"
+  ### setenv libgmt.so
+  - echo "push!(Base.DL_LOAD_PATH, \"${HOME}/gmt/lib\")" >> ${TRAVIS_HOME}/julia/etc/julia/startup.jl
+script:
+  - julia --check-bounds=yes --color=yes -e "using Pkg; Pkg.build(); Pkg.test(; coverage=true)"
 after_success:
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder())'
