@@ -38,9 +38,8 @@ before_install:
   - export CLAW="$HOME/clawpack-v5.6.1"
 before_script:
   ### repo
-  - git clone --depth=50 --branch=dev https://github.com/hydrocoast/VisClaw.jl.git hydrocoast/VisClaw.jl
+  - git clone --depth=50 --branch=${$TRAVIS_BRANCH} https://github.com/hydrocoast/VisClaw.jl.git hydrocoast/VisClaw.jl
   - cd hydrocoast/VisClaw.jl
-  - git checkout -f $TRAVIS_BRANCH
   - export JULIA_PROJECT=@.
   - julia --color=yes -e "VERSION >= v\"0.7.0-DEV.3630\" && using InteractiveUtils; versioninfo()"
   ### setenv libgmt.so
