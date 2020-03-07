@@ -35,11 +35,13 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     nfile = length(flist)
 
     ### draw figures until nothing or invalid number is input
+    println(">> Press a blank and ENTER to finish")
+    println(">> Input a file sequence number you want to plot:")
     ex=0 # initial value
     cnt=0
     while ex==0
         # accept input the step number of interest
-        @printf("input a number (1 to %d) = ", nfile)
+        @printf("checkpoint time (1 to %d) = ", nfile)
         i = readline(stdin)
         # check whether the input is integer
         if isempty(i); ex=1; continue; end;
