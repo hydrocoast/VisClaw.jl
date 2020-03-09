@@ -29,18 +29,20 @@ pkg> add VisClaw
 ```
 
 ## Usage  
-- In preparation, run some of the Clawpack numerical simulations  
-(e.g., chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and  
+- In preparation, run some of the Clawpack simulations  
+(e.g. chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and  
 ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
 
 - This package uses either GMT.jl or Plots.jl to plot results of the numerical simulation.
 Plots.jl is more suitable for a quick check.
-For example, the following codes generate a spatial distribution of the sea surface height:
+The following codes generate a spatial distribution of the sea surface height using Plots:
 ```julia
 julia> using VisClaw
-julia> simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output");
+julia> simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 julia> plt = plotscheck(simdir; color=:balance, clims=(-0.5,0.5))
-input a number (1 to 19) =         # specify a checkpoint time
+>> Press a blank and ENTER to finish
+>> Input a file sequence number you want to plot:
+checkpoint time (1 to 19) = 
 ```
 Topography data also can be easily plotted:
 ```julia
