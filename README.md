@@ -4,6 +4,12 @@
 [![Codecov](https://codecov.io/gh/hydrocoast/VisClaw.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/hydrocoast/VisClaw.jl)
 [![Coveralls](https://coveralls.io/repos/github/hydrocoast/VisClaw.jl/badge.svg?branch=master)](https://coveralls.io/github/hydrocoast/VisClaw.jl?branch=master)
 
+<p align="center">
+<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ex1.svg", width="250">
+<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ex2.svg", width="250">
+<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/example/figure/ex3.svg", width="250">
+</p>  
+
 VisClaw.jl is a Julia package of the Clawpack visualization tools (see http://www.clawpack.org).   
 This allows to draw figures and animations using the Julia language.   
 Please note that this package is unofficial and the author is not engaged in the Clawpack Development Team.   
