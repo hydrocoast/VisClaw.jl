@@ -35,7 +35,7 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     nfile = length(flist)
 
     ### draw figures until nothing or invalid number is input
-    println(">> Press a blank and ENTER to finish")
+    println(">> Press ENTER with a blank to finish")
     println(">> Input a file sequence number you want to plot:")
     ex=0 # initial value
     cnt=0
