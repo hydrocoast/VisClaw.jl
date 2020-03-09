@@ -40,9 +40,9 @@ The following codes generate a spatial distribution of the sea surface height us
 julia> using VisClaw
 julia> simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 julia> plt = plotscheck(simdir; color=:balance, clims=(-0.5,0.5))
->> Press a blank and ENTER to finish
+>> Press ENTER with a blank to finish
 >> Input a file sequence number you want to plot:
-checkpoint time (1 to 19) = 
+checkpoint time (1 to 19) =
 ```
 Topography data also can be easily plotted:
 ```julia
