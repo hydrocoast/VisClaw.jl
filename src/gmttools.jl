@@ -76,16 +76,23 @@ end
 """
 Generate grd data, VisClaw.DTopo
 """
-function geogrd(geo::VisClaw.DTopo; kwargs...)
+function geogrd(geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
 
     Δ = geo.dx
     R = VisClaw.getR(geo)
     xvec = repeat(geo.x, inner=(geo.my,1))
     yvec = repeat(geo.y, outer=(geo.mx,1))
 
-    G = GMT.surface([xvec[:] yvec[:] geo.deform[:]]; R=R, I=Δ, kwargs...)
-    #G = GMT.surface([xvec[:] reverse(yvec[:]) geo.deform[:]]; R=R, I=Δ, kwargs...)
-
+    if (itime < 0) || (geo.mt < itime)
+        error("Invalid time")
+    end
+    if geo.mt == 1
+        G = GMT.surface([xvec[:] yvec[:] geo.deform[:]]; R=R, I=Δ, kwargs...)
+    elseif itime == 0
+        G = GMT.surface([xvec[:] yvec[:] vec(geo.deform[:,:,end])]; R=R, I=Δ, kwargs...)
+    else
+        G = GMT.surface([xvec[:] yvec[:] vec(geo.deform[:,:,itime])]; R=R, I=Δ, kwargs...)
+    end
     return G
 end
 ###################################################

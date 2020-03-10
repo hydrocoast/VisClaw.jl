@@ -224,17 +224,20 @@ function loaddeform(filename::String, topotype=3::Int64)
     ## assign topography
     if topotype == 2
         deform = parse.(Float64, dataorg)
-        deform = reshape(topo, (mx, my))
-        deform = permutedims(topo,[2 1])
+        deform = reshape(topo, (mx, my, mt))
+        deform = permutedims(topo,[2 1 3])
     elseif topotype == 3
-        deform = zeros(my, mx)
-        for k = 1:my
-            line = replace(dataorg[k], r"^\s+|,?\s+$" => "")
-            line = replace(line, "," => " ") # for csv data
-            line = split(line, r"\s+",keepempty=false)
-            deform[k,:] = parse.(Float64, line)
+        deform = zeros(my, mx, mt)
+        for k = 1:mt
+            for i = 1:my
+                line = replace(dataorg[i], r"^\s+|,?\s+$" => "")
+                line = replace(line, "," => " ") # for csv data
+                line = split(line, r"\s+",keepempty=false)
+                deform[i,:,k] = parse.(Float64, line)
+            end
         end
     end
+    if mt==1; deform = dropdims(deform; dims=3); end
     deform = reverse(deform, dims=1) ## flip
     #deform[abs.(deform).<1e-2] .= NaN
     dtopo = VisClaw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform)
