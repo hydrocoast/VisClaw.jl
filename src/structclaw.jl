@@ -117,7 +117,7 @@ struct DTopo <: AbstractTopo
     mt :: Int64
     t0 :: Float64
     dt :: Float64
-    deform :: AbstractArray{Float64,2}
+    deform :: AbstractArray{Float64}
     # Constructor
     VisClaw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform) = new(mx,my,x,y,dx,dy,mt,t0,dt,deform)
 end

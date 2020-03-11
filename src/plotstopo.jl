@@ -1,27 +1,44 @@
-"""
-Function: plot topography and bathymetry in 2D
-"""
-function plotstopo!(plt, geo::VisClaw.AbstractTopo; kwargs...)
-
-    if isa(geo, VisClaw.Topo)
-		z = geo.elevation
-	elseif isa(geo, VisClaw.DTopo)
-		z = geo.deform
-	end
-
-	# plot
-	plt = Plots.plot!(plt, geo.x, geo.y, z;
-	                  xlims=extrema(geo.x), ylims=extrema(geo.y),
-	                  axis_ratio=:equal, kwargs...)
-
-	# return
-	return plt
-end
 ####################################################
 """
 Function: plot topography and bathymetry in 2D
 """
-plotstopo(geo::VisClaw.AbstractTopo; kwargs...) = plotstopo!(Plots.plot(), geo; kwargs...)
+function plotstopo!(plt, geo::VisClaw.Topo; kwargs...)
+	z = geo.elevation
+	# plot
+    plt = Plots.plot!(plt, geo.x, geo.y, z;
+                      xlims=extrema(geo.x), ylims=extrema(geo.y),
+                      axis_ratio=:equal, kwargs...)
+    # return
+    return plt
+end
+####################################################
+plotstopo(geo::VisClaw.Topo; kwargs...) = plotstopo!(Plots.plot(), geo; kwargs...)
+####################################################
+"""
+Function: plot displacement of topography
+"""
+function plotstopo!(plt, geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+
+    if (itime < 0) || (geo.mt < itime)
+        error("Invalid time")
+    end
+    if geo.mt==1
+        z = geo.deform
+    elseif  itime == 0
+        z = geo.deform[:,:,end]
+    else
+        z = geo.deform[:,:,itime]
+    end
+
+    # plot
+    plt = Plots.plot!(plt, geo.x, geo.y, z;
+                      xlims=extrema(geo.x), ylims=extrema(geo.y),
+                      axis_ratio=:equal, kwargs...)
+    # return
+    return plt
+end
+####################################################
+plotstopo(geo::VisClaw.DTopo, itime::Int64=0; kwargs...) = plotstopo!(Plots.plot(), geo, itime; kwargs...)
 ####################################################
 const plotsdtopo = plotstopo
 const plotsdtopo! = plotstopo!
