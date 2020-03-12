@@ -53,3 +53,5 @@ function plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge}; offset=(0,0), f
     return plt
 end
 ###########################################
+plotsgaugelocation(gauges::Vector{VisClaw.Gauge}; offset=(0,0), font::Plots.Font=an_default, kwargs...) =
+plotsgaugelocation!(Plots.plot(), gauges::Vector{VisClaw.Gauge}; offset=offset, font=font, kwargs...)
