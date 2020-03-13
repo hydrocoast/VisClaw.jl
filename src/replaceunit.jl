@@ -23,6 +23,7 @@ function replaceunit!(fgmax::VisClaw.FGmaxValue, unit::Symbol)
         fgmax.tMflux = ratio.*fgmax.tMflux
         fgmax.thmin = ratio.*fgmax.thmin
     end
+    return fgmax
 end
 #################################
 
@@ -41,6 +42,8 @@ function replaceunit!(gauge::VisClaw.Gauge, unit::Symbol)
     # convert
     gauge.unittime = unit
     gauge.time = ratio.*gauge.time
+    # return value
+    return gauge
 end
 #################################
 
@@ -59,5 +62,7 @@ function replaceunit!(amrs::VisClaw.AMR, unit::Symbol)
     # convert
     amrs.unittime = unit
     amrs.timelap = ratio.*amrs.timelap
+    # return value
+    return amrs
 end
 #################################

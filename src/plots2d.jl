@@ -50,6 +50,10 @@ function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
     if seriestype == :surface; bginside = Plots.RGBA(0.0,0.0,0.0,0.0); end
     # -----------------------------
     # colorbar_title
+    cb, kwdict = VisClaw.parse_colorbar(kwdict)
+    if cb==nothing; cb=:none; end
+    # -----------------------------
+    # colorbar_title
     cbtitle, kwdict = VisClaw.parse_colorbar_title(kwdict)
     if cbtitle==nothing; cbtitle=""; end
     # -----------------------------
@@ -129,10 +133,12 @@ function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
 
     ## colorbar
     for i = nplot_org+1:plt.n; plt.series_list[i].plotattributes[:colorbar_entry] = false; end
-    plt.series_list[nplot_org+1].plotattributes[:colorbar_entry] = true
+    if (cb !== :none) && (cb !== false)
+        plt.series_list[nplot_org+1].plotattributes[:colorbar_entry] = true
+    end
 
     ## Appearance
-    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=bginside, colorbar=true, colorbar_title=cbtitle)
+    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=bginside, colorbar=cb, colorbar_title=cbtitle)
 
     ## return value
     return plt
