@@ -3,6 +3,7 @@ using VisClaw
 using Printf
 using Plots
 gr()
+clibrary(:colorcet)
 
 # -----------------------------
 # ike

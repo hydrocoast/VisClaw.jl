@@ -22,8 +22,8 @@ scratchdir = joinpath(CLAW, "geoclaw/scratch")
     for f in filelist
         println(f)
         try 
-            #include(joinpath(exdir,f))
             @test_nowarn include(joinpath(exdir,f))
+            #include(joinpath(exdir,f))
         catch e
             println("Failed "*f)
 

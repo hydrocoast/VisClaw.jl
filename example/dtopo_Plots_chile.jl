@@ -3,8 +3,7 @@ using Printf
 
 ### Seafloor deformation (for tsunami simulation)
 using Plots
-#gr()
-plotlyjs()
+gr()
 
 # -----------------------------
 # chile 2010
