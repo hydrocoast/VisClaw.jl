@@ -2,8 +2,7 @@ using VisClaw
 
 using Printf
 using Plots
-#gr()
-plotlyjs()
+gr()
 
 # -----------------------------
 # ike
@@ -43,5 +42,5 @@ plts = tilebound!.(plts, amrall.amr)
 # save
 #plotssavefig(plts, output_prefix*".svg")
 # gif
-plotsgif(plts, output_prefix*".gif", fps=4)
+#plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

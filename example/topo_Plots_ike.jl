@@ -3,8 +3,7 @@ using Printf
 
 ### Topography and bathymetry
 using Plots
-#gr()
-plotlyjs()
+gr()
 
 # -----------------------------
 # ike

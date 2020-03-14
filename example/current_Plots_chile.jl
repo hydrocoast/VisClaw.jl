@@ -2,8 +2,7 @@ using VisClaw
 
 using Printf
 using Plots
-#gr()
-plotlyjs()
+gr()
 
 # -----------------------------
 # chile 2010
@@ -31,7 +30,7 @@ plts = map((p,s)->plot!(p, title=s), plts, time_str)
 plts = tilebound!.(plts, amrall.amr; lc=:gray)
 
 # save
-#plotssavefig(plts, output_prefix*".svg")
+plotssavefig(plts, output_prefix*".pdf")
 # gif
-plotsgif(plts, output_prefix*".gif", fps=4)
+#plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

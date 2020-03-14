@@ -6,17 +6,14 @@ using Printf
 exdir = joinpath(dirname(pathof(VisClaw)), "../example")
 filelist = readdir(exdir)
 filter!(x->occursin(".jl", x), filelist)
-map(s->filter!(x->!occursin(s, x), filelist), ["check", "fgmax", "run_examples"])
-map(s->filter!(x->!occursin(s, x), filelist), ["storm","seasurf","current"])
+map(s->filter!(x->!occursin(s, x), filelist), ["check", "fgmax", "run_examples", "GMT"])
 
 # number
 nf = length(filelist)
 println(@sprintf("%d", nf)*" files are going to be tested...")
 
-## avoid warn
-using Plots
-plotlyjs()
-plt = plot()
+using GR: GR
+GR.inline("pdf")
 
 scratchdir = joinpath(CLAW, "geoclaw/scratch")
 @testset "VisClaw.jl" begin

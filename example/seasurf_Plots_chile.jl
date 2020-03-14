@@ -2,9 +2,7 @@ using VisClaw
 using Printf
 
 using Plots
-#gr()
-plotlyjs()
-#pyplot()
+gr()
 
 # -----------------------------
 # chile 2010
@@ -35,5 +33,5 @@ plts = map(p -> plotsgaugelocation!(p, gauges; ms=4, color=:black), plts)
 # save
 #plotssavefig(plts, output_prefix*".svg")
 # gif
-plotsgif(plts, output_prefix*".gif", fps=4)
+#plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

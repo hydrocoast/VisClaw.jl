@@ -2,8 +2,7 @@ using VisClaw
 using Printf
 ### Waveform plots from gauges
 using Plots
-#gr()
-plotlyjs()
+gr()
 
 sec1h = 3.6e3
 sec1d = 24sec1h
