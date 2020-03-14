@@ -9,7 +9,7 @@ function replaceunit!(fgmax::VisClaw.FGmaxValue, unit::Symbol)
     end
 
     ratio = timedict[fgmax.unittime]/timedict[unit]
-    if abs(ratio - 1.0) < 1e-5; return; end
+    if abs(ratio - 1.0) < 1e-5; return fgmax; end
 
     # convert
     fgmax.unittime = unit
@@ -37,7 +37,7 @@ function replaceunit!(gauge::VisClaw.Gauge, unit::Symbol)
     end
 
     ratio = timedict[gauge.unittime]/timedict[unit]
-    if abs(ratio - 1.0) < 1e-5; return; end
+    if abs(ratio - 1.0) < 1e-5; return gauge; end
 
     # convert
     gauge.unittime = unit
@@ -57,7 +57,7 @@ function replaceunit!(amrs::VisClaw.AMR, unit::Symbol)
     end
 
     ratio = timedict[amrs.unittime]/timedict[unit]
-    if abs(ratio - 1.0) < 1e-5; return; end
+    if abs(ratio - 1.0) < 1e-5; return amrs; end
 
     # convert
     amrs.unittime = unit
