@@ -178,6 +178,25 @@ end
 
 ########################################
 """
+Struct: max values at a gauge
+"""
+mutable struct Gaugemax
+    label :: String # Name
+    id :: Int64 # gauge id
+    loc :: AbstractVector{Float64} # gauge location
+    AMRlevel :: Int64
+    eta :: Float64
+    vel :: Float64
+    t_eta :: Float64
+    t_vel :: Float64
+    unittime :: Symbol
+    # Constructor
+    VisClaw.Gaugemax(label,id,loc,AMRlevel,eta,vel,t_eta,t_vel,unittime) = new(label,id,loc,AMRlevel,eta,vel,t_eta,t_vel,unittime)
+end
+########################################
+
+########################################
+"""
 Struct: FGmax grid
 """
 struct FGmaxGrid
