@@ -18,6 +18,7 @@ before_install:
   - export PATH
   - echo 'export PATH="$HOME/gmt/bin:$PATH"' >>~/.bash_profile
   - cd $HOME/gmt
+  - git checkout 6.0.0
   - wget http://w3.ualg.pt/~jluis/ftp/gshhg-gmt-2.3.7.tar.gz
   - tar -xvzf gshhg-gmt-2.3.7.tar.gz
   - wget http://w3.ualg.pt/~jluis/ftp/dcw-gmt-1.1.4.tar.gz
