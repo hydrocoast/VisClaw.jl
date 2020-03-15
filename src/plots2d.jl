@@ -279,6 +279,7 @@ function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwarg
     ## plot time-series
     plt = Array{Plots.Plot}(undef, amrs.nstep)
     for i = 1:amrs.nstep
+        if isempty(amrs.amr[i]); plt[i] = Plots.plot(); continue; end
         plt[i] = VisClaw.plotsamr2d(amrs.amr[i], AMRlevel; kwargs...)
     end
     ## return plots

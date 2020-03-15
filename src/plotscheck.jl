@@ -20,6 +20,11 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     else
         error("Invalid input argument vartype: $vartype")
     end
+    # parse keyword args
+    kwdict = KWARG(kwargs)
+    # xlims, ylims
+    xlims, kwdict = VisClaw.parse_xlims(kwdict)
+    ylims, kwdict = VisClaw.parse_ylims(kwdict)
 
     ## make a list
     if !isdir(simdir); error("Directory $simdir doesn't exist"); end
@@ -58,10 +63,10 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
             continue
         end
 
-        amrs = loadfunction(simdir, i; kwargs_load...)
+        amrs = loadfunction(simdir, i; xlims=xlims, ylims=ylims, kwargs_load...)
 
         # draw figure
-        plt = VisClaw.plotsamr2d(amrs.amr[1], AMRlevel; kwargs...)
+        plt = VisClaw.plotsamr2d(amrs.amr[1], AMRlevel; xlims=xlims, ylims=ylims, kwdict...)
         plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s")
 
         # show
