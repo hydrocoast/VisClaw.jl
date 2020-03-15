@@ -42,7 +42,7 @@ parse_ylims(d::Dict) =
 parse_from_keys(d, [:ylims, :ylim, :ylimit, :ylimits])
 # -----------------------------
 parse_colorbar(d::Dict) =
-parse_from_keys(d, [:cb, :cbar, :colorkey])
+parse_from_keys(d, [:colorbar,:cb, :cbar, :colorkey])
 # -----------------------------
 parse_colorbar_title(d::Dict) =
 parse_from_keys(d, [:colorbar_title])
