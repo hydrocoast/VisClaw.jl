@@ -36,6 +36,7 @@ include("loadfgmax.jl")
 include("loadtopo.jl")
 include("loadfort.jl")
 include("loadgauge.jl")
+include("gaugemax.jl")
 # Convert mesh data
 include("uniquemesh.jl")
 
@@ -72,6 +73,7 @@ export loadsurface, loadcurrent, loadstorm
 export rmvalue_coarser!
 export axesratio
 export replaceunit!
+export gaugemax
 
 # functions with Plots.jl
 export plotsamr

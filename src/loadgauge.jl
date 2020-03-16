@@ -39,6 +39,7 @@ function loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge 
         end
         if loadeta
             eta = convert.(Float64,dataorg[:,6])
+            eta[D.<=1e-3] .= 0.0
             eta = eta.-eta0
         else
             eta = empty([0.0])
