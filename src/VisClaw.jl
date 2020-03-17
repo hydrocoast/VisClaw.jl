@@ -55,13 +55,9 @@ include("plotsfgmax.jl")
 using GMT:GMT
 # Setup
 include("gmttools.jl")
-include("gmttxtvelo.jl")
 # make figures with GMT
 include("gmtsurface.jl")
 include("gmtstorm.jl")
-
-# run exapmles
-include("run_examples.jl")
 
 # General functions
 export geodata, surgedata, gaugedata, fgmaxdata
