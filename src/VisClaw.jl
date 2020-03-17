@@ -38,7 +38,7 @@ include("loadfort.jl")
 include("loadgauge.jl")
 include("gaugemax.jl")
 # Convert mesh data
-include("uniquemesh.jl")
+include("rmvalue_coarser.jl")
 
 # Setup
 include("plotsargs.jl")

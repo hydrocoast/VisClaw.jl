@@ -17,13 +17,13 @@ GR.inline("pdf")
 
 scratchdir = joinpath(CLAW, "geoclaw/scratch")
 @testset "VisClaw.jl" begin
-    # Write your own tests here. 
+    # Write your own tests here.
     # for loop
     for f in filelist
         println(f)
-        try 
+        try
             @test_nowarn include(joinpath(exdir,f))
-            #include(joinpath(exdir,f))
+            include(joinpath(exdir,f))
         catch e
             println("Failed "*f)
 

@@ -28,6 +28,9 @@ plt = plot!(plt;
             tickfont=Plots.font("sans-serif",10),
             legend=:topleft,
             )
+
+pltv = plotsgaugevelocity(gauges)
+
 # save
 #savefig(plt, "ike_waveform_gauge.svg")
 # -----------------------------

@@ -12,6 +12,8 @@ output_prefix = "ike_eta"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
+surgedata = surgedata(simdir)
+
 # load water surface
 amrall = loadsurface(simdir)
 rmvalue_coarser!.(amrall.amr)

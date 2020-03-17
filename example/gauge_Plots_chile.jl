@@ -24,22 +24,27 @@ using DelimitedFiles: readdlm
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 # read
 params = geodata(simdir)
-gauges = loadgauge(simdir, eta0=params.eta0)
+gauges = loadgauge(simdir, eta0=params.eta0, loadvel=true)
+replaceunit!.(gauges, :hour)
+gmax = gaugemax(gauges[1])
 ##
+
 
 
 # plot
 plt = plotsgaugewaveform(gauges[1], lw=1.0)
-#plt = plotsgaugewaveform!(plt, gaugeobs[1], lc=:black, lw=0.5, linestyle=:dash)
-plt = plot!(plt; xlims=(-0.5sec1h, 9.5sec1h), ylims=(-0.15, 0.25),
-                 xlabel="Time since earthquake (hour)",
-                 ylabel="Amplitude (m)",
-                 xticks=(0.0:sec1h:9.0sec1h, [@sprintf("%d",i) for i=0:9]),
-                 legendfont=Plots.font("sans-serif",12),
-                 guidefont=Plots.font("sans-serif",10),
-                 tickfont=Plots.font("sans-serif",10),
-                 legend=:topright,
-                 )
+#plotsgaugewaveform!(plt, gaugeobs[1], lc=:black, lw=0.5, linestyle=:dash)
+plot!(plt; ylims=(-0.15, 0.25),
+           xlabel="Time since earthquake (hour)",
+           ylabel="Amplitude (m)",
+           legendfont=Plots.font("sans-serif",12),
+           guidefont=Plots.font("sans-serif",10),
+           tickfont=Plots.font("sans-serif",10),
+           legend=:topright,
+           )
+
+pltv = plotsgaugevelocity(gauges[1])
+pltl = plotsgaugelocation(gauges[1])
 
 # save
 #savefig(plt, "chile2010_waveform_gauge.svg")
