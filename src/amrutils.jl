@@ -8,23 +8,6 @@ function getlims(tiles::Vector{VisClaw.AMRGrid})
 end
 ######################################
 """
-generate meshgrid in 1-column
-"""
-function meshline(tile::VisClaw.AMRGrid)
-    ## set the boundary
-    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
-    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
-    ## grid info
-    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
-    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
-    xvec = repeat(xline, inner=(tile.my,1)) |> vec
-    yvec = repeat(yline, outer=(tile.mx,1)) |> vec
-
-    ## return values
-    return xvec, yvec
-end
-######################################
-"""
 generate meshgrid
 """
 function meshtile(tile::VisClaw.AMRGrid)

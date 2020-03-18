@@ -38,7 +38,7 @@ include("loadfort.jl")
 include("loadgauge.jl")
 include("gaugemax.jl")
 # Convert mesh data
-include("uniquemesh.jl")
+include("rmvalue_coarser.jl")
 
 # Setup
 include("plotsargs.jl")
@@ -55,13 +55,9 @@ include("plotsfgmax.jl")
 using GMT:GMT
 # Setup
 include("gmttools.jl")
-include("gmttxtvelo.jl")
 # make figures with GMT
 include("gmtsurface.jl")
 include("gmtstorm.jl")
-
-# run exapmles
-include("run_examples.jl")
 
 # General functions
 export geodata, surgedata, gaugedata, fgmaxdata
