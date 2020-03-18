@@ -6,7 +6,7 @@ using Printf
 exdir = joinpath(dirname(pathof(VisClaw)), "../example")
 filelist = readdir(exdir)
 filter!(x->occursin(".jl", x), filelist)
-map(s->filter!(x->!occursin(s, x), filelist), ["check", "fgmax", "run_examples"])
+map(s->filter!(x->!occursin(s, x), filelist), ["check", "fgmax"])
 
 # number
 nf = length(filelist)
@@ -16,6 +16,9 @@ using GR: GR
 GR.inline("pdf")
 
 scratchdir = joinpath(CLAW, "geoclaw/scratch")
+# fgmax
+fgmaxtestdir = joinpath(CLAW, "geoclaw/tests/chile2010_fgmax")
+
 @testset "VisClaw.jl" begin
     # Write your own tests here.
     # for loop
@@ -23,15 +26,18 @@ scratchdir = joinpath(CLAW, "geoclaw/scratch")
         println(f)
         try
             @test_nowarn include(joinpath(exdir,f))
-            include(joinpath(exdir,f))
         catch e
-            println("Failed "*f)
+            try
+                include(joinpath(exdir,f))
+            catch e
+                println("Failed "*f)
 
-            bt = backtrace()
-            msg = sprint(showerror, e, bt)
-            println(msg)
-
-            println()
+                bt = backtrace()
+                msg = sprint(showerror, e, bt)
+                println(msg)
+                println()
+                continue
+            end
             continue
         end
     end
