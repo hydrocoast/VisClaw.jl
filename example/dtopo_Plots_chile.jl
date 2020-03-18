@@ -10,7 +10,7 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
-dtopodata = dtopodata(simdir)
+#dtopodata = dtopodata(simdir)
 if @isdefined(scratchdir)
     dtopo = loaddtopo(joinpath(scratchdir,"dtopo_usgs100227.tt3"))
 else
