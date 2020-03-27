@@ -117,6 +117,7 @@ function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
     # check the number of added series
     if plt.n == nplot_org
         println("Nothing to be plotted. Check xlims and ylims you specified.")
+        plt = Plots.plot!(plt, 0:5, 0:5, repeat([NaN], inner=(6,6)), label="", c=seriescolor, clims=clims, colorbar=cb)
         return plt
     end
 
@@ -146,6 +147,10 @@ end
 ######################################
 plotsamr2d(tiles, AMRlevel::AbstractVector{Int64}=empI; kwargs...) =
 plotsamr2d!(Plots.plot(), tiles, AMRlevel; kwargs...)
+######################################
+plotsamr2d!(plt, tiles, AMRlevel::Int64; kwargs...) = plotsamr2d!(plt, tiles, AMRlevel:AMRlevel; kwargs...)
+######################################
+plotsamr2d(tiles, AMRlevel::Int64; kwargs...) = plotsamr2d(tiles, AMRlevel:AMRlevel; kwargs...)
 ######################################
 
 
@@ -286,3 +291,4 @@ function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwarg
     return plt
 end
 #############################################
+plotsamr(amrs::VisClaw.AMR, AMRlevel::Int64; kwargs...) = plotsamr(amrs::VisClaw.AMR, AMRlevel:AMRlevel; kwargs...)
