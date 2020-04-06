@@ -2,7 +2,8 @@
 ## Function: read topo.data
 #################################
 """
-Function: read topo.data
+    topodata(dirname::String)
+read topo.data
 """
 function topodata(dirname::String)
     ## check args
@@ -40,7 +41,8 @@ end
 ## Function: read dtopo.data
 #################################
 """
-Function: read dtopo.data
+    dtopodata(dirname::String)
+read dtopo.data
 """
 function dtopodata(dirname::String)
     ## check args
@@ -85,7 +87,9 @@ end
 ## Function: load topography
 #################################
 """
-Function: load topography
+    loadtopo(dirname::String)
+    loadtopo(filename::String, topotype=3::Int64)
+load topography data
 """
 function loadtopo(filename::String, topotype=3::Int64)
     ## from _output directory
@@ -165,7 +169,10 @@ end
 ## Function: load seafloor deformation
 #########################################
 """
-Function: load seafloor deformation (dtopo)
+    loaddeform(dirname::String)
+    loaddeform(filename::String, topotype=3::Int64)
+load data of seafloor deformation (dtopo)
+loaddtopo is an alias of loaddeform.
 """
 function loaddeform(filename::String, topotype=3::Int64)
     ## from _output directory
@@ -230,7 +237,7 @@ function loaddeform(filename::String, topotype=3::Int64)
         deform = zeros(my, mx, mt)
         for k = 1:mt
             for i = 1:my
-                line = replace(dataorg[i], r"^\s+|,?\s+$" => "")
+                line = replace(dataorg[i+(k-1)my], r"^\s+|,?\s+$" => "")
                 line = replace(line, "," => " ") # for csv data
                 line = split(line, r"\s+",keepempty=false)
                 deform[i,:,k] = parse.(Float64, line)

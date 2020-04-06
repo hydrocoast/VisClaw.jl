@@ -1,52 +1,58 @@
 ####################################################
 """
-Function: plot topography and bathymetry in 2D
+    plotstopo(topo::VisClaw.Topo; kwargs...)
+    plotstopo!(plt, topo::VisClaw.Topo; kwargs...)
+
+plot topography and bathymetry data using Plots
 """
-function plotstopo!(plt, geo::VisClaw.Topo; kwargs...)
-	z = geo.elevation
+function plotstopo!(plt, topo::VisClaw.Topo; kwargs...)
 	# plot
-    plt = Plots.plot!(plt, geo.x, geo.y, z;
-                      xlims=extrema(geo.x), ylims=extrema(geo.y),
+    plt = Plots.plot!(plt, topo.x, topo.y, topo.elevation;
+                      xlims=extrema(topo.x), ylims=extrema(topo.y),
                       axis_ratio=:equal, kwargs...)
     # return
     return plt
 end
 ####################################################
-plotstopo(geo::VisClaw.Topo; kwargs...) = plotstopo!(Plots.plot(), geo; kwargs...)
+plotstopo(topo::VisClaw.Topo; kwargs...) = plotstopo!(Plots.plot(), topo; kwargs...)
+
 ####################################################
 """
-Function: plot displacement of topography
-"""
-function plotstopo!(plt, geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+    plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+    plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
 
-    if (itime < 0) || (geo.mt < itime)
+plot dtopo data using Plots
+"""
+function plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+
+    if (itime < 0) || (dtopo.mt < itime)
         error("Invalid time")
     end
-    if geo.mt==1
-        z = geo.deform
+    if dtopo.mt==1
+        z = dtopo.deform
     elseif  itime == 0
-        z = geo.deform[:,:,end]
+        z = dtopo.deform[:,:,end]
     else
-        z = geo.deform[:,:,itime]
+        z = dtopo.deform[:,:,itime]
     end
 
     # plot
-    plt = Plots.plot!(plt, geo.x, geo.y, z;
-                      xlims=extrema(geo.x), ylims=extrema(geo.y),
+    plt = Plots.plot!(plt, dtopo.x, dtopo.y, z;
+                      xlims=extrema(dtopo.x), ylims=extrema(dtopo.y),
                       axis_ratio=:equal, kwargs...)
     # return
     return plt
 end
 ####################################################
-plotstopo(geo::VisClaw.DTopo, itime::Int64=0; kwargs...) = plotstopo!(Plots.plot(), geo, itime; kwargs...)
-####################################################
-const plotsdtopo = plotstopo
-const plotsdtopo! = plotstopo!
+plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...) = plotsdtopo!(Plots.plot(), dtopo, itime; kwargs...)
 
 
 ####################################################
 """
-Function: plot a range of topo/bath
+    plotstoporange(geo::VisClaw.AbstractTopo; kwargs...)
+    plotstoporange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
+
+plot a range of topo/bath using Plots
 """
 function plotstoporange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
 
@@ -64,13 +70,16 @@ plotstoporange(geo::VisClaw.AbstractTopo; kwargs...) = plotstoporange!(Plots.plo
 
 ####################################################
 """
-Function: plot coastlines from topo
+    plotscoastline(topo::VisClaw.Topo; kwargs...)
+    plotscoastline!(plt, topo::VisClaw.Topo; kwargs...)
+
+plot coastlines from topography and bathymetry data using Plots
 """
-function plotscoastline!(plt, geo::VisClaw.Topo; kwargs...)
+function plotscoastline!(plt, topo::VisClaw.Topo; kwargs...)
 	# plot
-	plt = Plots.contour!(plt, geo.x, geo.y, geo.elevation; levels=[0], kwargs...)
+	plt = Plots.contour!(plt, topo.x, topo.y, topo.elevation; levels=[0], kwargs...)
 	return plt
 end
 ####################################################
-plotscoastline(geo::VisClaw.Topo; kwargs...) = plotscoastline!(Plots.plot(), geo; kwargs...)
+plotscoastline(topo::VisClaw.Topo; kwargs...) = plotscoastline!(Plots.plot(), topo; kwargs...)
 ####################################################
