@@ -148,10 +148,9 @@ struct SurgeParam
     windindex::Int64
     slpindex::Int64
     stormtype::Int64
-    landfall::Float64
     # Constructor
-    VisClaw.SurgeParam() = new(5,7,1,0.0)
-    VisClaw.SurgeParam(windindex,slpindex,stormtype,landfall) = new(windindex,slpindex,stormtype,landfall)
+    VisClaw.SurgeParam() = new(5,7,1)
+    VisClaw.SurgeParam(windindex,slpindex,stormtype) = new(windindex,slpindex,stormtype)
 end
 ########################################
 

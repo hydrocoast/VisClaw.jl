@@ -10,7 +10,7 @@ before_install:
   ## Install GMT trunk
   - pwd
   - sudo apt-get install libgconf2-dev libgconf-2-4 libgtk-3-0 libxss1 libnss3 libasound2 libx11-xcb1
-  - sudo apt-get install build-essential libcurl4-gnutls-dev libnetcdf-dev libgdal1-dev libfftw3-dev libpcre3-dev liblapack-dev ghostscript 
+  - sudo apt-get install build-essential libcurl4-gnutls-dev libnetcdf-dev libgdal1-dev libfftw3-dev libpcre3-dev liblapack-dev ghostscript
   - sudo apt-get install qt5-default qt5-image-formats-plugins qt5-qmake qt5-style-plugins
   - sudo apt-get install libqt5widgets5 libqt5gui5 libqt5svg5-dev libxt6 libxrender1 libgl1-mesa-glx libqt5dbus5 libqt5network5 libqt5core5a
   - git clone https://github.com/GenericMappingTools/gmt.git $HOME/gmt
@@ -30,13 +30,13 @@ before_install:
   - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/gmt/lib"
   ###  download clawpack output examples
   - cd $HOME
-  - FILE_ID=1HlvUJQ1WbM-kR_EtbeNSiu5kIeO5JCAN
+  - FILE_ID=1Vcc8U1hJQOHEt-Up92TicrxAf_DCG8eq
   - FILE_NAME=clawpack-v5.6.1.tar.gz
   - curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=${FILE_ID}" > /dev/null
   - CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)"
   - curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=${FILE_ID}" -o ${FILE_NAME}
-  - tar -zxvf clawpack-v5.6.1.tar.gz
-  - export CLAW="$HOME/clawpack-v5.6.1"
+  - tar -zxvf ${FILE_NAME}
+  - export CLAW="$HOME/${FILE_NAME}"
 before_script:
   ### repo
   - git clone --depth=50 --branch=${TRAVIS_BRANCH} https://github.com/hydrocoast/VisClaw.jl.git hydrocoast/VisClaw.jl

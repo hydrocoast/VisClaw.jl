@@ -12,7 +12,7 @@ output_prefix = "ike_eta"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
-surgeparams = surgedata(simdir)
+surgeparams = surgedata(joinpath(simdir, "surge.data"))
 
 # load water surface
 amrall = loadsurface(simdir)

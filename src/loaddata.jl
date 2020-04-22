@@ -58,9 +58,8 @@ function surgedata(outdir::String)
     windindex = parse(Int64,split(txt[occursin.("wind_index",txt)][1],r"\s+")[1])
     slpindex = parse(Int64,split(txt[occursin.("pressure_index",txt)][1],r"\s+")[1])
     stormtype = parse(Int64,split(txt[occursin.("storm_specification_type",txt)][1],r"\s+")[1])
-    landfall = parse(Float64,split(txt[occursin.(" landfall ",txt)][1],r"\s+")[1])
     # instance
-    surgeparams = VisClaw.SurgeParam(windindex,slpindex,stormtype,landfall)
+    surgeparams = VisClaw.SurgeParam(windindex,slpindex,stormtype)
     # return values
     return surgeparams
 end

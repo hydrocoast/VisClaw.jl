@@ -9,19 +9,18 @@ clibrary(:colorcet)
 #simdir = "your_simulation_path/_output"
 simdir = joinpath(CLAW,"geoclaw/tests/chile2010_fgmax/_output")
 # load
-#=
-if @isdefined(fgmaxtestdir)
-    fg = Vector{VisClaw.FGmaxGrid}(undef, 3)
-    fg[1] = VisClaw.FGmaxGrid(1, joinpath(fgmaxtestdir, "def_fgmax1.txt"), 5)
-    fg[1] = VisClaw.FGmaxGrid(2, joinpath(fgmaxtestdir, "def_fgmax2.txt"), 5)
-    fg[1] = VisClaw.FGmaxGrid(3, joinpath(fgmaxtestdir, "def_fgmax3.txt"), 5)
-else
-    fg = fgmaxdata(simdir)
-    fg = loadfgmaxgrid.(fg)
-    fgmax = loadfgmax.(simdir, fg, nval_save=2)
-end
-=#
 fg = fgmaxdata(simdir)
+if @isdefined(fgmaxtestdir)
+    fg[1] = VisClaw.FGmaxGrid(fg[1].FGid, joinpath(fgmaxtestdir, "def_fgmax1.txt"), fg[1].nval)
+    fg[2] = VisClaw.FGmaxGrid(fg[2].FGid, joinpath(fgmaxtestdir, "def_fgmax2.txt"), fg[2].nval)
+    fg[3] = VisClaw.FGmaxGrid(fg[3].FGid, joinpath(fgmaxtestdir, "def_fgmax3.txt"), fg[3].nval)
+    #fg = Vector{VisClaw.FGmaxGrid}(undef, 3)
+    #fg[1] = VisClaw.FGmaxGrid(1, joinpath(fgmaxtestdir, "def_fgmax1.txt"), 5)
+    #fg[1] = VisClaw.FGmaxGrid(2, joinpath(fgmaxtestdir, "def_fgmax2.txt"), 5)
+    #fg[1] = VisClaw.FGmaxGrid(3, joinpath(fgmaxtestdir, "def_fgmax3.txt"), 5)
+end
+#fg = fgmaxdata(simdir)
+
 fg = loadfgmaxgrid.(fg)
 fgmax = loadfgmax.(simdir, fg, nval_save=2)
 replaceunit!.(fgmax, :hour)
