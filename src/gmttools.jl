@@ -1,6 +1,8 @@
 ###################################################
 """
-Get x and y ranges of a tile in String
+    getR_tile = getR_tile(tile::VisClaw.AMRGrid)
+
+Get x and y ranges of a tile in String for -R option in GMT
 """
 function getR_tile(tile::VisClaw.AMRGrid)
     xs = tile.xlow
@@ -13,16 +15,16 @@ function getR_tile(tile::VisClaw.AMRGrid)
 end
 ###################################################
 """
-Get x and y ranges in String for -R
+    xyrange = getR(tiles::Vector{VisClaw.AMRGrid})
+    xyrange = getR(topo::VisClaw.AbstractTopo)
+
+Get x and y ranges in String for -R option in GMT
 """
 function getR(tiles::Vector{VisClaw.AMRGrid})
     xs, xe, ys, ye = VisClaw.getlims(tiles)
     return "$xs/$xe/$ys/$ye"
 end
 ###################################################
-"""
-Get x and y ranges in String for -R
-"""
 function getR(topo::VisClaw.AbstractTopo)
     xs=topo.x[1]
     xe=topo.x[end]
@@ -33,6 +35,9 @@ function getR(topo::VisClaw.AbstractTopo)
 end
 ###################################################
 """
+    hwratio = axesratio(tiles::Vector{VisClaw.AMRGrid})
+    hwratio = axesratio(topo::VisClaw.AbstractTopo)
+
 Get height/width ratio
 """
 function axesratio(tiles::Vector{VisClaw.AMRGrid})
@@ -42,9 +47,6 @@ function axesratio(tiles::Vector{VisClaw.AMRGrid})
     return hwratio
 end
 ###################################################
-"""
-Get height/width ratio
-"""
 function axesratio(topo::VisClaw.AbstractTopo)
     xs=topo.x[1]
     xe=topo.x[end]
@@ -58,7 +60,10 @@ end
 
 ###################################################
 """
-Generate grd data, VisClaw.Topo
+    G = geogrd(geo::VisClaw.Topo; kwargs...)
+    G = geogrd(geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+
+Generate grd (GMT) data
 """
 function geogrd(geo::VisClaw.Topo; kwargs...)
 
@@ -73,9 +78,6 @@ function geogrd(geo::VisClaw.Topo; kwargs...)
     return G
 end
 ###################################################
-"""
-Generate grd data, VisClaw.DTopo
-"""
 function geogrd(geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
 
     Δ = geo.dx
@@ -99,6 +101,8 @@ end
 
 ###################################################
 """
+    proj = getJ(proj_base::String, hwratio::Real)
+
 Correct J option
 """
 #function getJ(geo; proj_base="X10d"::String)

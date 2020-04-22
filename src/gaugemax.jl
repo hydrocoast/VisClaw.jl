@@ -1,4 +1,6 @@
 """
+    gmax = gaugemax(gauge::VisClaw.Gauge)
+
 Maximal values and their occurrence times in a gauge
 """
 function gaugemax(gauge::VisClaw.Gauge)

@@ -3,6 +3,8 @@ default_maskgrd = "topomask.grd"
 
 ###################################################
 """
+    filename = landmask_asc(topo::VisClaw.Topo, filename::String=default_masktxt)
+
 output [x y z] data in txt for masking
 """
 function landmask_asc(topo::VisClaw.Topo, filename::String=default_masktxt)
@@ -26,6 +28,8 @@ end
 
 ###################################################
 """
+    G = landmask_grd(txtfile::String=default_masktxt; grdfile::String="", kwargs...)
+
 output masking grid
 """
 function landmask_grd(txtfile::String=default_masktxt;
@@ -70,6 +74,8 @@ end
 
 ###################################################
 """
+    G = tilegrd(tile::VisClaw.AMRGrid; spacing_unit::String="", kwargs...)
+
 make a grid file of VisClaw.AMRGrid with landmask
 """
 function tilegrd(tile::VisClaw.AMRGrid; spacing_unit::String="", kwargs...)
@@ -111,6 +117,8 @@ end
 
 ###################################################
 """
+    G = tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; spacing_unit::String="", kwargs...)
+
 make a grid file of VisClaw.AMRGrid with landmask
 """
 function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; spacing_unit::String="", kwargs...)

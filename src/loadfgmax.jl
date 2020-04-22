@@ -1,5 +1,8 @@
 ###################################
 """
+    fgmaxgrid = loadfgmaxgrid(fg::VisClaw.FGmaxGrid)
+    fgmaxgrid = loadfgmaxgrid(fname::String; FGid=0::Int64, nval=0::Int64)
+
 Function: read specification of a fixed grid
 """
 function loadfgmaxgrid(fname::String; FGid=0::Int64, nval=0::Int64)
@@ -36,14 +39,14 @@ function loadfgmaxgrid(fname::String; FGid=0::Int64, nval=0::Int64)
 
 end
 ###################################
-"""
-Function: read specification of a fixed grid
-"""
 loadfgmaxgrid(fg::VisClaw.FGmaxGrid) = loadfgmaxgrid(fg.file; FGid=fg.FGid, nval=fg.nval)
 ###################################
 
 #################################
 """
+    fgmaxval = loadfgmax(loaddir::String, fg::VisClaw.FGmaxGrid; nval_save::Int64=fg.nval)
+    fgmaxval = loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int64; nval_save::Int64=nval)
+
 Function: fort.FGx.valuemax and fort.FGx.aux1 reader
 """
 function loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int64; nval_save::Int64=nval)
@@ -125,9 +128,6 @@ function loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
 
 end
 #################################
-"""
-Function: fort.FGx.valuemax reader
-"""
 loadfgmax(loaddir::String, fg::VisClaw.FGmaxGrid; nval_save::Int64=fg.nval) =
 loadfgmax(loaddir, fg.FGid, fg.nval, fg.nx, fg.ny::Int64; nval_save=nval_save)
 #################################

@@ -1,16 +1,16 @@
-#################################
-## Function: read topo.data
-#################################
 """
-    topodata(dirname::String)
+    topofile, topotype, ntopo = topodata("simlation/path/_output"::String)
+    topofile, topotype, ntopo = topodata("simlation/path/_output/topo.data"::String)
+
 read topo.data
 """
-function topodata(dirname::String)
+function topodata(outdir::String)
+    # filename
+    filename = occursin("topo.data", basename(outdir)) ? outdir : joinpath(outdir,"topo.data")
     ## check args
-    if !isdir(dirname); error("A directory $dirname is not found."); end;
+    if !isfile(filename); error("$filename is not found."); end;
 
     ## read ascdata
-    filename = joinpath(dirname,"topo.data")
     f = open(filename,"r")
     ascdata = readlines(f)
     close(f)
@@ -38,19 +38,19 @@ end
 #################################
 
 #################################
-## Function: read dtopo.data
-#################################
 """
-    dtopodata(dirname::String)
+    dtopofile, dtopotype, ndtopo = dtopodata("simlation/path/_output"::String)
+    dtopofile, dtopotype, ndtopo = dtopodata("simlation/path/_output/dtopo.data"::String)
+
 read dtopo.data
 """
-function dtopodata(dirname::String)
+function dtopodata(outdir::String)
+    # filename
+    filename = occursin("dtopo.data", basename(outdir)) ? outdir : joinpath(outdir,"dtopo.data")
     ## check args
-    if !isdir(dirname); error("A directory $dirname is not found."); end;
+    if !isfile(filename); error("$filename is not found."); end;
 
-    ## read ascdata
-    filename= joinpath(dirname,"dtopo.data")
-    if !isfile(filename); error("File $filename is not found."); end
+    # read
     f = open(filename,"r")
     ascdata = readlines(f)
     close(f)
@@ -84,11 +84,10 @@ end
 
 
 #################################
-## Function: load topography
-#################################
 """
-    loadtopo(dirname::String)
-    loadtopo(filename::String, topotype=3::Int64)
+    bathtopo = loadtopo(outdir::String)
+    bathtopo = loadtopo(filename::String, topotype=3::Int64)
+
 load topography data
 """
 function loadtopo(filename::String, topotype=3::Int64)
@@ -158,21 +157,21 @@ function loadtopo(filename::String, topotype=3::Int64)
     end
     topo[topo.==nodata] .= NaN ## replace nodate to NaN
     topo = reverse(topo, dims=1) ## flip
-    geo = VisClaw.Topo(ncols, nrows, x, y, cellsize, cellsize, topo)
+    bathtopo = VisClaw.Topo(ncols, nrows, x, y, cellsize, cellsize, topo)
 
-    return geo
+    return bathtopo
 end
 #################################
 
 
 #########################################
-## Function: load seafloor deformation
-#########################################
 """
-    loaddeform(dirname::String)
-    loaddeform(filename::String, topotype=3::Int64)
-load data of seafloor deformation (dtopo)
-loaddtopo is an alias of loaddeform.
+    dtopo = loaddtopo(outdir::String)
+    dtopo = loaddtopo(filename::String, topotype=3::Int64)
+    dtopo = loaddeform(outdir::String)
+    dtopo = loaddeform(filename::String, topotype=3::Int64)
+
+load spatial distribution of seafloor deformation (dtopo)
 """
 function loaddeform(filename::String, topotype=3::Int64)
     ## from _output directory

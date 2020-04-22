@@ -1,4 +1,9 @@
 ######################################
+"""
+    x1, x2, y1, y2 = getlims(tiles::Vector{VisClaw.AMRGrid})
+
+get min/max range of tiles
+"""
 function getlims(tiles::Vector{VisClaw.AMRGrid})
     x1 = minimum(getfield.(tiles, :xlow))
     y1 = minimum(getfield.(tiles, :ylow))
@@ -8,7 +13,9 @@ function getlims(tiles::Vector{VisClaw.AMRGrid})
 end
 ######################################
 """
-generate meshgrid
+    xmesh, ymesh = meshtile(tile::VisClaw.AMRGrid)
+
+generate meshgrids of tile
 """
 function meshtile(tile::VisClaw.AMRGrid)
     ## set the boundary
@@ -26,6 +33,8 @@ end
 ######################################
 
 """
+    var = keytile(tile::VisClaw.AMRGrid)
+
 Get the main property name from VisClaw.AMRGrid
 """
 function keytile(tile::VisClaw.AMRGrid)
@@ -46,7 +55,9 @@ end
 
 ##########################################################
 """
-Get Z values of cells including their margins
+    xvec, yvec, val = tilezmargin(tile::VisClaw.AMRGrid, var::Symbol; digits=4)
+
+Get Z-values of cells including their margins
 """
 function tilezmargin(tile::VisClaw.AMRGrid, var::Symbol; digits=4)
     ## set the boundary
@@ -73,7 +84,9 @@ end
 
 ##########################################################
 """
-Get Z values of cells at the grid lines
+    xvec, yvec, val = tilez(tile::VisClaw.AMRGrid, var::Symbol; digits=4)
+
+Get Z-values of cells at the grid lines
 """
 function tilez(tile::VisClaw.AMRGrid, var::Symbol; digits=4)
     xvec, yvec, val = VisClaw.tilezmargin(tile, var, digits=digits)

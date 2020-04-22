@@ -1,4 +1,9 @@
 """
+    amr = loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
+                    params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
+                    xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf),
+                    AMRlevel=[])
+
 Function: fort.qxxxx reader
 """
 function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
@@ -121,6 +126,9 @@ function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
 end
 #################################
 """
+    amr = loadforta(filename::String, ncol::Int;
+                    xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[])
+
 Function: fort.axxxx reader
 """
 loadforta(filename::String, ncol::Int; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
@@ -128,9 +136,9 @@ loadfortq(filename, ncol; vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMR
 #################################
 
 #################################
-## Function: load time
-#################################
 """
+    timelaps = loadfortt(filename::String)
+
 Function: fort.txxxx reader
 """
 function loadfortt(filename::String)
@@ -146,10 +154,19 @@ end
 #################################
 
 #######################################
-## Function: loadfortq and loadfortt
-##      time-series of water surface
-#######################################
 """
+    amrs = loadsurface(loaddir::String, filesequence::AbstractVector{Int64}; runup::Bool=true,
+                       xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadsurface(loaddir::String, filestart::Int64, filend::Int64; runup::Bool=true,
+                       xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadsurface(loaddir::String, fileid::Int64; runup::Bool=true,
+                       xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadsurface(loaddir::String; runup::Bool=true,
+                       xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
 Function: loadfortq and loadfortt
           time-series of water surface
 """
@@ -236,6 +253,18 @@ loadsurface(loaddir, 0:0; runup=runup, xlims=xlims, ylims=ylims, AMRlevel=AMRlev
 ######################################
 
 ######################################
+"""
+    amrs = loadstorm(loaddir::String, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadstorm(loaddir::String, filestart::Int64, filend::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadstorm(loaddir::String, fileid::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadstorm(loaddir::String; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+Function: loadforta and loadfortt
+          storm data
+"""
 loadstorm(loaddir::String, filesequence::AbstractVector{Int64}, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filesequence, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
@@ -250,6 +279,18 @@ loadsurface(loaddir, 0:0, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMR
 ######################################
 
 #######################################
+"""
+    amrs = loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadcurrent(loaddir::String, filestart::Int64, filend::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadcurrent(loaddir::String, fileid::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+    amrs = loadcurrent(loaddir::String; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+
+Function: loadfortq and loadfortt
+          ocean current data
+"""
 loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filesequence, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################

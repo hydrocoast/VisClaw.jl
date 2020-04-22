@@ -1,5 +1,7 @@
 #################################
 """
+    gauges = loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false)
+
 gauge*.txt reader
 """
 function loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ",

@@ -1,4 +1,10 @@
 ###############################################################################
+"""
+    plt = plotsfgmax(fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue, var::Symbol; kwargs...)
+
+    plotsfgmax!(plt::Plots.Plot, fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue, var::Symbol; kwargs...)
+
+"""
 function plotsfgmax!(plt, fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue, var::Symbol; kwargs...)
 
     # vector
@@ -28,11 +34,19 @@ function plotsfgmax!(plt, fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue, var:
     return plt
 end
 ###############################################################################
+"""
+$(@doc plotsfgmax!)
+"""
 plotsfgmax(fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue, var::Symbol; kwargs...) =
 plotsfgmax!(Plots.plot(), fg, fgmax, var; kwargs...)
 ###############################################################################
 
 ###############################################################################
+"""
+    plt = plotsfgmaxsurf(fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue; kwargs...)
+
+    plt = plotsfgmaxsurf(fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue, :h; kwargs...)
+"""
 plotsfgmaxsurf(fg::VisClaw.FGmaxGrid, fgmax::VisClaw.FGmaxValue; kwargs...) =
 plotsfgmax(fg, fgmax, :h; kwargs...)
 ###############################################################################

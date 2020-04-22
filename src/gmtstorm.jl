@@ -1,5 +1,10 @@
 
 ###################################################
+"""
+    txtfile = txtwind(tiles::Vector{VisClaw.AMRGrid}; skip=3::Int64, offset1::Int64=0, offset2::Int64=offset1)
+
+output an txt file for psvelo in GMT
+"""
 function txtwind(tiles::Vector{VisClaw.AMRGrid}; skip=3::Int64,
                  offset1::Int64=0, offset2::Int64=offset1)
 
@@ -55,6 +60,11 @@ end
 ###################################################
 
 ###################################################
+"""
+    txtfile = txtwind_scale(x, y, u, v, label::String="")
+
+output a txt file for scales of psvelo in GMT
+"""
 function txtwind_scale(x, y, u, v, label::String="")
 
     if isempty(label)
@@ -71,3 +81,4 @@ function txtwind_scale(x, y, u, v, label::String="")
 
     return txtfile
 end
+###################################################

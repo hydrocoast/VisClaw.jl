@@ -1,5 +1,7 @@
 ############################################################
 """
+    poly = polyrectangle(tile::VisClaw.AMRGrid)
+
 polygon data (rectangle) from a tile in AMR
 """
 function polyrectangle(tile::VisClaw.AMRGrid)
@@ -23,7 +25,9 @@ end
 
 ############################################################
 """
-replace a value to NaN where it is overlapped by a finer grid
+   rmvalue_coarser!(tiles::Vector{VisClaw.AMRGrid})
+
+replace values at coarser grids (lower levels) to NaN 
 """
 function rmvalue_coarser!(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles

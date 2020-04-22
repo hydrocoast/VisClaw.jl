@@ -3,7 +3,16 @@ an_default = Plots.font(10,:left,:top,0.0,:black)
 
 ###########################################
 """
-Function: plot a gauge location using Plots
+    plt = plotsgaugelocation(gauge::VisClaw.Gauge; offset=(0,0), font::Plots.Font, annotation_str=@sprintf(" %s",gauge.id), kwargs...)
+
+    plt = plotsgaugelocation(gauges::Vector{VisClaw.Gauge}; offset=(0,0), font::Plots.Font, annotation_str=" ", kwargs...)
+
+    plotsgaugelocation!(plt::Plots.Plot, gauge::VisClaw.Gauge; offset=(0,0), font::Plots.Font, annotation_str=@sprintf(" %s",gauge.id), kwargs...)
+
+    plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge}; offset=(0,0), font::Plots.Font, annotation_str=" ", kwargs...)
+
+
+Function: plot a gauge location (with scatter plot) using Plots
 """
 function plotsgaugelocation!(plt, gauge::VisClaw.Gauge;
                              offset=(0,0), font::Plots.Font=an_default, annotation_str=@sprintf(" %s",gauge.id), kwargs...)
@@ -24,6 +33,9 @@ function plotsgaugelocation!(plt, gauge::VisClaw.Gauge;
 
 end
 ###########################################
+"""
+$(@doc plotsgaugelocation!)
+"""
 plotsgaugelocation(gauge::VisClaw.Gauge; offset=(0,0), font::Plots.Font=an_default, annotation_str=@sprintf(" %s",gauge.id), kwargs...) =
 plotsgaugelocation!(Plots.plot(), gauge; offset=(0,0), font=font, annotation_str=annotation_str, kwargs...)
 ###########################################

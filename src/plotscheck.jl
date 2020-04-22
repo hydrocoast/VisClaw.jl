@@ -1,5 +1,8 @@
 ##############################################################################
 """
+    plt = plotscheck("simlation/path/_output"::String, AMRlevel::AbstractVector{Int64}=[]; vartype::Symbol=:surface, runup=true, kwargs...)
+    plt = plotscheck("simlation/path/_output"::String, AMRlevel::Int64; vartype::Symbol=:surface, runup=true, kwargs...)
+
 Quick checker of the spatial distribution
 """
 function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartype::Symbol=:surface, runup=true, kwargs...)
@@ -87,3 +90,4 @@ end
 ##############################################################################
 plotscheck(simdir::String, AMRlevel::Int64; kwargs...) =
 plotscheck(simdir, AMRlevel:AMRlevel; kwargs...)
+##############################################################################

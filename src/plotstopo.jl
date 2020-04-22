@@ -1,7 +1,8 @@
 ####################################################
 """
-    plotstopo(topo::VisClaw.Topo; kwargs...)
-    plotstopo!(plt, topo::VisClaw.Topo; kwargs...)
+    plt = plotstopo(topo::VisClaw.Topo; kwargs...)
+
+    plotstopo!(plt::Plots.Plot, topo::VisClaw.Topo; kwargs...)
 
 plot topography and bathymetry data using Plots
 """
@@ -14,12 +15,16 @@ function plotstopo!(plt, topo::VisClaw.Topo; kwargs...)
     return plt
 end
 ####################################################
+"""
+$(@doc plotstopo!)
+"""
 plotstopo(topo::VisClaw.Topo; kwargs...) = plotstopo!(Plots.plot(), topo; kwargs...)
 
 ####################################################
 """
-    plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
-    plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+    plt = plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+
+    plotsdtopo!(plt::Plots.Plot, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
 
 plot dtopo data using Plots
 """
@@ -44,13 +49,17 @@ function plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
     return plt
 end
 ####################################################
+"""
+$(@doc plotsdtopo!)
+"""
 plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...) = plotsdtopo!(Plots.plot(), dtopo, itime; kwargs...)
 
 
 ####################################################
 """
-    plotstoporange(geo::VisClaw.AbstractTopo; kwargs...)
-    plotstoporange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
+    plt = plotstoporange(geo::VisClaw.AbstractTopo; kwargs...)
+
+    plotstoporange!(plt::Plots.Plot, geo::VisClaw.AbstractTopo; kwargs...)
 
 plot a range of topo/bath using Plots
 """
@@ -65,13 +74,17 @@ function plotstoporange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
 	return plt
 end
 ####################################################
+"""
+$(@doc plotstoporange!)
+"""
 plotstoporange(geo::VisClaw.AbstractTopo; kwargs...) = plotstoporange!(Plots.plot(), geo; kwargs...)
 ####################################################
 
 ####################################################
 """
-    plotscoastline(topo::VisClaw.Topo; kwargs...)
-    plotscoastline!(plt, topo::VisClaw.Topo; kwargs...)
+    plt = plotscoastline(topo::VisClaw.Topo; kwargs...)
+
+    plotscoastline!(plt::Plots.Plot, topo::VisClaw.Topo; kwargs...)
 
 plot coastlines from topography and bathymetry data using Plots
 """
@@ -81,5 +94,8 @@ function plotscoastline!(plt, topo::VisClaw.Topo; kwargs...)
 	return plt
 end
 ####################################################
+"""
+$(@doc plotscoastline!)
+"""
 plotscoastline(topo::VisClaw.Topo; kwargs...) = plotscoastline!(Plots.plot(), topo; kwargs...)
 ####################################################

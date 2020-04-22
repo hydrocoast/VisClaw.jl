@@ -1,4 +1,6 @@
 """
+    val, d = parse_from_keys(d::Dict, symbs)
+	
 This function is based on find_in_dict() in GMT.
 See if D contains any of the symbols in SYMBS.
 If yes, return corresponding value

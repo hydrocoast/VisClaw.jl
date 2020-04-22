@@ -1,6 +1,10 @@
 empI = empty([], Int64)
 ######################################
 """
+    plt = plotsamr2d(tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}; kwargs...)
+
+    plotsamr2d!(plt::Plots.Plot, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}=[]; wind::Bool=false, kwargs...)
+
 Function: plot values of AMR grids in two-dimension
 """
 function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}=empI;
@@ -145,6 +149,9 @@ function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
     return plt
 end
 ######################################
+"""
+$(@doc plotsamr2d!)
+"""
 plotsamr2d(tiles, AMRlevel::AbstractVector{Int64}=empI; kwargs...) =
 plotsamr2d!(Plots.plot(), tiles, AMRlevel; kwargs...)
 ######################################
@@ -157,7 +164,9 @@ plotsamr2d(tiles, AMRlevel::Int64; kwargs...) = plotsamr2d(tiles, AMRlevel:AMRle
 
 #######################################
 """
-Function: add the grid numbers
+    gridnumber!(plt::Plots.Plot, tiles; AMRlevel::AbstractVector{Int64}=[], font::Plots.Font=Plots.font(12, :hcenter, :black), xlims=(), ylims=())
+
+Function: add the grid numbers of tiles
 """
 function gridnumber!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI,
                      font::Plots.Font=Plots.font(12, :hcenter, :black),
@@ -210,7 +219,9 @@ end
 
 #######################################
 """
-Function: draw boundaries
+    tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=[], kwargs...)
+
+Function: draw boundaries of tiles
 """
 function tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
 
@@ -278,7 +289,10 @@ end
 
 #######################################
 """
-Function: plot time-series of AMR data
+    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=[]; kwargs...)
+    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::Int64; kwargs...)
+
+Function: plot AMR data at designated times
 """
 function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwargs...)
     ## plot time-series

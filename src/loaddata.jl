@@ -2,11 +2,15 @@
 
 ###################################
 """
+    params = geodata("simlation/path/_output"::String)
+    params = geodata("simlation/path/_output/geoclaw.data"::String)
+
 Function: geoclaw.data reader
 """
 function geodata(dirname::String)
     # definition of filename
-    fname = joinpath(dirname,"geoclaw.data")
+    fname = occursin("geoclaw.data", basename(dirname)) ? dirname : joinpath(dirname, "geoclaw.data")
+
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end
     # read all lines
@@ -35,11 +39,15 @@ end
 
 ###################################
 """
+    surgeparams = surgedata("simlation/path/_output"::String)
+    surgeparams = surgedata("simlation/path/_output/surge.data"::String)
+
 Function: surge.data reader
 """
 function surgedata(dirname::String)
     # definition of filename
-    fname = joinpath(dirname,"surge.data")
+    fname = occursin("surge.data", basename(dirname)) ? dirname : joinpath(dirname, "surge.data")
+
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end
     # read all lines
@@ -52,19 +60,23 @@ function surgedata(dirname::String)
     stormtype = parse(Int64,split(txt[occursin.("storm_specification_type",txt)][1],r"\s+")[1])
     landfall = parse(Float64,split(txt[occursin.(" landfall ",txt)][1],r"\s+")[1])
     # instance
-    surgedata = VisClaw.SurgeParam(windindex,slpindex,stormtype,landfall)
+    surgeparams = VisClaw.SurgeParam(windindex,slpindex,stormtype,landfall)
     # return values
-    return surgedata
+    return surgeparams
 end
 ###################################
 
 ###################################
 """
+    gaugeinfo = gaugedata("simlation/path/_output"::String)
+    gaugeinfo = gaugedata("simlation/path/_output/gauges.data"::String)
+
 Function: gauges.data reader
 """
 function gaugedata(dirname::String)
     # definition of filename
-    fname = joinpath(dirname,"gauges.data")
+    fname = occursin("gauges.data", basename(dirname)) ? dirname : joinpath(dirname,"gauges.data")
+
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end
     # read all lines
@@ -74,7 +86,7 @@ function gaugedata(dirname::String)
     # parse parameters
     ngauges = parse(Int64, split(txt[occursin.("ngauges",txt)][1],r"\s+")[1])
     # preallocate
-    gaugedata = Vector{VisClaw.Gauge}(undef,ngauges)
+    gaugeinfo = Vector{VisClaw.Gauge}(undef,ngauges)
 
     # read gauge info
     baseline = findfirst(x->occursin("ngauges", x), txt)
@@ -85,21 +97,25 @@ function gaugedata(dirname::String)
         loc = [parse(Float64,txtline[2]), parse(Float64,txtline[3])]
         time = [parse(Float64,txtline[4]), parse(Float64,txtline[5])]
         # instance
-        gaugedata[i] = VisClaw.Gauge(label,id,0,loc,[],time,[])
+        gaugeinfo[i] = VisClaw.Gauge(label,id,0,loc,[],time,[])
     end
 
     # return values
-    return gaugedata
+    return gaugeinfo
 end
 ###################################
 
 ###################################
 """
+    fgmaxgrids = fgmaxdata("simlation/path/_output"::String)
+    fgmaxgrids = fgmaxdata("simlation/path/_output/fgmax.data"::String)
+
 Function: fgmax.data reader
 """
 function fgmaxdata(dirname::String)
     # definition of filename
-    fname = joinpath(dirname,"fgmax.data")
+    fname = occursin("fgmax.data", basename(dirname)) ? dirname : joinpath(dirname, "fgmax.data")
+
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end
     # read all lines

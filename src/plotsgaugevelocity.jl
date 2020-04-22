@@ -1,5 +1,13 @@
 """
-Function: plot a waveform at a gauge
+    plt = plotsgaugevelocity(gauge::VisClaw.Gauge; kwargs...)
+
+	plt = plotsgaugevelocity(gauges::Vector{VisClaw.Gauge}; kwargs...)
+
+    plotsgaugevelocity!(plt::Plots.Plot, gauge::VisClaw.Gauge; kwargs...)
+
+	plotsgaugevelocity!(plt::Plots.Plot, gauges::Vector{VisClaw.Gauge}; kwargs...)
+
+Function: plot waveforms of gauges
 """
 function plotsgaugevelocity!(plt, gauge::VisClaw.Gauge; kwargs...)
     # keyword args
@@ -10,15 +18,15 @@ function plotsgaugevelocity!(plt, gauge::VisClaw.Gauge; kwargs...)
     return plt
 end
 ###########################################
+"""
+$(@doc plotsgaugevelocity!)
+"""
 plotsgaugevelocity(gauge::VisClaw.Gauge; kwargs...) =
 plotsgaugevelocity!(Plots.plot(), gauge; kwargs...)
 ###########################################
 
 
 ###########################################
-"""
-Function: plot waveforms at gauges
-"""
 function plotsgaugevelocity!(plt, gauges::Vector{VisClaw.Gauge}; kwargs...)
     # keyword args
     d = KWARG(kwargs)
