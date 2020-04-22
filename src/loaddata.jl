@@ -7,9 +7,9 @@
 
 Function: geoclaw.data reader
 """
-function geodata(dirname::String)
+function geodata(outdir::String)
     # definition of filename
-    fname = occursin("geoclaw.data", basename(dirname)) ? dirname : joinpath(dirname, "geoclaw.data")
+    fname = occursin("geoclaw.data", basename(outdir)) ? outdir : joinpath(outdir, "geoclaw.data")
 
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end
@@ -44,9 +44,9 @@ end
 
 Function: surge.data reader
 """
-function surgedata(dirname::String)
+function surgedata(outdir::String)
     # definition of filename
-    fname = occursin("surge.data", basename(dirname)) ? dirname : joinpath(dirname, "surge.data")
+    fname = occursin("surge.data", basename(outdir)) ? outdir : joinpath(outdir, "surge.data")
 
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end
@@ -73,9 +73,9 @@ end
 
 Function: gauges.data reader
 """
-function gaugedata(dirname::String)
+function gaugedata(outdir::String)
     # definition of filename
-    fname = occursin("gauges.data", basename(dirname)) ? dirname : joinpath(dirname,"gauges.data")
+    fname = occursin("gauges.data", basename(outdir)) ? outdir : joinpath(outdir,"gauges.data")
 
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end
@@ -112,9 +112,9 @@ end
 
 Function: fgmax.data reader
 """
-function fgmaxdata(dirname::String)
+function fgmaxdata(outdir::String)
     # definition of filename
-    fname = occursin("fgmax.data", basename(dirname)) ? dirname : joinpath(dirname, "fgmax.data")
+    fname = occursin("fgmax.data", basename(outdir)) ? outdir : joinpath(outdir, "fgmax.data")
 
     # check whether exist
     if !isfile(fname); error("File $fname is not found."); end

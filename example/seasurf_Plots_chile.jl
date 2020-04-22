@@ -12,7 +12,11 @@ output_prefix = "chile2010_eta"
 
 # load water surface
 amrall = loadsurface(simdir)
+replaceunit!(amrall, :minute)
 rmvalue_coarser!.(amrall.amr)
+
+# for CI
+tmp = VisClaw.keytile(amrall.amr[1][1])
 
 # plot
 plts = plotsamr(amrall; c=:coolwarm, clims=(-0.5,0.5),
@@ -22,7 +26,7 @@ plts = plotsamr(amrall; c=:coolwarm, clims=(-0.5,0.5),
                 )
 
 # time in string
-time_str = map(x->@sprintf("%03d", x/60.0)*" min", amrall.timelap)
+time_str = map(x->@sprintf("%03d", x)*" min", amrall.timelap)
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
 # gauge locations (from gauges.data)

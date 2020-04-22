@@ -10,6 +10,9 @@ function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
                    params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
                    xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf),
                    AMRlevel=[])
+    # check
+    !any(map(sym -> vartype == sym, [:surface, :current, :storm])) && error("kwarg 'vartype' is invalid")
+
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -26,8 +29,6 @@ function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
         amr = Array{VisClaw.Velocity}(undef,ngrid)
     elseif vartype==:storm
         amr = Array{VisClaw.Storm}(undef,ngrid)
-    else
-        error("kwarg vartype is invalid")
     end
 
     l = 1
@@ -51,9 +52,8 @@ function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
         # the next tile
         l = l+9+(mx+1)*my
         ## check AMRlevel
-        if !isempty(AMRlevel)
-            if isempty(findall(AMRlevel .== AMRlevel_load)); i += 1; continue; end
-        end
+        if !isempty(AMRlevel); if isempty(findall(AMRlevel .== AMRlevel_load)); i += 1; continue; end; end
+
         ## check whether the tile is on the domain
         if (xlow+dx*mx < xlims[1]) | (xlims[2] < xlow); i += 1; continue; end
         if (ylow+dy*my < ylims[1]) | (ylims[2] < ylow); i += 1; continue; end
@@ -175,6 +175,9 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
                      xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf),
                      AMRlevel=[])
 
+    # check
+    !any(map(sym -> vartype == sym, [:surface, :current, :storm])) && error("kwarg 'vartype' is invalid")
+
     ## define the filepath & filename
     if vartype==:surface
         fnamekw = "fort.q0"
@@ -185,8 +188,6 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
     elseif vartype==:storm
         fnamekw = "fort.a0"
         col=5
-    else
-        error("Invalid input argument vartype: $vartype")
     end
 
     ## make a list
@@ -204,9 +205,8 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
 
     # file sequence to be loaded
     if filesequence==0:0; filesequence = 1:nfile; end
-    if any(filesequence .< 1) || any(filesequence .> nfile)
-        error("Incorrect file sequence was specified. (This must be from 1 to $nfile)")
-    end
+    (any(filesequence .< 1) || any(filesequence .> nfile)) && error("Incorrect file sequence was specified. (This must be from 1 to $nfile)")
+    
 
     ## the number of files (to be loaded)
     nfile = length(filesequence)

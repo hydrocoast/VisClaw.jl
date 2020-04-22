@@ -38,18 +38,13 @@ end
 Get the main property name from VisClaw.AMRGrid
 """
 function keytile(tile::VisClaw.AMRGrid)
-    # type check
-    if isa(tile, VisClaw.SurfaceHeight)
-        var = :eta
-    elseif isa(tile, VisClaw.Velocity)
-        var = :vel
-    elseif isa(tile, VisClaw.Storm)
-        var = :slp
-    else
-        error("Invalid input argument, type of VisClaw.AMRGrid")
-    end
+    # check
+    !isa(tile, VisClaw.AMRGrid) && error("Invalid input argument. It must be a type of VisClaw.AMRGrid")
+    # assign
+    varset = [:eta, :vel, :slp]
+    ind = map(T -> isa(tile, T), [VisClaw.SurfaceHeight, VisClaw.Velocity, VisClaw.Storm])
     # return value
-    return var
+    return varset[ind][1]
 end
 ##########################################################
 

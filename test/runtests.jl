@@ -6,7 +6,8 @@ using Printf
 exdir = joinpath(dirname(pathof(VisClaw)), "../example")
 filelist = readdir(exdir)
 filter!(x->occursin(".jl", x), filelist)
-map(s->filter!(x->!occursin(s, x), filelist), ["check", "fgmax"])
+#map(s->filter!(x->!occursin(s, x), filelist), ["check", "fgmax"])
+map(s->filter!(x->!occursin(s, x), filelist), ["check"])
 
 # number
 nf = length(filelist)

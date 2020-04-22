@@ -252,9 +252,7 @@ function tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
     # -----------------------------
 
     # Too fine grids are not plotted
-    if isempty(AMRlevel) && xlims==nothing && ylims==nothing
-        AMRlevel = 1:3
-    end
+    if isempty(AMRlevel) && xlims==nothing && ylims==nothing; AMRlevel = 1:3; end
 
 
     ## the number of tiles
@@ -262,9 +260,7 @@ function tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
     for i = 1:ntile
 
         ## skip when the AMR level of this tile doesn't match any designated level
-        if !isempty(AMRlevel)
-            if isempty(findall(tiles[i].AMRlevel .== AMRlevel)); continue; end
-        end
+        if !isempty(AMRlevel); if isempty(findall(tiles[i].AMRlevel .== AMRlevel)); continue; end; end
 
         ## set the boundary
         x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]

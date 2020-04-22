@@ -85,9 +85,7 @@ function geogrd(geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
     xvec = repeat(geo.x, inner=(geo.my,1))
     yvec = repeat(geo.y, outer=(geo.mx,1))
 
-    if (itime < 0) || (geo.mt < itime)
-        error("Invalid time")
-    end
+    ( (itime < 0) || (geo.mt < itime) ) && error("Invalid time")
     if geo.mt == 1
         G = GMT.surface([xvec[:] yvec[:] geo.deform[:]]; R=R, I=Δ, kwargs...)
     elseif itime == 0
@@ -110,38 +108,28 @@ function getJ(proj_base::String, hwratio::Real)
     # find projection specifier
     J1 = match(r"^([a-zA-Z]+)", proj_base)
     J2 = match(r"([a-zA-Z]+).+?([a-zA-Z]+)", proj_base)
-    if J1 === nothing
-        error("Invald argument proj_base: $proj_base")
-    end
+
+    J1 === nothing && error("Invald argument proj_base: $proj_base")
 
     # assign figure width
     # check whether variable proj_base contains any number
     regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
     chkwidth = match(regex, proj_base)
-    if chkwidth === nothing
-        fwidth=10
-    else
-        fwidth = parse(Float64, chkwidth.captures[1])
-    end
+
+    fwidth = chkwidth === nothing ? fwidth=10 : parse(Float64, chkwidth.captures[1])
+
     # assign figure height
     # check whether variable proj_base contains the height
     regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?).+?([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
     chkheight = match(regex, proj_base)
-    if chkheight === nothing
-        fheight = hwratio*fwidth
-    else
-        fheight = parse(Float64, chkheight.captures[2])
-    end
+
+    fheight = chkheight === nothing ? hwratio*fwidth : parse(Float64, chkheight.captures[2])
 
     # generate J option
     if occursin("/",proj_base) && chkheight !== nothing
         proj = proj_base
     else
-        if J2 === nothing
-            proj=J1.captures[1]*"$fwidth"*"/$fheight"
-        else
-            proj=J1.captures[1]*"$fwidth"*J2.captures[2]*"/$fheight"*J2.captures[2]
-        end
+        proj = J2 === nothing ? J1.captures[1]*"$fwidth"*"/$fheight" : J1.captures[1]*"$fwidth"*J2.captures[2]*"/$fheight"*J2.captures[2]
     end
     # return value
     return proj

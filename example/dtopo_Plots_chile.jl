@@ -10,7 +10,7 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
-#dtopodata = dtopodata(simdir)
+dtopodata = dtopodata(simdir)
 if @isdefined(scratchdir)
     dtopo = loaddtopo(joinpath(scratchdir,"dtopo_usgs100227.tt3"))
 else
@@ -18,6 +18,6 @@ else
 end
 
 # plot
-plt = plotstopo(dtopo; linetype=:contourf, color=:coolwarm, clims=(-3.0,3.0))
+plt = plotsdtopo(dtopo; linetype=:contourf, color=:coolwarm, clims=(-3.0,3.0))
 #savefig(plt, "chile_dtopo.svg")
 # -----------------------------

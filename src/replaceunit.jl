@@ -29,12 +29,8 @@ end
 
 #################################
 function replaceunit!(gauge::VisClaw.Gauge, unit::Symbol)
-    if !haskey(timedict, unit)
-        error("Invalid specification of unit")
-    end
-    if !haskey(timedict, gauge.unittime)
-        error("Invalid symbol in gauge")
-    end
+    !haskey(timedict, unit) && error("Invalid specification: unit")
+    !haskey(timedict, gauge.unittime) && error("Invalid symbol in gauge")
 
     ratio = timedict[gauge.unittime]/timedict[unit]
     if abs(ratio - 1.0) < 1e-5; return gauge; end
@@ -49,12 +45,8 @@ end
 
 #################################
 function replaceunit!(amrs::VisClaw.AMR, unit::Symbol)
-    if !haskey(timedict, unit)
-        error("Invalid specification of unit")
-    end
-    if !haskey(timedict, amrs.unittime)
-        error("Invalid symbol in AMR")
-    end
+    !haskey(timedict, unit) && error("Invalid specification: unit")
+    !haskey(timedict, amrs.unittime) && error("Invalid symbol in AMR")
 
     ratio = timedict[amrs.unittime]/timedict[unit]
     if abs(ratio - 1.0) < 1e-5; return amrs; end
