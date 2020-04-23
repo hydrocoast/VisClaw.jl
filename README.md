@@ -1,5 +1,7 @@
 # VisClaw.jl
 
+**NOTE:** this package is unofficial and the author is not engaged in the Clawpack Development Team.   
+
 [![Build Status](https://travis-ci.com/hydrocoast/VisClaw.jl.svg?branch=master)](https://travis-ci.com/hydrocoast/VisClaw.jl)
 [![Codecov](https://codecov.io/gh/hydrocoast/VisClaw.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/hydrocoast/VisClaw.jl)
 [![Coveralls](https://coveralls.io/repos/github/hydrocoast/VisClaw.jl/badge.svg?branch=master)](https://coveralls.io/github/hydrocoast/VisClaw.jl?branch=master)
@@ -12,7 +14,7 @@
 
 VisClaw.jl is a Julia package of the Clawpack visualization tools (see http://www.clawpack.org).   
 This allows to draw figures and animations using the Julia language.   
-Please note that this package is unofficial and the author is not engaged in the Clawpack Development Team.   
+
 
 ## Requirements
 - [Julia](https://github.com/JuliaLang/julia) v1.3.0 or later
