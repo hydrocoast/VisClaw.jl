@@ -8,6 +8,7 @@ filelist = readdir(exdir)
 filter!(x->occursin(".jl", x), filelist)
 #map(s->filter!(x->!occursin(s, x), filelist), ["check", "fgmax"])
 map(s->filter!(x->!occursin(s, x), filelist), ["check"])
+#filter!(x->occursin("current_Plots_ike", x), filelist)
 
 # number
 nf = length(filelist)

@@ -19,6 +19,7 @@ end
 
 plt1 = plotscoastline(topo; lc=:black)
 plotstoporange!(plt1, topo; lc=:magenta)
+plttmp = plotstoporange(topo; lc=:black)
 
 # plot
 plt = plotstopo(topo; linetype=:heatmap, color=:topo, clims=(-5000,5000))

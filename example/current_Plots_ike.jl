@@ -12,6 +12,10 @@ output_prefix = "ike_velo"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
+pltchk = plotscheck(simdir; vartype=:current, testplot=true)
+pltchk = plotscheck(simdir; vartype=:storm, testplot=true)
+pltchk = plotscheck(simdir, 1; testplot=true)
+
 # load water current
 amrall = loadcurrent(simdir)
 rmvalue_coarser!.(amrall.amr)

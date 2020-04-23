@@ -206,7 +206,7 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
     # file sequence to be loaded
     if filesequence==0:0; filesequence = 1:nfile; end
     (any(filesequence .< 1) || any(filesequence .> nfile)) && error("Incorrect file sequence was specified. (This must be from 1 to $nfile)")
-    
+
 
     ## the number of files (to be loaded)
     nfile = length(filesequence)
@@ -265,16 +265,16 @@ loadsurface(loaddir, 0:0; runup=runup, xlims=xlims, ylims=ylims, AMRlevel=AMRlev
 Function: loadforta and loadfortt
           storm data
 """
-loadstorm(loaddir::String, filesequence::AbstractVector{Int64}, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::String, filesequence::AbstractVector{Int64}; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filesequence, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadstorm(loaddir::String, filestart::Int64, filend::Int64, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::String, filestart::Int64, filend::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filestart:filend, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadstorm(loaddir::String, fileid::Int64, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::String, fileid::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, fileid:fileid, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadstorm(loaddir::String, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::String; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, 0:0, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 ######################################
 
@@ -291,15 +291,15 @@ loadsurface(loaddir, 0:0, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMR
 Function: loadfortq and loadfortt
           ocean current data
 """
-loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filesequence, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadcurrent(loaddir::String, filestart::Int64, filend::Int64, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::String, filestart::Int64, filend::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filestart:filend, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadcurrent(loaddir::String, fileid::Int64, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::String, fileid::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, fileid:fileid, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadcurrent(loaddir::String, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::String; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, 0:0, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
