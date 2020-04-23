@@ -22,7 +22,7 @@ end
 #fg = fgmaxdata(simdir)
 
 fg = loadfgmaxgrid.(fg)
-fgmax = loadfgmax.(simdir, fg, nval_save=2)
+fgmax = loadfgmax.(simdir, fg, nval_save=5)
 replaceunit!.(fgmax, :hour)
 
 # plot
@@ -32,5 +32,8 @@ plt_th = plotsfgmax(fg[1], fgmax[1], :th; linetype=:contourf, color=:darktest_r,
 plt_tv = plotsfgmax(fg[1], fgmax[1], :tv; linetype=:contourf, color=:darktest_r, colorbar_title=string(fgmax[1].unittime), title="tv")
 
 plotsfgmaxsurf(fg[1], fgmax[1])
+
 # subplot layout
 plts = plot(plt_h, plt_v, plt_th, plt_tv, layout=(2,2), size=(800,600))
+
+plt_hmin = plotsfgmax(fg[1], fgmax[1], :hmin; linetype=:contourf, color=:dense_r, clims=(-4.0,0.1), colorbar_title="(m)", title="tv")
