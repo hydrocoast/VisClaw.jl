@@ -5,8 +5,9 @@
 
 Quick checker of the spatial distribution
 """
-function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartype::Symbol=:surface, runup=true, kwargs...)
+function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartype::Symbol=:surface, runup::Bool=true, testplot::Bool=true, kwargs...)
 
+    !any([vartype==s for s in [:surface, :storm, :current]]) && error("Invalid input argument vartype: $vartype")
     ## define the filepath & filename
     if vartype==:surface
         fnamekw = "fort.q0"
@@ -20,9 +21,8 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
         fnamekw = "fort.a0"
         loadfunction = VisClaw.loadstorm
         kwargs_load = Dict([])
-    else
-        error("Invalid input argument vartype: $vartype")
     end
+
     # parse keyword args
     kwdict = KWARG(kwargs)
     # xlims, ylims
@@ -32,10 +32,10 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     if ylims == nothing; ylims_load = (-Inf,Inf); end
 
     ## make a list
-    if !isdir(simdir); error("Directory $simdir doesn't exist"); end
+    !isdir(simdir) && error("Not found: directory $simdir")
     flist = readdir(simdir)
     idx = occursin.(fnamekw,flist)
-    if sum(idx)==0; error("File named $fnamekw was not found"); end
+    sum(idx)==0 && error("File named $fnamekw was not found")
     flist = flist[idx]
 
     # load geoclaw.data
@@ -52,22 +52,19 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     while ex==0
         # accept input the step number of interest
         @printf("checkpoint time (1 to %d) = ", nfile)
-        i = readline(stdin)
+        i = testplot ? "1" : readline(stdin)
+        if testplot; ex=1; end
+
         # check whether the input is integer
         if isempty(i); ex=1; continue; end;
-        i=try
-             parse(Int64,i)
-          catch
-             "input $s cannot be parsed to integer"
-          end
-        if isa(i,String); ex=1; println(i); continue; end;
-        # check whether the input is valid number
-        if (i>nfile) || (i<1)
-            println("Invalid number")
-            ex=1
-            continue
+        # parse to interger
+        i = try; parse(Int64,i)
+        catch; "cannot be parsed to integer"; ex=1; continue;
         end
+        # check whether the input is valid number
+        if ( (i>nfile) || (i<1) ); println("Invalid number"); ex=1; continue; end
 
+        # load data
         amrs = loadfunction(simdir, i; xlims=xlims_load, ylims=ylims_load, kwargs_load...)
 
         # draw figure
@@ -81,9 +78,8 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     end
 
     # if no plot is done
-    if cnt==0
-        plt = nothing
-    end
+    if cnt==0; plt = nothing; end
+
     # return value
     return plt
 end

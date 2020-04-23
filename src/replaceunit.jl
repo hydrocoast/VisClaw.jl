@@ -1,12 +1,9 @@
 
 #################################
 function replaceunit!(fgmax::VisClaw.FGmaxValue, unit::Symbol)
-    if !haskey(timedict, unit)
-        error("Invalid specification of unit")
-    end
-    if !haskey(timedict, fgmax.unittime)
-        error("Invalid symbol in fgmax")
-    end
+
+    !haskey(timedict, unit) && error("Invalid specification of unit")
+    !haskey(timedict, fgmax.unittime) && error("Invalid symbol in fgmax")
 
     ratio = timedict[fgmax.unittime]/timedict[unit]
     if abs(ratio - 1.0) < 1e-5; return fgmax; end

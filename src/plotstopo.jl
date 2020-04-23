@@ -30,15 +30,11 @@ plot dtopo data using Plots
 """
 function plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
 
-    if (itime < 0) || (dtopo.mt < itime)
-        error("Invalid time")
-    end
-    if dtopo.mt==1
-        z = dtopo.deform
-    elseif  itime == 0
-        z = dtopo.deform[:,:,end]
-    else
-        z = dtopo.deform[:,:,itime]
+    ( (itime < 0) || (dtopo.mt < itime) ) && error("Invalid time")
+
+    if dtopo.mt==1;     z = dtopo.deform
+    elseif  itime == 0; z = dtopo.deform[:,:,end]
+    else;               z = dtopo.deform[:,:,itime]
     end
 
     # plot

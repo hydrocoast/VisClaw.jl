@@ -22,14 +22,11 @@ function loadfgmaxgrid(fname::String; FGid=0::Int64, nval=0::Int64)
 
     # point style
     point_style = parse(Int64, split(strip(txt[6]), r"\s+")[1])
-    if point_style != 2
-        error("point_style $point_style is not currently supported")
-        return nothing
-    else
-        nx, ny = parse.(Int64, split(strip(txt[7]), r"\s+")[1:2])
-        x1, y1 = parse.(Float64, split(strip(txt[8]), r"\s+")[1:2])
-        x2, y2 = parse.(Float64, split(strip(txt[9]), r"\s+")[1:2])
-    end
+    point_style != 2 && error("point_style $point_style is not currently supported")
+
+    nx, ny = parse.(Int64, split(strip(txt[7]), r"\s+")[1:2])
+    x1, y1 = parse.(Float64, split(strip(txt[8]), r"\s+")[1:2])
+    x2, y2 = parse.(Float64, split(strip(txt[9]), r"\s+")[1:2])
 
     # Constructor
     fgmaxgrid = VisClaw.FGmaxGrid(FGid, fname, nval, nx, ny, (x1,x2), (y1,y2))
@@ -85,42 +82,31 @@ function loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
     end
     bath = permutedims(reshape(bath, (nx, ny)), [2 1])
 
+    !any([nval==i for i in [1,2,5]]) && error("nval $nval must be either 1, 2 or 5.")
+    !any([nval_save==i for i in [1,2,5]]) && error("nval_save $nval_save must be either 1, 2 or 5.")
+    if nval_save > nval; nval_save = nval; end
+
     # assign
-    if nval == 1
-        h = permutedims(reshape(dat[:,4], (nx, ny)), [2 1])
-        th = permutedims(reshape(dat[:,6], (nx, ny)), [2 1])
-    elseif nval == 2
-        h = permutedims(reshape(dat[:,4], (nx, ny)), [2 1])
+    h = permutedims(reshape(dat[:,4], (nx, ny)), [2 1])
+    th = permutedims(reshape(dat[:,6], (nx, ny)), [2 1])
+    if nval >= 2
         v = permutedims(reshape(dat[:,5], (nx, ny)), [2 1])
-        th = permutedims(reshape(dat[:,6], (nx, ny)), [2 1])
         tv = permutedims(reshape(dat[:,7], (nx, ny)), [2 1])
-    elseif nval == 5
-        # maxixa
-        h = permutedims(reshape(dat[:,4], (nx, ny)), [2 1])
-        v = permutedims(reshape(dat[:,5], (nx, ny)), [2 1])
+    end
+    if nval >= 5
         M = permutedims(reshape(dat[:,6], (nx, ny)), [2 1])
         Mflux = permutedims(reshape(dat[:,7], (nx, ny)), [2 1])
         hmin = permutedims(reshape(dat[:,8], (nx, ny)), [2 1])
         # times when maxixa
-        th = permutedims(reshape(dat[:,9], (nx, ny)), [2 1])
-        tv = permutedims(reshape(dat[:,10], (nx, ny)), [2 1])
         tM = permutedims(reshape(dat[:,11], (nx, ny)), [2 1])
         tMflux = permutedims(reshape(dat[:,12], (nx, ny)), [2 1])
         thmin = permutedims(reshape(dat[:,13], (nx, ny)), [2 1])
-    else
-        error("nval $nval must be either 1, 2 or 5.")
     end
 
-    if nval_save > nval; nval_save = nval; end
 
-    if nval_save == 1
-        fgmaxval = VisClaw.FGmaxValue(bath,h,th)
-    elseif nval_save == 2
-        fgmaxval = VisClaw.FGmaxValue(bath,h,v,th,tv)
-    elseif nval_save == 5
-        fgmaxval = VisClaw.FGmaxValue(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
-    else
-        error("nval_save $nval_save must be either 1, 2 or 5.")
+    if nval_save == 1;     fgmaxval = VisClaw.FGmaxValue(bath,h,th)
+    elseif nval_save == 2; fgmaxval = VisClaw.FGmaxValue(bath,h,v,th,tv)
+    elseif nval_save == 5; fgmaxval = VisClaw.FGmaxValue(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
     end
 
     # return

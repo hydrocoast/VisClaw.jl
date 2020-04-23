@@ -58,9 +58,7 @@ function dtopodata(outdir::String)
     baseline = findfirst(x->occursin("mdtopofiles", x), ascdata)
     ndtopo = parse(Int64, split(ascdata[baseline], r"\s+", keepempty=false)[1])
 
-    if ndtopo == 0
-        println("No mdtopofile")
-        return nothing, nothing, ndtopo
+    if ndtopo == 0; println("No mdtopofile");  return nothing, nothing, ndtopo
 
     elseif ndtopo == 1
         dtopofile = replace(ascdata[baseline+3], r"[\'\s]" => "")
@@ -128,16 +126,12 @@ function loadtopo(filename::String, topotype=3::Int64)
     tmp = parse.(Float64, tmp)
     # topotype 2?
     if length(tmp) == 1
-        if topotype == 3
-            println("topotype 2?")
-        end
+        if topotype == 3; println("topotype 2?"); end
         topotype = 2
     end
     # topotype 3?
     if length(tmp) > 1
-        if topotype == 2
-            println("topotype 3?")
-        end
+        if topotype == 2; println("topotype 3?"); end
         topotype = 3
     end
 
@@ -214,16 +208,12 @@ function loaddeform(filename::String, topotype=3::Int64)
     tmp = parse.(Float64, tmp)
     # topotype 2?
     if length(tmp) == 1
-        if topotype == 3
-            println("topotype 2?")
-        end
+        if topotype == 3; println("topotype 2?"); end
         topotype = 2
     end
     # topotype 3?
     if length(tmp) > 1
-        if topotype == 2
-            println("topotype 3?")
-        end
+        if topotype == 2; println("topotype 3?"); end
         topotype = 3
     end
 
