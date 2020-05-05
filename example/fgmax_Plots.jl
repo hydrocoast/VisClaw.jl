@@ -22,17 +22,17 @@ end
 
 fg = loadfgmaxgrid.(fg)
 fgmax = loadfgmax.(simdir, fg, nval_save=5)
-replaceunit!.(fgmax, :hour)
+#replaceunit!.(fgmax, :hour)
 
 # plot
 plt_h = plotsfgmax(fg[1], fgmax[1], :h; linetype=:contourf, color=:heat, clims=(0.0, 2.0), colorbar_title="(m)", title="h")
-plt_v = plotsfgmax(fg[1], fgmax[1], :v; linetype=:contourf, color=:rainbow, clims=(0.0, 0.2), colorbar_title="(m/s)", title="v")
-plt_th = plotsfgmax(fg[1], fgmax[1], :th; linetype=:contourf, color=:darktest_r, colorbar_title=string(fgmax[1].unittime), title="th")
-plt_tv = plotsfgmax(fg[1], fgmax[1], :tv; linetype=:contourf, color=:darktest_r, colorbar_title=string(fgmax[1].unittime), title="tv")
+plt_v = plotsfgmax(fg[1], fgmax[1], :v; linetype=:contourf, color=:darkrainbow, clims=(0.0, 0.2), colorbar_title="(m/s)", title="v")
+plt_th = plotsfgmax(fg[1], fgmax[1], :th; linetype=:contourf, color=:thermal, colorbar_title=string(fgmax[1].unittime), title="th")
+plt_tv = plotsfgmax(fg[1], fgmax[1], :tv; linetype=:contourf, color=:thermal, colorbar_title=string(fgmax[1].unittime), title="tv")
 
 plotsfgmaxsurf(fg[1], fgmax[1])
 
 # subplot layout
 plts = plot(plt_h, plt_v, plt_th, plt_tv, layout=(2,2), size=(800,600))
 
-plt_hmin = plotsfgmax(fg[1], fgmax[1], :hmin; linetype=:contourf, color=:dense_r, clims=(-4.0,0.1), colorbar_title="(m)", title="tv")
+plt_hmin = plotsfgmax(fg[1], fgmax[1], :hmin; linetype=:contourf, color=:ice, clims=(-4.0,0.1), colorbar_title="(m)", title="tv")
