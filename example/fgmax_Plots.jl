@@ -3,7 +3,6 @@ using Printf
 
 using Plots
 gr() # this code is optimized for the GR backend
-clibrary(:colorcet)
 
 # directory
 #simdir = "your_simulation_path/_output"

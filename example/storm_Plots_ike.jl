@@ -25,7 +25,7 @@ end
 
 
 # plot
-plts = plotsamr(amrall; c=:juno_grad, clims=(960.0, 1010.0),
+plts = plotsamr(amrall; c=cgrad([:red, :yellow, :white]), clims=(960.0, 1010.0),
                 xguide="Longitude", yguide="Latitude",
                 xlims=(-99.0,-85.0), ylims=(22.0,32.0),
                 guidefont=Plots.font("sans-serif",12),

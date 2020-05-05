@@ -3,7 +3,6 @@ using VisClaw
 using Printf
 using Plots
 gr()
-clibrary(:colorcet)
 
 # -----------------------------
 # ike
@@ -25,7 +24,7 @@ end
 
 # plot amrgrid
 plts = plotsamr(amrall;
-                c=:rainbow, clims=(0.0, 40.0),
+                c=:darktest, clims=(0.0, 40.0),
                 xguide="Longitude", yguide="Latitude",
                 xlims=(-99.0,-80.0), ylims=(16.0,32.0),
                 guidefont=Plots.font("sans-serif",12),
