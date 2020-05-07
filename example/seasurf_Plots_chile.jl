@@ -19,7 +19,7 @@ rmvalue_coarser!.(amrall.amr)
 tmp = VisClaw.keytile(amrall.amr[1][1])
 
 # plot
-plts = plotsamr(amrall; c=:coolwarm, clims=(-0.5,0.5),
+plts = plotsamr(amrall; c=:seismic, clims=(-0.5,0.5),
                 xguide="Longitude", yguide="Latitude",
                 guidefont=Plots.font("sans-serif",12),
                 tickfont=Plots.font("sans-serif",10),

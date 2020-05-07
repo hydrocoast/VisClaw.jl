@@ -74,35 +74,35 @@ function loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
     dat = readdlm(loadfile)
 
     ## bathymetry
-    level = dat[:,3]
-
-    bath = bath_level[:,end]
-    for i = nlevel-1:-1:1
-        bath[level.==i] .= bath_level[level.==i,i]
-    end
-    bath = permutedims(reshape(bath, (nx, ny)), [2 1])
+    #level = dat[:,3]
+    #bath = bath_level[:,end]
+    #for i = nlevel-1:-1:1
+    #    bath[level.==i] .= bath_level[level.==i,i]
+    #end
+    #bath = permutedims(reshape(bath, (nx, ny)), [2 1])
 
     !any([nval==i for i in [1,2,5]]) && error("nval $nval must be either 1, 2 or 5.")
     !any([nval_save==i for i in [1,2,5]]) && error("nval_save $nval_save must be either 1, 2 or 5.")
     if nval_save > nval; nval_save = nval; end
 
     # assign
-    h = permutedims(reshape(dat[:,4], (nx, ny)), [2 1])
-    th = permutedims(reshape(dat[:,6], (nx, ny)), [2 1])
+    ncol = 4 + 2nval
+    valall = permutedims(reshape(dat, (nx, ny, ncol)), [2 1 3])
+    bath = valall[:,:,4]
+    h = valall[:,:,5]
+    th = valall[:,:,5+nval]
     if nval >= 2
-        v = permutedims(reshape(dat[:,5], (nx, ny)), [2 1])
-        tv = permutedims(reshape(dat[:,7], (nx, ny)), [2 1])
+        v = valall[:,:,6]
+        tv = valall[:,:,6+nval]
     end
     if nval >= 5
-        M = permutedims(reshape(dat[:,6], (nx, ny)), [2 1])
-        Mflux = permutedims(reshape(dat[:,7], (nx, ny)), [2 1])
-        hmin = permutedims(reshape(dat[:,8], (nx, ny)), [2 1])
-        # times when maxixa
-        tM = permutedims(reshape(dat[:,11], (nx, ny)), [2 1])
-        tMflux = permutedims(reshape(dat[:,12], (nx, ny)), [2 1])
-        thmin = permutedims(reshape(dat[:,13], (nx, ny)), [2 1])
+        M = valall[:,:,7]
+        tM = valall[:,:,7+nval]
+        Mflux = valall[:,:,8]
+        tMflux = valall[:,:,8+nval]
+        hmin = valall[:,:,9]
+        thmin = valall[:,:,9+nval]
     end
-
 
     if nval_save == 1;     fgmaxval = VisClaw.FGmaxValue(bath,h,th)
     elseif nval_save == 2; fgmaxval = VisClaw.FGmaxValue(bath,h,v,th,tv)
