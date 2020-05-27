@@ -20,9 +20,9 @@ before_install:
   - echo 'export PATH="$HOME/gmt/bin:$PATH"' >>~/.bash_profile
   - cd $HOME/gmt
   - git checkout 6.0.0
-  - wget http://gmt.soest.hawaii.edu/files/download?name=gshhg-gmt-2.3.7.tar.gz -O gshhg-gmt-2.3.7.tar.gz
+  - wget http://www.soest.hawaii.edu/pwessel/gshhg/gshhg-gmt-2.3.7.tar.gz
   - tar -xvzf gshhg-gmt-2.3.7.tar.gz
-  - wget http://gmt.soest.hawaii.edu/files/download?name=dcw-gmt-1.1.4.tar.gz -O dcw-gmt-1.1.4.tar.gz
+  - wget http://www.soest.hawaii.edu/pwessel/dcw/dcw-gmt-1.1.4.tar.gz
   - tar -xvzf dcw-gmt-1.1.4.tar.gz
   - mkdir build
   - cd build
