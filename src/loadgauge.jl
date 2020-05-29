@@ -4,8 +4,8 @@
 
 gauge*.txt reader
 """
-function loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ",
-                   loadeta::Bool=true, loadvel::Bool=false)
+function loadgauge(dirname::String, gaugeid::AbstractVector{Int64}=0:0;
+                   eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false)
     # check args
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
@@ -14,9 +14,13 @@ function loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge 
     if isempty(files); println("No gauge file"); return nothing end;
     nf = length(files)
 
+    gaugeid == 0:0 ? (gaugeid = 1:nf) : nothing
+
+    nfload = length(gaugeid)
+
     # preallocate
     gauges = Vector{VisClaw.Gauge}(undef,nf)
-    for k = 1:nf
+    for k in gaugeid
         filename=joinpath(dirname,files[k])
 
         # read header
@@ -57,3 +61,7 @@ function loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge 
     return gauges
 end
 #################################
+
+
+loadgauge(dirname::String, gaugeid::Int64; eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false) =
+loadgauge(dirname, gaugeid:gaugeid; eta0=eta0, labelehead=labelhead, loadeta=loadeta, loadvel=loadvel)
