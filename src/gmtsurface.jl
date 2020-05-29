@@ -74,11 +74,11 @@ end
 
 ###################################################
 """
-    G = tilegrd(tile::VisClaw.AMRGrid; spacing_unit::String="", kwargs...)
+    G = tilegrd(tile::VisClaw.AMRGrid; length_unit::String="", kwargs...)
 
 make a grid file of VisClaw.AMRGrid with landmask
 """
-function tilegrd(tile::VisClaw.AMRGrid; spacing_unit::String="", kwargs...)
+function tilegrd(tile::VisClaw.AMRGrid; length_unit::String="", kwargs...)
     # var
     var = VisClaw.keytile(tile)
     # prameters & options
@@ -90,8 +90,10 @@ function tilegrd(tile::VisClaw.AMRGrid; spacing_unit::String="", kwargs...)
     xmat = repeat(xvec, inner=(length(yvec),1))
     ymat = repeat(yvec, outer=(length(xvec),1))
 
-    if !isempty(spacing_unit)
-        Δ = "$(Δ)"*spacing_unit
+    if !isempty(length_unit)
+        Δ = "$(Δ)"*length_unit
+        # +ue?
+        R = length_unit*R
     end
 
     # if NaN in all
@@ -117,11 +119,11 @@ end
 
 ###################################################
 """
-    G = tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; spacing_unit::String="", kwargs...)
+    G = tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; length_unit::String="", kwargs...)
 
 make a grid file of VisClaw.AMRGrid with landmask
 """
-function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; spacing_unit::String="", kwargs...)
+function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; length_unit::String="", kwargs...)
     # var
     var = VisClaw.keytile(tile)
     # prameters & options
@@ -138,9 +140,11 @@ function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; spacing_unit::
     tmp_eta = "eta_tile.grd"
     eta_masked = "eta_masked.grd"
 
-    if !isempty(spacing_unit)
-        Δ = "$(Δ)"*spacing_unit
-        r = "$(r)"*spacing_unit
+    if !isempty(length_unit)
+        Δ = "$(Δ)"*length_unit
+        r = "$(r)"*length_unit
+        # +ue?
+        R = length_unit*R
     end
 
     # makegrd

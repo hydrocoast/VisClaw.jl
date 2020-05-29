@@ -1,36 +1,41 @@
 ###################################################
 """
-    getR_tile = getR_tile(tile::VisClaw.AMRGrid)
+    getR_tile = getR_tile(tile::VisClaw.AMRGrid; length_unit="")
 
 Get x and y ranges of a tile in String for -R option in GMT
 """
-function getR_tile(tile::VisClaw.AMRGrid)
+function getR_tile(tile::VisClaw.AMRGrid; length_unit="")
     xs = tile.xlow
     ys = tile.ylow
     xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
     ye = round(tile.ylow + tile.my*tile.dy, digits=4)
     xyrange="$xs/$xe/$ys/$ye"
+    isempty(length_unit) || (xyrange = xyrange*"+u"*length_unit)
     # return value
     return xyrange
 end
 ###################################################
 """
-    xyrange = getR(tiles::Vector{VisClaw.AMRGrid})
-    xyrange = getR(topo::VisClaw.AbstractTopo)
+    xyrange = getR(tiles::Vector{VisClaw.AMRGrid}; length_unit="")
+    xyrange = getR(topo::VisClaw.AbstractTopo; length_unit="")
 
 Get x and y ranges in String for -R option in GMT
 """
-function getR(tiles::Vector{VisClaw.AMRGrid})
+function getR(tiles::Vector{VisClaw.AMRGrid}; length_unit="")
     xs, xe, ys, ye = VisClaw.getlims(tiles)
-    return "$xs/$xe/$ys/$ye"
+    xyrange="$xs/$xe/$ys/$ye"
+    isempty(length_unit) || (xyrange = xyrange*"+u"*length_unit)
+    # return value
+    return xyrange
 end
 ###################################################
-function getR(topo::VisClaw.AbstractTopo)
+function getR(topo::VisClaw.AbstractTopo; length_unit="")
     xs=topo.x[1]
     xe=topo.x[end]
     ys=topo.y[1]
     ye=topo.y[end]
     xyrange="$xs/$xe/$ys/$ye"
+    isempty(length_unit) || (xyrange = xyrange*"+u"*length_unit)
     return xyrange
 end
 ###################################################

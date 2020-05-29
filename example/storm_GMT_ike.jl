@@ -38,7 +38,7 @@ for i = 1:amrall.nstep
     outpng = output_prefix*@sprintf("%03d", i)*".png"
 
     # surface grids
-    G = tilegrd.(amrall.amr[i]; spacing_unit="d")
+    G = tilegrd.(amrall.amr[i]; length_unit="d")
 
     # plot pressure field
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])

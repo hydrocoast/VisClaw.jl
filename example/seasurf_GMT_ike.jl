@@ -41,7 +41,7 @@ for i = 1:amrall.nstep
     outpdf = output_prefix*@sprintf("%03d", i)*".pdf"
 
     # land-masked surface grids
-    G = tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
+    G = tilegrd_mask.(amrall.amr[i], landmask_txt; length_unit="d")
 
     # plot
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
