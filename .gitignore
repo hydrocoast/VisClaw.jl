@@ -15,5 +15,7 @@ gmt.*
 *.gif
 *.eps
 *.pdf
+*.cpt
+tmp/
 .ipynb_*/
 !example/figure/*.*
