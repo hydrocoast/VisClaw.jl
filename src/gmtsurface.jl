@@ -1,5 +1,6 @@
 default_masktxt = "topo4mask.txt"
 default_maskgrd = "topomask.grd"
+tmp4grd = "tmp4grd.txt"
 
 ###################################################
 """
@@ -113,6 +114,39 @@ function tilegrd(tile::VisClaw.AMRGrid; length_unit::String="", kwargs...)
 end
 ###################################################
 
+###################################################
+"""
+    G = tilegrd_xyz(tile::VisClaw.AMRGrid; kwargs...)
+
+make a grid file of VisClaw.AMRGrid
+"""
+function tilegrd_xyz(tile::VisClaw.AMRGrid; kwargs...)
+    # var
+    var = VisClaw.keytile(tile)
+    # prameters & options
+    R = VisClaw.getR_tile(tile)
+    Δ = tile.dx
+
+    xvec, yvec, zdata = VisClaw.tilez(tile, var)
+    nx = length(xvec)
+    ny = length(yvec)
+    xvec = repeat(xvec, inner=(ny,1)) |> vec
+    yvec = repeat(yvec, outer=(nx,1)) |> vec
+    zvec = vec(zdata)
+    inds = isnan.(zvec)
+    deleteat!(xvec, inds)
+    deleteat!(yvec, inds)
+    deleteat!(zvec, inds)
+
+    tmp4grd = "tmp4grd.txt"
+    f = open(tmp4grd, "w"); Base.print_array(f, [xvec yvec zvec]); close(f)
+    G = GMT.gmt("xyz2grd $(tmp4grd)  -R$(R) -I$(Δ)")
+    rm(tmp4grd, force=true)
+
+    # return value (GMT.GMTgrid)
+    return G
+end
+###################################################
 
 ###################################################
 """

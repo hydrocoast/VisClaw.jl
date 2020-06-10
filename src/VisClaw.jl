@@ -93,7 +93,7 @@ export plotsgif, plotssavefig
 # functions with GMT.jl
 export getR, getR_tile, getJ, geogrd
 export landmask_asc, landmask_grd
-export tilegrd, tilegrd_mask
+export tilegrd_xyz, tilegrd, tilegrd_mask
 export txtwind, txtwind_scale
 
 
