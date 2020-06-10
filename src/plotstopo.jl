@@ -7,10 +7,14 @@
 plot topography and bathymetry data using Plots
 """
 function plotstopo!(plt, topo::VisClaw.Topo; kwargs...)
+	# parse keyword args
+    kwdict = KWARG(kwargs)
+	seriestype, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriestype, :heatmap)
+
 	# plot
-    plt = Plots.plot!(plt, topo.x, topo.y, topo.elevation;
+    plt = Plots.plot!(plt, topo.x, topo.y, topo.elevation; seriestype=seriestype,
                       xlims=extrema(topo.x), ylims=extrema(topo.y),
-                      axis_ratio=:equal, kwargs...)
+                      axis_ratio=:equal, kwdict...)
     # return
     return plt
 end
@@ -37,10 +41,14 @@ function plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
     else;               z = dtopo.deform[:,:,itime]
     end
 
+	# parse keyword args
+    kwdict = KWARG(kwargs)
+	seriestype, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriestype, :heatmap)
+
     # plot
-    plt = Plots.plot!(plt, dtopo.x, dtopo.y, z;
+    plt = Plots.plot!(plt, dtopo.x, dtopo.y, z; seriestype=seriestype,
                       xlims=extrema(dtopo.x), ylims=extrema(dtopo.y),
-                      axis_ratio=:equal, kwargs...)
+                      axis_ratio=:equal, kwdict...)
     # return
     return plt
 end
@@ -60,12 +68,15 @@ plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...) = plotsdtopo!(Plots.
 plot a range of topo/bath using Plots
 """
 function plotstoporange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
+	# parse keyword args
+    kwdict = KWARG(kwargs)
+	label, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_label, "")
 
 	xp = [geo.x[1],  geo.x[1]  , geo.x[end], geo.x[end], geo.x[1]]
 	yp = [geo.y[1],  geo.y[end], geo.y[end], geo.y[1]  , geo.y[1]]
 
 	# plot
-	plt = Plots.plot!(plt, xp, yp; kwargs...)
+	plt = Plots.plot!(plt, xp, yp; label=label, kwdict...)
 
 	return plt
 end
@@ -85,8 +96,12 @@ plotstoporange(geo::VisClaw.AbstractTopo; kwargs...) = plotstoporange!(Plots.plo
 plot coastlines from topography and bathymetry data using Plots
 """
 function plotscoastline!(plt, topo::VisClaw.Topo; kwargs...)
+	# parse keyword args
+    kwdict = KWARG(kwargs)
+	label, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_label, "")
+
 	# plot
-	plt = Plots.contour!(plt, topo.x, topo.y, topo.elevation; levels=[0], kwargs...)
+	plt = Plots.contour!(plt, topo.x, topo.y, topo.elevation; levels=[0], label=label, kwdict...)
 	return plt
 end
 ####################################################

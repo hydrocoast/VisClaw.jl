@@ -29,12 +29,10 @@ function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
     kwdict = KWARG(kwargs)
     # -----------------------------
     # linetype
-    seriestype, kwdict = VisClaw.parse_seriestype(kwdict)
-    if seriestype == nothing; seriestype=:heatmap; end
+    seriestype, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriestype, :heatmap)
     # -----------------------------
     # color
-    seriescolor, kwdict = VisClaw.parse_seriescolor(kwdict)
-    if seriescolor == nothing; seriescolor=:auto; end
+    seriescolor, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriescolor, :auto)
     # -----------------------------
     # color axis
     clims, kwdict = VisClaw.parse_clims(kwdict)
@@ -49,17 +47,14 @@ function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
     end
     # -----------------------------
     # background_color_inside
-    bginside, kwdict = VisClaw.parse_bgcolor_inside(kwdict)
-    if bginside == nothing; bginside = Plots.RGB(.7,.7,.7); end
+    bginside, kwdict =  VisClaw.kwarg_default(kwdict, VisClaw.parse_bgcolor_inside, Plots.RGB(.7,.7,.7))
     if seriestype == :surface; bginside = Plots.RGBA(0.0,0.0,0.0,0.0); end
     # -----------------------------
-    # colorbar_title
-    cb, kwdict = VisClaw.parse_colorbar(kwdict)
-    if cb==nothing; cb=:none; end
+    # colorbar
+    cb, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_colorbar, :none)
     # -----------------------------
     # colorbar_title
-    cbtitle, kwdict = VisClaw.parse_colorbar_title(kwdict)
-    if cbtitle==nothing; cbtitle=""; end
+    cbtitle, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_colorbar_title, "")
     # -----------------------------
     # xlims, ylims
     xlims, kwdict = VisClaw.parse_xlims(kwdict)
@@ -219,23 +214,21 @@ end
 
 #######################################
 """
-    tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=[], kwargs...)
+    tilebound!(plt, tiles; AMRlevel::T=[], kwargs...) where T <: Union{Int64,AbstractVector{Int64}}
 
 Function: draw boundaries of tiles
 """
-function tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
+function tilebound!(plt, tiles; AMRlevel::T=empI, kwargs...) where T <: Union{Int64,AbstractVector{Int64}}
 
     # parse keyword args
     kwdict = KWARG(kwargs)
 
     # -----------------------------
     # linestyle
-    linestyle, kwdict = VisClaw.parse_linestyle(kwdict)
-    if linestyle == nothing; linestyle=:solid; end
+    linestyle, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_linestyle, :solid)
     # -----------------------------
     # linecolor
-    linecolor, kwdict = VisClaw.parse_linecolor(kwdict)
-    if linecolor == nothing; linecolor=:black; end
+    linecolor, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_linecolor, :black)
     # -----------------------------
     # xlims, ylims
     xlims, kwdict = VisClaw.parse_xlims(kwdict)

@@ -1,9 +1,9 @@
 """
     val, d = parse_from_keys(d::Dict, symbs)
-	
+
 This function is based on find_in_dict() in GMT.
-See if D contains any of the symbols in SYMBS.
-If yes, return corresponding value
+Check if d (Dict) contains either of symbs (list of symbol).
+If true, return corresponding value
 """
 function parse_from_keys(d::Dict, symbs)
 	for symb in symbs
@@ -58,3 +58,13 @@ parse_from_keys(d, [:linestyle, :style, :s, :ls])
 parse_linecolor(d::Dict) =
 parse_from_keys(d, [:linecolor, :lc, :lcolor, :lcolour, :linecolour])
 # -----------------------------
+parse_label(d::Dict) =
+parse_from_keys(d, [:lab, :labels, :label])
+# -----------------------------
+
+
+function kwarg_default(d::Dict, func::Function, default_value)
+	val, d = func(d)
+	if val==nothing; val=default_value; end
+	return val, d
+end
