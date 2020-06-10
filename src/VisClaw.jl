@@ -60,6 +60,7 @@ using GMT:GMT
 # Setup
 include("gmttools.jl")
 # make figures with GMT
+include("gmttopo.jl")
 include("gmtsurface.jl")
 include("gmtstorm.jl")
 
@@ -95,6 +96,7 @@ export getR, getR_tile, getJ, geogrd
 export landmask_asc, landmask_grd
 export tilegrd_xyz, tilegrd, tilegrd_mask
 export txtwind, txtwind_scale
+export gmttoporange!, gmtcoastline!
 
 
 end
