@@ -9,7 +9,7 @@ end
 
 ####################################################
 function gmttopo(G::GMT.GMTgrid; factor_lims::Float64=0.8, sigdigits_lims::Int64=2,
-	                                 C=:geo, T=[], D::Bool=true, J="", R="", kwargs...)
+	                             C=:geo, T=[], D::Bool=true, J="", R="", kwargs...)
 	## cpt
 	isa(C, GMT.GMTcpt) || ( cpt=makecptfromgrd(G; factor_lims=factor_lims, sigdigits_lims=sigdigits_lims, C=C, T=T, D=D) )
 	isempty(J) && ( J=getJ("X10", axesratio(G)) )

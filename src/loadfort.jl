@@ -180,22 +180,21 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
 
     ## define the filepath & filename
     if vartype==:surface
-        fnamekw = "fort.q0"
+        fnamekw = r"^fort\.q\d+$"
         col=4
     elseif vartype==:current
-        fnamekw = "fort.q0"
+        fnamekw = r"^fort\.q\d+$"
         col=2
     elseif vartype==:storm
-        fnamekw = "fort.a0"
+        fnamekw = r"^fort\.a\d+$"
         col=5
     end
 
     ## make a list
-    if !isdir(loaddir); error("Directory $loaddir doesn't exist"); end
+    isdir(loaddir) || error("Directory $loaddir doesn't exist")
     flist = readdir(loaddir)
-    idx = occursin.(fnamekw,flist)
-    if sum(idx)==0; error("File named $fnamekw was not found"); end
-    flist = flist[idx]
+    filter!(x->occursin(fnamekw, x), flist)
+    isempty(flist) && error("File named $fnamekw was not found")
 
     # load geoclaw.data
     params = VisClaw.geodata(loaddir)

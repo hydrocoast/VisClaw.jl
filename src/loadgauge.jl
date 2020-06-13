@@ -9,8 +9,7 @@ function loadgauge(dirname::String, gaugeid::AbstractVector{Int64}=0:0;
     # check args
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
-    ind = map(x->occursin(r"gauge\d+\.txt",x),files)
-    files = files[ind]
+    filter!(x->occursin(r"^gauge\d+\.txt$", x), files)
     if isempty(files); println("No gauge file"); return nothing end;
     nf = length(files)
 
@@ -31,7 +30,8 @@ function loadgauge(dirname::String, gaugeid::AbstractVector{Int64}=0:0;
         loc = [parse(Float64,header1[30:46]), parse(Float64,header1[48:64])]
 
         # read time-series of vars in the certain colmns
-        dataorg = readdlm(filename, skipstart=2)
+        ###dataorg = readdlm(filename, skipstart=2)
+        dataorg = readdlm(filename, skipstart=3) # v5.7.0
         AMRlevel = convert.(Int64,dataorg[:,1])
         time = convert.(Float64,dataorg[:,2])
         D = convert.(Float64,dataorg[:,3])

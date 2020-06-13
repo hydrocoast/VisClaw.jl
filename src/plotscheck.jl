@@ -10,15 +10,15 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     !any([vartype==s for s in [:surface, :storm, :current]]) && error("Invalid input argument vartype: $vartype")
     ## define the filepath & filename
     if vartype==:surface
-        fnamekw = "fort.q0"
+        fnamekw = r"^fort\.q\d+$"
         loadfunction = VisClaw.loadsurface
         kwargs_load = Dict([(:runup, runup)])
     elseif vartype==:current
-        fnamekw = "fort.q0"
+        fnamekw = r"^fort\.q\d+$"
         loadfunction = VisClaw.loadcurrent
         kwargs_load = Dict([])
     elseif vartype==:storm
-        fnamekw = "fort.a0"
+        fnamekw = r"^fort\.a\d+$"
         loadfunction = VisClaw.loadstorm
         kwargs_load = Dict([])
     end
@@ -32,11 +32,10 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     if ylims == nothing; ylims_load = (-Inf,Inf); end
 
     ## make a list
-    !isdir(simdir) && error("Not found: directory $simdir")
+    isdir(simdir) || error("Not found: directory $simdir")
     flist = readdir(simdir)
-    idx = occursin.(fnamekw,flist)
-    sum(idx)==0 && error("File named $fnamekw was not found")
-    flist = flist[idx]
+    filter!(x->occursin(fnamekw, x), flist)
+    isempty(flist) && error("File named $fnamekw was not found")
 
     # load geoclaw.data
     params = VisClaw.geodata(simdir)
