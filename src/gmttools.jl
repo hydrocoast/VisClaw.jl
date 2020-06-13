@@ -18,6 +18,7 @@ end
 """
     xyrange = getR(tiles::Vector{VisClaw.AMRGrid}; length_unit="")
     xyrange = getR(topo::VisClaw.AbstractTopo; length_unit="")
+    xyrange = getR(G::GMT.GMTgrid; length_unit="")
 
 Get x and y ranges in String for -R option in GMT
 """
@@ -39,9 +40,18 @@ function getR(topo::VisClaw.AbstractTopo; length_unit="")
     return xyrange
 end
 ###################################################
+function getR(G::GMT.GMTgrid; length_unit="")
+    x = extrema(G.x)
+    y = extrema(G.y)
+    xyrange="$(x[1])/$(x[2])/$(y[1])/$(y[2])"
+    isempty(length_unit) || (xyrange = xyrange*"+u"*length_unit)
+    return xyrange
+end
+###################################################
 """
     hwratio = axesratio(tiles::Vector{VisClaw.AMRGrid})
     hwratio = axesratio(topo::VisClaw.AbstractTopo)
+    hwratio = axesratio(G::GMT.GMTgrid)
 
 Get height/width ratio
 """
@@ -62,6 +72,15 @@ function axesratio(topo::VisClaw.AbstractTopo)
     return hwratio
 end
 ###################################################
+function axesratio(G::GMT.GMTgrid)
+    x = extrema(G.x)
+    y = extrema(G.y)
+    hwratio = (y[2]-y[1])/(x[2]-x[1])
+    # return value
+    return hwratio
+end
+###################################################
+
 
 ###################################################
 """
