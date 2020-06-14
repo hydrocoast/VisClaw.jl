@@ -98,6 +98,8 @@ export landmask_asc, landmask_grd
 export tilegrd_xyz, tilegrd, tilegrd_mask
 export txtwind, txtwind_scale
 export gmttopo
+export gmtgaugewaveform, gmtgaugewaveform!
+export gmtgaugevelocity, gmtgaugevelocity!
 export gmtgaugelocation, gmtgaugelocation!
 export gmttoporange!, gmtcoastline!
 

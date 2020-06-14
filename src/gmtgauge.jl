@@ -17,3 +17,27 @@ gmtgaugelocation!(gauge::VisClaw.Gauge; kwargs...) = GMT.plot!([gauge.loc[1] gau
 ####################################################
 gmtgaugelocation(gauges::Vector{VisClaw.Gauge}; kwargs...) = GMT.plot(gaugexy2mat(gauges); kwargs...)
 gmtgaugelocation!(gauges::Vector{VisClaw.Gauge}; kwargs...) = GMT.plot!(gaugexy2mat(gauges); kwargs...)
+
+
+
+####################################################
+"""
+    gmtgaugewaveform(gauge::VisClaw.Gauge; kwargs...)
+"""
+gmtgaugewaveform(gauge::VisClaw.Gauge; kwargs...) = GMT.plot(gauge.time, gauge.eta; kwargs...)
+####################################################
+"""
+    gmtgaugewaveform!(gauge::VisClaw.Gauge; kwargs...)
+"""
+gmtgaugewaveform!(gauge::VisClaw.Gauge; kwargs...) = GMT.plot!(gauge.time, gauge.eta; kwargs...)
+####################################################
+"""
+    gmtgaugevelocity(gauge::VisClaw.Gauge; kwargs...)
+"""
+gmtgaugevelocity(gauge::VisClaw.Gauge; kwargs...) = GMT.plot(gauge.time, sqrt.(gauge.u.^2 + gauge.v.^2); kwargs...)
+####################################################
+"""
+    gmtgaugevelocity!(gauge::VisClaw.Gauge; kwargs...)
+"""
+gmtgaugevelocity!(gauge::VisClaw.Gauge; kwargs...) = GMT.plot!(gauge.time, sqrt.(gauge.u.^2 + gauge.v.^2); kwargs...)
+####################################################
