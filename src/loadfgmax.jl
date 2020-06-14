@@ -1,119 +1,46 @@
-###################################
-"""
-    fgmaxgrid = loadfgmaxgrid(fg::VisClaw.FGmaxGrid)
-    fgmaxgrid = loadfgmaxgrid(fname::String; FGid=0::Int64, nval=0::Int64)
-
-Function: read specification of a fixed grid
-"""
-function loadfgmaxgrid(fname::String; FGid=0::Int64, nval=0::Int64)
-
-    if !isfile(fname); error("File $fname is not found."); end
-    # read all lines
-    open(fname,"r") do f
-        global txt = readlines(f)
-    end
-
-    # base parameters
-    tstart_max = parse(Float64, split(strip(txt[1]), r"\s+")[1])
-    tend_max = parse(Float64, split(strip(txt[2]), r"\s+")[1])
-    dt_check = parse(Float64, split(strip(txt[3]), r"\s+")[1])
-    min_level_check = parse(Int64, split(strip(txt[4]), r"\s+")[1])
-    arrival_tol = parse(Float64, split(strip(txt[5]), r"\s+")[1])
-
-    # point style
-    point_style = parse(Int64, split(strip(txt[6]), r"\s+")[1])
-    point_style != 2 && error("point_style $point_style is not currently supported")
-
-    nx, ny = parse.(Int64, split(strip(txt[7]), r"\s+")[1:2])
-    x1, y1 = parse.(Float64, split(strip(txt[8]), r"\s+")[1:2])
-    x2, y2 = parse.(Float64, split(strip(txt[9]), r"\s+")[1:2])
-
-    # Constructor
-    fgmaxgrid = VisClaw.FGmaxGrid(FGid, fname, nval, nx, ny, (x1,x2), (y1,y2))
-
-    # return
-    return fgmaxgrid
-
-end
-###################################
-loadfgmaxgrid(fg::VisClaw.FGmaxGrid) = loadfgmaxgrid(fg.file; FGid=fg.FGid, nval=fg.nval)
-###################################
-
 #################################
 """
-    fgmaxval = loadfgmax(loaddir::String, fg::VisClaw.FGmaxGrid; nval_save::Int64=fg.nval)
-    fgmaxval = loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int64; nval_save::Int64=nval)
+    fgmax = loadfgmax(loaddir::String, fg::VisClaw.FixedGrid; nval_save::Int64=fg.nval)
 
-Function: fort.FGx.valuemax and fort.FGx.aux1 reader
+Function: fgmaxXXXX.txt reader
 """
-function loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int64; nval_save::Int64=nval)
+function loadfgmax(loaddir::String, fg::VisClaw.FixedGrid; nval_save::Int64=fg.nval)
+    # check nval_save
+    nval_save > fg.nval && (nval_save=fg.nval)
 
-
-    # fort.FGx.aux1
-    filename = "fort.FG"*@sprintf("%d",FGid)*".aux1"
-    auxfile = joinpath(loaddir,filename)
-    ## check
-    if !isfile(auxfile); error("Not found: $auxfile"); end
-
+    # fgmaxXXXX.txt
+    filename = "fgmax"*@sprintf("%04d",fg.id)*".txt"
     # load
-    dat = readdlm(auxfile)
+    dat = readdlm(joinpath(loaddir, filename), Float64)
+    dat[dat.<-1e10] .= NaN
 
     # assign
-    npnt, ncol = size(dat)
-    nlevel = ncol - 2
-    bath_level = dat[:,3:end]
-
-
-    # fort.FGx.valuemax
-    filename = "fort.FG"*@sprintf("%d",FGid)*".valuemax"
-    loadfile = joinpath(loaddir,filename)
-    ## check
-    if !isfile(loadfile); error("Not found: $loadfile"); end
-
-    # load
-    dat = readdlm(loadfile)
-
-    ## bathymetry
-    #level = dat[:,3]
-    #bath = bath_level[:,end]
-    #for i = nlevel-1:-1:1
-    #    bath[level.==i] .= bath_level[level.==i,i]
-    #end
-    #bath = permutedims(reshape(bath, (nx, ny)), [2 1])
-
-    !any([nval==i for i in [1,2,5]]) && error("nval $nval must be either 1, 2 or 5.")
-    !any([nval_save==i for i in [1,2,5]]) && error("nval_save $nval_save must be either 1, 2 or 5.")
-    if nval_save > nval; nval_save = nval; end
-
-    # assign
-    ncol = 4 + 2nval
-    valall = permutedims(reshape(dat, (nx, ny, ncol)), [2 1 3])
-    bath = valall[:,:,4]
-    h = valall[:,:,5]
-    th = valall[:,:,5+nval]
-    if nval >= 2
+    ncol = 4 + 2(fg.nval) + 1
+    valall = permutedims(reshape(dat, (fg.nx, fg.ny, ncol)), [2 1 3])
+    topo = valall[:,:,4]
+    D = valall[:,:,5]
+    tD = valall[:,:,5+fg.nval]
+    tarrival = valall[:,:,end]
+    if fg.nval >= 2
         v = valall[:,:,6]
-        tv = valall[:,:,6+nval]
+        tv = valall[:,:,6+fg.nval]
     end
-    if nval >= 5
+    if fg.nval >= 5
         M = valall[:,:,7]
-        tM = valall[:,:,7+nval]
+        tM = valall[:,:,7+fg.nval]
         Mflux = valall[:,:,8]
-        tMflux = valall[:,:,8+nval]
+        tMflux = valall[:,:,8+fg.nval]
         hmin = valall[:,:,9]
-        thmin = valall[:,:,9+nval]
+        thmin = valall[:,:,9+fg.nval]
     end
 
-    if nval_save == 1;     fgmaxval = VisClaw.FGmaxValue(bath,h,th)
-    elseif nval_save == 2; fgmaxval = VisClaw.FGmaxValue(bath,h,v,th,tv)
-    elseif nval_save == 5; fgmaxval = VisClaw.FGmaxValue(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
+    if nval_save == 1;     fgmax = VisClaw.FGmax(topo,D,tD,tarrival)
+    elseif nval_save == 2; fgmax = VisClaw.FGmax(topo,D,v,tD,tv,tarrival)
+    elseif nval_save == 5; fgmax = VisClaw.FGmax(topo,D,v,M,Mflux,hmin,tD,tv,tM,tMflux,thmin,tarrival)
     end
 
     # return
-    return fgmaxval
+    return fgmax
 
 end
-#################################
-loadfgmax(loaddir::String, fg::VisClaw.FGmaxGrid; nval_save::Int64=fg.nval) =
-loadfgmax(loaddir, fg.FGid, fg.nval, fg.nx, fg.ny::Int64; nval_save=nval_save)
 #################################

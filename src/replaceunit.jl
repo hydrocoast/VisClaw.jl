@@ -1,6 +1,6 @@
 
 #################################
-function replaceunit!(fgmax::VisClaw.FGmaxValue, unit::Symbol)
+function replaceunit!(fgmax::VisClaw.FGmax, unit::Symbol)
 
     !haskey(timedict, unit) && error("Invalid specification of unit")
     !haskey(timedict, fgmax.unittime) && error("Invalid symbol in fgmax")
@@ -11,14 +11,13 @@ function replaceunit!(fgmax::VisClaw.FGmaxValue, unit::Symbol)
     # convert
     fgmax.unittime = unit
 
-    fgmax.th = ratio.*fgmax.th
-    if !isempty(fgmax.tv)
-        fgmax.tv = ratio.*fgmax.tv
-    end
+    fgmax.tD = ratio.*fgmax.tD
+    fgmax.tarrival = ratio.*fgmax.tarrival
+    !isempty(fgmax.tv) && (fgmax.tv = ratio.*fgmax.tv)
     if !isempty(fgmax.tM)
         fgmax.tM = ratio.*fgmax.tM
         fgmax.tMflux = ratio.*fgmax.tMflux
-        fgmax.thmin = ratio.*fgmax.thmin
+        fgmax.tDmin = ratio.*fgmax.tDmin
     end
     return fgmax
 end

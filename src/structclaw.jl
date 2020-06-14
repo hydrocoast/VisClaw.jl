@@ -196,11 +196,11 @@ end
 
 ########################################
 """
-Struct: FGmax grid
+Struct: Fixed grid
 """
-struct FGmaxGrid
-    FGid :: Int64
-    file :: String
+struct FixedGrid
+    id :: Int64
+    style :: Int64
     nval :: Int64
     nx :: Int64
     ny :: Int64
@@ -208,8 +208,7 @@ struct FGmaxGrid
     ylims :: Tuple{Float64,Float64}
 
     # Constructor
-    VisClaw.FGmaxGrid(FGid,file,nval) = new(FGid,file,nval,0,0,(0.0,0.0),(0.0,0.0))
-    VisClaw.FGmaxGrid(FGid,file,nval,nx,ny,xlims,ylims) = new(FGid,file,nval,nx,ny,xlims,ylims)
+    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims) = new(id,style,nval,nx,ny,xlims,ylims)
 end
 ########################################
 
@@ -217,26 +216,27 @@ end
 """
 Struct: fgmax values
 """
-mutable struct FGmaxValue
-    bath :: AbstractArray{Float64,2}
-    h :: AbstractArray{Float64,2}
+mutable struct FGmax
+    topo :: AbstractArray{Float64,2}
+    D :: AbstractArray{Float64,2}
     v :: AbstractArray{Float64,2}
     M :: AbstractArray{Float64,2}
     Mflux :: AbstractArray{Float64,2}
-    hmin :: AbstractArray{Float64,2}
-    th :: AbstractArray{Float64,2}
+    Dmin :: AbstractArray{Float64,2}
+    tD :: AbstractArray{Float64,2}
     tv :: AbstractArray{Float64,2}
     tM :: AbstractArray{Float64,2}
     tMflux :: AbstractArray{Float64,2}
-    thmin :: AbstractArray{Float64,2}
+    tDmin :: AbstractArray{Float64,2}
+    tarrival :: AbstractArray{Float64,2}
     unittime :: Symbol
 
     # Constructor
-    VisClaw.FGmaxValue(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
-                                        th, emptyF, emptyF, emptyF, emptyF, :second)
-    VisClaw.FGmaxValue(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
-                                             th, tv, emptyF, emptyF, emptyF, :second)
-    VisClaw.FGmaxValue(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
-                   new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin, :second)
+    VisClaw.FGmax(topo,D,tD,tarrival) =
+              new(topo,D,emptyF,emptyF,emptyF,emptyF,tD,emptyF,emptyF,emptyF,emptyF,tarrival,:second)
+    VisClaw.FGmax(topo,D,v,tD,tv,tarrival) =
+              new(topo,D,v,emptyF,emptyF,emptyF,tD,tv,emptyF,emptyF,emptyF,tarrival,:second)
+    VisClaw.FGmax(topo,D,v,M,Mflux,Dmin,tD,tv,tM,tMflux,tDmin,tarrival) =
+              new(topo,D,v,M,Mflux,Dmin,tD,tv,tM,tMflux,tDmin,tarrival,:second)
 end
 ########################################

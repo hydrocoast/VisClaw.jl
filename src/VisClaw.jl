@@ -68,7 +68,7 @@ include("gmtstorm.jl")
 # General functions
 export geodata, surgedata, gaugedata, fgmaxdata
 export topodata, dtopodata
-export loadfgmax, loadfgmaxgrid
+export loadfgmax
 export loadtopo, loaddeform, loaddtopo
 export loadgauge
 export loadsurface, loadcurrent, loadstorm
@@ -83,7 +83,6 @@ export plotscheck
 export gridnumber!, tilebound!
 export plotscoastline, plotscoastline!
 export plotsfgmax, plotsfgmax!
-export plotsfgmaxsurf
 export plotstopo, plotstopo!
 export plotsdtopo, plotsdtopo!
 export plotstoporange, plotstoporange!

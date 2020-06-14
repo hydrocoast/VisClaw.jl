@@ -65,14 +65,10 @@ function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
             land = (elev-depth) .>= params.dmin
 
             # sea surface anomaly
-            if params.eta0 != 0.0
-                elev[.!land] = elev[.!land].-params.eta0
-            end
+            (params.eta0 != 0.0) && (elev[.!land] = elev[.!land].-params.eta0)
 
             # inundation depth if wet
-            if runup
-                elev[land] = depth[land]
-            end
+            runup && (elev[land] = depth[land])
 
             # NaN if dry
             elev[depth.<=0.0] .= NaN

@@ -109,6 +109,47 @@ end
     fgmaxgrids = fgmaxdata("simlation/path/_output"::String)
     fgmaxgrids = fgmaxdata("simlation/path/_output/fgmax.data"::String)
 
+Function: fgmax_grids.data reader
+"""
+function fgmaxdata(outdir::String)
+    ## definition of filename
+    fname = occursin("fgmax_grids.data", basename(outdir)) ? outdir : joinpath(outdir, "fgmax_grids.data")
+
+    # check
+    isfile(fname) || error("File $fname is not found.")
+    # read all lines
+    open(fname,"r") do f
+        global txt = readlines(f)
+    end
+
+    # parse parameters
+    num_fgmax_val = parse(Int64, split(txt[occursin.("num_fgmax_val",txt)][1],r"\s+")[1])
+    num_fgmax_grids = parse(Int64, split(txt[occursin.("num_fgmax_grids",txt)][1],r"\s+")[1])
+
+    fg = Vector{VisClaw.FixedGrid}(undef, num_fgmax_grids)
+    for i=1:num_fgmax_grids
+        baseline = 10+12(i-1)
+
+        point_style = parse(Int64, split(strip(txt[baseline+8]), r"\s+")[1])
+        (point_style != 2) && error("point_style $point_style is not supported yet.")
+
+        FGid = parse(Int64, split(strip(txt[baseline+1]), r"\s+")[1])
+        nx, ny = parse.(Int64, split(strip(txt[baseline+9]), r"\s+")[1:2])
+        x1, y1 = parse.(Float64, split(strip(txt[baseline+10]), r"\s+")[1:2])
+        x2, y2 = parse.(Float64, split(strip(txt[baseline+11]), r"\s+")[1:2])
+        # instance
+        fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, nx, ny, (x1,x2), (y1,y2))
+    end
+
+    # return
+    return fg
+end
+#=
+###################################
+"""
+    fgmaxgrids = fgmaxdata("simlation/path/_output"::String)
+    fgmaxgrids = fgmaxdata("simlation/path/_output/fgmax.data"::String)
+
 Function: fgmax.data reader
 """
 function fgmaxdata(outdir::String)
@@ -149,3 +190,4 @@ function fgmaxdata(outdir::String)
 
 end
 ###################################
+=#
