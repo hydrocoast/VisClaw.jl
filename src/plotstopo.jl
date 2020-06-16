@@ -10,11 +10,12 @@ function plotstopo!(plt, topo::VisClaw.Topo; kwargs...)
 	# parse keyword args
     kwdict = KWARG(kwargs)
 	seriestype, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriestype, :heatmap)
+	xlims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_xlims, extrema(topo.x))
+	ylims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_ylims, extrema(topo.y))
 
 	# plot
     plt = Plots.plot!(plt, topo.x, topo.y, topo.elevation; seriestype=seriestype,
-                      xlims=extrema(topo.x), ylims=extrema(topo.y),
-                      axis_ratio=:equal, kwdict...)
+                      xlims=xlims, ylims=ylims, axis_ratio=:equal, kwdict...)
     # return
     return plt
 end
@@ -90,8 +91,10 @@ plotstoporange(geo::VisClaw.AbstractTopo; kwargs...) = plotstoporange!(Plots.plo
 ####################################################
 """
     plt = plotscoastline(topo::VisClaw.Topo; kwargs...)
+	plt = plotscoastline(topo::VisClaw.Topo, wetdry::VisClaw.Topo; kwargs...)
 
     plotscoastline!(plt::Plots.Plot, topo::VisClaw.Topo; kwargs...)
+    plotscoastline!(plt::Plots.Plot, topo::VisClaw.Topo, wetdry::VisClaw.Topo; kwargs...)
 
 plot coastlines from topography and bathymetry data using Plots
 """
@@ -99,9 +102,12 @@ function plotscoastline!(plt, topo::VisClaw.Topo; kwargs...)
 	# parse keyword args
     kwdict = KWARG(kwargs)
 	label, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_label, "")
+	xlims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_xlims, extrema(topo.x))
+	ylims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_ylims, extrema(topo.y))
 
 	# plot
-	plt = Plots.contour!(plt, topo.x, topo.y, topo.elevation; levels=[0], label=label, kwdict...)
+	plt = Plots.contour!(plt, topo.x, topo.y, topo.elevation; levels=[0], label=label,
+	                     xlims=xlims, ylims=ylims, axis_ratio=:equal, kwdict...)
 	return plt
 end
 ####################################################
@@ -109,4 +115,24 @@ end
 $(@doc plotscoastline!)
 """
 plotscoastline(topo::VisClaw.Topo; kwargs...) = plotscoastline!(Plots.plot(), topo; kwargs...)
+####################################################
+
+
+####################################################
+function plotscoastline!(plt, topo::VisClaw.Topo, wetdry::VisClaw.Topo; kwargs...)
+	## check args
+	(size(topo.elevation) == size(wetdry.elevation)) || error("size of wetdry array should correspond to that of topo array.")
+
+    ## make a new VisClaw.Topo for coastline plot
+	dry = findall(convert(BitArray, wetdry.elevation))
+    topotmp = copy(topo.elevation)
+	topotmp[dry] .= 1e3
+	topo_coastline = VisClaw.Topo(topo.ncols, topo.nrows, topo.x, topo.y, topo.dx, topo.dy, topotmp)
+
+    ## plot
+	plt = plotscoastline!(plt, topo_coastline; kwargs...)
+	return plt
+end
+####################################################
+plotscoastline(topo::VisClaw.Topo, wetdry::VisClaw.Topo; kwargs...) = plotscoastline!(Plots.plot(), topo, wetdry; kwargs...)
 ####################################################
