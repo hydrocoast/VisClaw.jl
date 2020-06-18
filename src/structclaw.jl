@@ -254,7 +254,7 @@ struct Track
     unittime :: Symbol
 
     # Constructor
-    VisClaw.Track(lon,lat) = new(emptyF,lon,lat,emptyF,:second)
+    VisClaw.Track(lon,lat) = new(empty([0.0]),lon,lat,empty([0.0]),:second)
     VisClaw.Track(timelap,lon,lat,direction) = new(timelap,lon,lat,direction,:second)
 end
 ########################################
