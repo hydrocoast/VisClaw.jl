@@ -240,3 +240,21 @@ mutable struct FGmax
               new(topo,D,v,M,Mflux,Dmin,tD,tv,tM,tMflux,tDmin,tarrival,:second)
 end
 ########################################
+
+
+########################################
+"""
+Struct: track data container
+"""
+struct Track
+    timelap :: AbstractVector{Float64}
+    lon :: AbstractVector{Float64}
+    lat :: AbstractVector{Float64}
+    direction :: AbstractVector{Float64}
+    unittime :: Symbol
+
+    # Constructor
+    VisClaw.Track(lon,lat) = new(empty([0.0]),lon,lat,empty([0.0]),:second)
+    VisClaw.Track(timelap,lon,lat,direction) = new(timelap,lon,lat,direction,:second)
+end
+########################################
