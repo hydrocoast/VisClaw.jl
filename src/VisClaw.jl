@@ -37,6 +37,7 @@ include("replaceunit.jl")
 # Load
 include("loaddata.jl")
 include("loadfgmax.jl")
+include("loadtrack.jl")
 include("loadtopo.jl")
 include("loadfort.jl")
 include("loadgauge.jl")
@@ -55,6 +56,7 @@ include("plotsgaugewaveform.jl")
 include("plotsgaugevelocity.jl")
 include("plotsgaugelocation.jl")
 include("plotsfgmax.jl")
+include("plotstrack.jl")
 
 using GMT:GMT
 # Setup
@@ -64,6 +66,7 @@ include("gmttopo.jl")
 include("gmtgauge.jl")
 include("gmtsurface.jl")
 include("gmtstorm.jl")
+include("gmttrack.jl")
 
 # General functions
 export geodata, surgedata, gaugedata, fgmaxdata
@@ -71,6 +74,7 @@ export topodata, dtopodata
 export loadfgmax
 export loadtopo, loaddeform, loaddtopo
 export loadgauge
+export loadtrack
 export loadsurface, loadcurrent, loadstorm
 export rmvalue_coarser!
 export axesratio
@@ -89,6 +93,7 @@ export plotstoporange, plotstoporange!
 export plotsgaugelocation, plotsgaugelocation!
 export plotsgaugewaveform, plotsgaugewaveform!
 export plotsgaugevelocity, plotsgaugevelocity!
+export plotstrack, plotstrack!
 export plotsgif, plotssavefig
 
 # functions with GMT.jl
@@ -101,6 +106,6 @@ export gmtgaugewaveform, gmtgaugewaveform!
 export gmtgaugevelocity, gmtgaugevelocity!
 export gmtgaugelocation, gmtgaugelocation!
 export gmttoporange!, gmtcoastline!
-
+export gmttrack, gmttrack!
 
 end
