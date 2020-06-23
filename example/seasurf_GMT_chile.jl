@@ -44,7 +44,7 @@ for i = 1:amrall.nstep
     GMT.grdimage!(Gland, R=region, J=proj, C="white,gray80", Q=true)
     GMT.grdimage!.(G, C=cpt, J=proj, R=region, B="", Q=true)
     GMT.colorbar!(J=proj, R=region, B="xa0.5f0.5 y+l(m)", D="jBR+w10.0/0.3+o-1.5/0.0", V=true)
-    GMT.coast!(J=proj, R=region, B="a15f15 neSW", D=:i, W=:thinnest, V=true, fmt="PDF", savefig=outpdf)
+    GMT.coast!(J=proj, R=region, B="a15f15 neSW", D=:i, W=:thinnest, V=true, savefig=outpdf)
 end
 
 rm(landmask_txt, force=true)

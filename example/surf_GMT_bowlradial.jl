@@ -36,7 +36,7 @@ for i = 1:amrall.nstep
     GMT.basemap(J=proj, R=region, B=time_str)
     GMT.grdimage!.(G, C=cpt, J=proj, R=region, B="", Q=true)
     GMT.colorbar!(J=proj, R=region, C=cpt, B="xa0.2f0.2 y+l(m)", D="jBR+w10.0/0.3+o-1.5/0.0")
-    GMT.grdcontour!(Gtopo, J=proj, R=region, C="-1e6,0.0,1e6", savefig=outpdf)
+    gmtcoastline!(Gtopo, savefig=outpdf)
 end
 
 # -----------------------------
