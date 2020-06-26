@@ -42,9 +42,9 @@ for i = 1:amrall.nstep
 
     # plot pressure field
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
-    GMT.grdimage!.(G, C=cpt, J=proj, R=region, B="", Q=true)
-    GMT.colorbar!(J=proj, R=region, B="xa10f10 y+lhPa", D="jBR+w8.0/0.3+o-1.5/0.0")
-    GMT.coast!(J=proj, R=region, B="a10f10 neSW", D=:i, W="thinnest,gray80")
+    GMT.grdimage!.(G, C=cpt, B="", Q=true)
+    GMT.colorbar!(B="xa10f10 y+lhPa", D="jBR+w8.0/0.3+o-1.5/0.0")
+    GMT.coast!(B="a10f10 neSW", D=:i, W="thinnest,gray80")
 
     # plot wind field
     psfile = GMT.fname_out(Dict())[1]
@@ -57,6 +57,3 @@ for i = 1:amrall.nstep
 end
 
 rm(scalefile, force=true)
-
-# gif
-# -----------------------------
