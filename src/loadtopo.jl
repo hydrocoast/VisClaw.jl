@@ -97,7 +97,11 @@ function loadtopo(filename::String, topotype=3::Int64)
 
     ## check args
     if !isfile(filename); error("file $filename is not found."); end;
-    if (topotype!=2) & (topotype!=3); error("unsupported topotype"); end
+    # if (topotype!=2) & (topotype!=3); error("unsupported topotype"); end
+    if (topotype!=2) & (topotype!=3) & (topotype!=4); error("unsupported topotype"); end
+
+    # for topotype 2 or 3 (ascii format)
+    if topotype==2 | topotype==3
 
     ## separator in regular expression
     regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
@@ -149,8 +153,65 @@ function loadtopo(filename::String, topotype=3::Int64)
             topo[k,:] = parse.(Float64, line)
         end
     end
+
     topo[topo.==nodata] .= NaN ## replace nodate to NaN
     topo = reverse(topo, dims=1) ## flip
+
+    # for topotype 4 (NetCDF)
+    elseif topotype==4
+
+        # read x and y
+        try
+            x = NetCDF.ncread(filename,"X")
+        catch
+            try
+                x = NetCDF.ncread(filename,"lon")
+            catch
+                try
+                    x = NetCDF.ncread(filename,"longitude")
+                catch
+                    error("Unsupported variable name for x")
+                end
+            end
+        end
+
+        try
+            y = NetCDF.ncread(filename,"Y")
+        catch
+            try
+                y = NetCDF.ncread(filename,"lat")
+            catch
+                try
+                    y = NetCDF.ncread(filename,"latitude")
+                catch
+                    error("Unsupported variable name for y")
+                end
+            end
+        end
+
+        # read z
+        try
+            topo = NetCDF.ncread(filename,"elevation")
+        catch
+            try
+                topo = NetCDF.ncread(filename,"Band1")
+            catch
+                try
+                    topo = NetCDF.ncread(filename,"z")
+                catch
+                    error("Unsupported variable name for topo")
+                end
+            end
+        end
+
+        cellsize = x[2] - x[1]; # here should be revised
+        ncols = length(x);
+        nrows = length(y);
+
+        topo = topo';
+
+    end
+
     bathtopo = VisClaw.Topo(ncols, nrows, x, y, cellsize, cellsize, topo)
 
     return bathtopo

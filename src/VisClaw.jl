@@ -22,6 +22,8 @@ using Dates
 using GeometricalPredicates: GeometricalPredicates
 using Plots: Plots
 
+using NetCDF
+
 # define CLAW path from shell
 include("clawpath.jl")
 export CLAW
