@@ -202,13 +202,23 @@ struct FixedGrid
     id :: Int64
     style :: Int64
     nval :: Int64
+    ## point_style = 2, 4
     nx :: Int64
     ny :: Int64
     xlims :: Tuple{Float64,Float64}
     ylims :: Tuple{Float64,Float64}
+    ## point_style = 0, 1, 4
+    npts :: Int64
+    x :: AbstractVector{Float64}
+    y :: AbstractVector{Float64}
 
     # Constructor
-    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims) = new(id,style,nval,nx,ny,xlims,ylims)
+    ## point_style = 0, 1
+    VisClaw.FixedGrid(id,style,nval,npts,x,y) = new(id,style,nval,0,0,(NaN,NaN),(NaN,NaN),npts,x,y)
+    ## point_style = 2
+    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims) = new(id,style,nval,nx,ny,xlims,ylims,0,[NaN],[NaN])
+    ## point_style = 3, 4
+    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims,npts,x,y) = new(id,style,nval,nx,ny,xlims,ylims,npts,x,y)
 end
 ########################################
 
@@ -217,18 +227,18 @@ end
 Struct: fgmax values
 """
 mutable struct FGmax
-    topo :: AbstractArray{Float64,2}
-    D :: AbstractArray{Float64,2}
-    v :: AbstractArray{Float64,2}
-    M :: AbstractArray{Float64,2}
-    Mflux :: AbstractArray{Float64,2}
-    Dmin :: AbstractArray{Float64,2}
-    tD :: AbstractArray{Float64,2}
-    tv :: AbstractArray{Float64,2}
-    tM :: AbstractArray{Float64,2}
-    tMflux :: AbstractArray{Float64,2}
-    tDmin :: AbstractArray{Float64,2}
-    tarrival :: AbstractArray{Float64,2}
+    topo :: AbstractArray{Float64}
+    D :: AbstractArray{Float64}
+    v :: AbstractArray{Float64}
+    M :: AbstractArray{Float64}
+    Mflux :: AbstractArray{Float64}
+    Dmin :: AbstractArray{Float64}
+    tD :: AbstractArray{Float64}
+    tv :: AbstractArray{Float64}
+    tM :: AbstractArray{Float64}
+    tMflux :: AbstractArray{Float64}
+    tDmin :: AbstractArray{Float64}
+    tarrival :: AbstractArray{Float64}
     unittime :: Symbol
 
     # Constructor
