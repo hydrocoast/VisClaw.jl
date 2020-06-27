@@ -8,34 +8,56 @@
 function plotsfgmax!(plt, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax, var::Symbol=:D; kwargs...)
     # parse keyword args
     kwdict = KWARG(kwargs)
-	seriestype, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriestype, :heatmap)
+
+	# get var
+	val = copy(getfield(fgmax, var))
+	# check
+	isempty(val) && error("Empty: $var")
 
     # vector
-    x = collect(Float64, LinRange(fg.xlims[1], fg.xlims[end], fg.nx))
-    y = collect(Float64, LinRange(fg.ylims[1], fg.ylims[end], fg.ny))
+	if fg.style == 0 || fg.style == 1 || fg.style == 3
 
-    # ocean grids
-    ocean = fgmax.topo.<=0.0
+		# correct
+	    (var==:D) && (val = val + fgmax.topo)
+		(var==:Dmin) && (val = val - fgmax.topo)
 
-    # get var
-    val = copy(getfield(fgmax, var))
-    # check
-    isempty(val) && error("Empty: $var")
+		# plot
+	    plt = Plots.plot!(plt, fg.x, fg.y, val; kwdict...)
 
-    # correct
-    (var==:D) && (val[ocean] = val[ocean] + fgmax.topo[ocean])
-	(var==:Dmin) && (val[ocean] = val[ocean] - fgmax.topo[ocean])
-	#=
-    elseif var==:Dmin
-        val[ocean] = -val[ocean] + fgmax.topo[ocean]
+    elseif fg.style == 2
+		seriestype, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriestype, :heatmap)
+
+        x = collect(Float64, LinRange(fg.xlims[1], fg.xlims[end], fg.nx))
+        y = collect(Float64, LinRange(fg.ylims[1], fg.ylims[end], fg.ny))
+		# grids in ocean
+	    ocean = fgmax.topo.<=0.0
+
+	    # correct
+	    (var==:D) && (val[ocean] = val[ocean] + fgmax.topo[ocean])
+		(var==:Dmin) && (val[ocean] = val[ocean] - fgmax.topo[ocean])
+	    val[.!ocean] .= NaN
+
+	    # plot
+	    plt = Plots.plot!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, seriestype=seriestype, kwdict...)
+
+	elseif fg.style == 4
+		seriestype, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_seriestype, :heatmap)
+
+		x = collect(Float64, LinRange(fg.xlims[1], fg.xlims[end], fg.nx))
+        y = collect(Float64, LinRange(fg.ylims[1], fg.ylims[end], fg.ny))
+
+		# correct
+	    (var==:D) && (val = val + fgmax.topo)
+		(var==:Dmin) && (val = val - fgmax.topo)
+
+		var_vec = copy(val)
+		val = NaN*zeros(Float64 ,(fg.ny, fg.nx))
+		val[fg.flag] = var_vec
+		val = reverse(val, dims=1)
+
+		# plot
+	    plt = Plots.plot!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, seriestype=seriestype, kwdict...)
     end
-	=#
-
-    val[.!ocean] .= NaN
-
-
-    # plot
-    plt = Plots.plot!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, seriestype=seriestype, kwdict...)
 
     # return
     return plt

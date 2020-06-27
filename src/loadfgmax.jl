@@ -17,7 +17,7 @@ function loadfgmax(loaddir::String, fg::VisClaw.FixedGrid; nval_save::Int64=fg.n
     ncol = 4 + 2(fg.nval) + 1
     # assign
     ##
-    if fg.style == 0 || fg.style == 1 || fg.style == 4
+    if fg.style == 0 || fg.style == 1
         topo = dat[:,4]
         D = dat[:,5]
         tD = dat[:,5+fg.nval]
@@ -51,6 +51,27 @@ function loadfgmax(loaddir::String, fg::VisClaw.FixedGrid; nval_save::Int64=fg.n
             tMflux = valall[:,:,8+fg.nval]
             hmin = valall[:,:,9]
             thmin = valall[:,:,9+fg.nval]
+        end
+    elseif fg.style == 4
+        indc = [[fg.flag[i][1] fg.flag[i][2]] for i=1:fg.npts]
+        indc = vcat(indc...)
+        ind = sortperm(indc[:,1])
+
+        topo = dat[ind,4]
+        D = dat[ind,5]
+        tD = dat[ind,5+fg.nval]
+        tarrival = dat[ind,end]
+        if fg.nval >= 2
+            v = dat[ind,6]
+            tv = dat[ind,6+fg.nval]
+        end
+        if fg.nval >= 5
+            M = dat[ind,7]
+            tM = dat[ind,7+fg.nval]
+            Mflux = dat[ind,8]
+            tMflux = dat[ind,8+fg.nval]
+            hmin = dat[ind,9]
+            thmin = dat[ind,9+fg.nval]
         end
     end
 

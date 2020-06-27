@@ -211,14 +211,19 @@ struct FixedGrid
     npts :: Int64
     x :: AbstractVector{Float64}
     y :: AbstractVector{Float64}
+    ## point_style = 4
+    flag :: AbstractArray
 
     # Constructor
     ## point_style = 0, 1
-    VisClaw.FixedGrid(id,style,nval,npts,x,y) = new(id,style,nval,0,0,(NaN,NaN),(NaN,NaN),npts,x,y)
+    VisClaw.FixedGrid(id,style,nval,npts,x,y) = new(id,style,nval,0,0,(NaN,NaN),(NaN,NaN),npts,x,y,[])
     ## point_style = 2
-    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims) = new(id,style,nval,nx,ny,xlims,ylims,0,[NaN],[NaN])
-    ## point_style = 3, 4
-    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims,npts,x,y) = new(id,style,nval,nx,ny,xlims,ylims,npts,x,y)
+    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims) = new(id,style,nval,nx,ny,xlims,ylims,0,[NaN],[NaN],[])
+    ## point_style = 3
+    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims,npts,x,y) = new(id,style,nval,nx,ny,xlims,ylims,npts,x,y,[])
+    ## point_style = 4
+    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims,npts,x,y,flag) = new(id,style,nval,nx,ny,xlims,ylims,npts,x,y,flag)
+
 end
 ########################################
 

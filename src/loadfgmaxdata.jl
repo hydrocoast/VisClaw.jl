@@ -39,10 +39,11 @@ function fgmaxdata(outdir::String)
             if npts == 0
                 fgmax_deffile = String(strip(txt[baseline+10])[2:end-1])
                 open(fgmax_deffile,"r") do ff; global fgtxt = readlines(ff); end
+                npts = parse(Int64, split(strip(fgtxt[1]), r"\s+")[1])
                 x = zeros(Float64,npts)
                 y = zeros(Float64,npts)
                 for ip = 1:npts
-                    x[ip], y[ip] = parse.(Float64, split(strip(fgtxt[ip]), r"\s+")[1:2])
+                    x[ip], y[ip] = parse.(Float64, split(strip(fgtxt[1+ip]), r"\s+")[1:2])
                 end
                 baseline += 11
             else
@@ -91,11 +92,17 @@ function fgmaxdata(outdir::String)
             x = vec(X[flag])
             y = vec(Y[flag])
             npts = length(x)
+
+            ind = sortperm([flag[i][1] for i=1:npts], rev=true)
+            flag = flag[ind]
+            x = x[ind]
+            y = y[ind]
+
             ## instance
             fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val,
                                       topoflag.ncols, topoflag.nrows,
                                       extrema(topoflag.x), extrema(topoflag.y),
-                                      npts, x, y)
+                                      npts, x, y, flag)
             baseline += 10
         end
     end
