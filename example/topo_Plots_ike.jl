@@ -10,11 +10,7 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-if @isdefined(scratchdir)
-    topo = loadtopo(joinpath(scratchdir,"gulf_caribbean.tt3"), 3)
-else
-    topo = loadtopo(simdir)
-end
+topo = loadtopo(simdir)
 
 # Plot
 plt = plotstopo(topo; linetype=:heatmap, color=:delta, clims=(-6000,6000))

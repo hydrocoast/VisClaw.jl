@@ -17,10 +17,6 @@ println(@sprintf("%d", nf)*" files are going to be tested...")
 using GR: GR
 GR.inline("pdf")
 
-scratchdir = joinpath(CLAW, "geoclaw/scratch")
-# fgmax
-fgmaxtestdir = joinpath(CLAW, "geoclaw/tests/chile2010_fgmax")
-
 @testset "VisClaw.jl" begin
     # Write your own tests here.
     # for loop

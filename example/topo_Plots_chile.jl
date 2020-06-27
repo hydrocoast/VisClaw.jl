@@ -10,12 +10,7 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-if @isdefined(scratchdir)
-    topofile, topotype, ntopo = topodata(joinpath(simdir, "topo.data"))
-    topo = loadtopo(joinpath(scratchdir,"etopo10min120W60W60S0S.asc"), 2)
-else
-    topo = loadtopo(simdir)
-end
+topo = loadtopo(simdir)
 
 plt1 = plotscoastline(topo; lc=:black)
 plotstoporange!(plt1, topo; lc=:magenta)

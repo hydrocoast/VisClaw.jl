@@ -17,11 +17,7 @@ amrall = loadstorm(simdir)
 rmvalue_coarser!.(amrall.amr)
 
 # load topo
-if @isdefined(scratchdir)
-    topo = loadtopo(joinpath(scratchdir,"gulf_caribbean.tt3"), 3)
-else
-    topo = loadtopo(simdir)
-end
+topo = loadtopo(simdir)
 
 
 # plot

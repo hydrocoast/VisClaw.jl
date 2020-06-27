@@ -16,11 +16,7 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 amrall = loadstorm(simdir)
 rmvalue_coarser!.(amrall.amr)
 
-if @isdefined(scratchdir)
-    topo = loadtopo(joinpath(scratchdir,"gulf_caribbean.tt3"), 3)
-else
-    topo = loadtopo(simdir)
-end
+topo = loadtopo(simdir)
 
 # plot amrgrid
 plts = plotsamr(amrall;

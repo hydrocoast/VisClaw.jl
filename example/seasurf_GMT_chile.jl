@@ -10,11 +10,7 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 output_prefix = "chile2010_eta_GMT"
 
 # load topo
-if @isdefined(scratchdir)
-    topo = loadtopo(joinpath(scratchdir,"etopo10min120W60W60S0S.asc"), 2)
-else
-    topo = loadtopo(simdir)
-end
+topo = loadtopo(simdir)
 
 # makecpt
 cpt = GMT.makecpt(C=:polar, T="-1.0/1.0", D=true, V=true)

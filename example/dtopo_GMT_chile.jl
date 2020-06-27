@@ -9,11 +9,7 @@ using GMT: GMT
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-if @isdefined(scratchdir)
-    dtopo = loaddtopo(joinpath(scratchdir,"dtopo_usgs100227.tt3"))
-else
-    dtopo = loaddtopo(simdir)
-end
+dtopo = loaddtopo(simdir)
 
 # makegrd
 G = geogrd(dtopo; V=true)

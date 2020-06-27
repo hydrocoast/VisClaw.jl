@@ -3,11 +3,7 @@ using GMT: GMT
 
 ## load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-if @isdefined(scratchdir)
-    topo = loadtopo(joinpath(scratchdir,"etopo10min120W60W60S0S.asc"), 2)
-else
-    topo = loadtopo(simdir)
-end
+topo = loadtopo(simdir)
 
 ## plot
 gmttopo(topo)
