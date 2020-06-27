@@ -32,10 +32,12 @@ function plotsfgmax!(plt, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax, var::Symb
 
 		# wet cells
 		wet = fgmax.D .!= 0.0
+		land = fgmax.topo .> 0.0
 
 	    # correct
 	    (var==:D) && (val[wet] = val[wet] + fgmax.topo[wet])
 		(var==:Dmin) && (val[wet] = val[wet] - fgmax.topo[wet])
+		(var==:Dmin) && (val[land] .= NaN)
 	    val[.!wet] .= NaN
 
 	    # plot
