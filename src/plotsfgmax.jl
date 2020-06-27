@@ -29,13 +29,14 @@ function plotsfgmax!(plt, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax, var::Symb
 
         x = collect(Float64, LinRange(fg.xlims[1], fg.xlims[end], fg.nx))
         y = collect(Float64, LinRange(fg.ylims[1], fg.ylims[end], fg.ny))
-		# grids in ocean
-	    ocean = fgmax.topo.<=0.0
+
+		# wet cells
+		wet = fgmax.D .!= 0.0
 
 	    # correct
-	    (var==:D) && (val[ocean] = val[ocean] + fgmax.topo[ocean])
-		(var==:Dmin) && (val[ocean] = val[ocean] - fgmax.topo[ocean])
-	    val[.!ocean] .= NaN
+	    (var==:D) && (val[wet] = val[wet] + fgmax.topo[wet])
+		(var==:Dmin) && (val[wet] = val[wet] - fgmax.topo[wet])
+	    val[.!wet] .= NaN
 
 	    # plot
 	    plt = Plots.plot!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, seriestype=seriestype, kwdict...)
