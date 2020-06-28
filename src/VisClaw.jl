@@ -106,7 +106,8 @@ export gmttopo
 export gmtgaugewaveform, gmtgaugewaveform!
 export gmtgaugevelocity, gmtgaugevelocity!
 export gmtgaugelocation, gmtgaugelocation!
-export gmttoporange!, gmtcoastline!
+export gmttoporange!
+export gmtcoastline, gmtcoastline!
 export gmttrack, gmttrack!
 
 end

@@ -44,17 +44,23 @@ end
 
 ####################################################
 """
+    gmtcoastline(topo::VisClaw.Topo; kwargs...)
+	gmtcoastline(G::GMT.GMTgrid; kwargs...)
     gmtcoastline!(topo::VisClaw.Topo; kwargs...)
 	gmtcoastline!(G::GMT.GMTgrid; kwargs...)
 
 plot coastlines from topography and bathymetry data using GMT
 """
-gmtcoastline!(topo::VisClaw.Topo; kwargs...) =
-GMT.grdcontour!(geogrd(topo); C="-1e10,0,1e10", kwargs...)
+gmtcoastline!(topo::VisClaw.Topo; kwargs...) = GMT.grdcontour!(geogrd(topo); C="-1e10,0,1e10", kwargs...)
+####################################################
+gmtcoastline!(G::GMT.GMTgrid; kwargs...) = GMT.grdcontour!(G; C="-1e10,0,1e10", kwargs...)
+####################################################
+
 ####################################################
 """
 $(@doc gmtcoastline!)
 """
-gmtcoastline!(G::GMT.GMTgrid; kwargs...) =
-GMT.grdcontour!(G; C="-1e10,0,1e10", kwargs...)
+gmtcoastline(topo::VisClaw.Topo; kwargs...) = GMT.grdcontour(geogrd(topo); C="-1e10,0,1e10", kwargs...)
+####################################################
+gmtcoastline(G::GMT.GMTgrid; kwargs...) = GMT.grdcontour(G; C="-1e10,0,1e10", kwargs...)
 ####################################################
