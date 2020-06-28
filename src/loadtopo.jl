@@ -96,8 +96,20 @@ function loadtopo(filename::String, topotype=3::Int64)
     end
 
     ## check args
-    if !isfile(filename); error("file $filename is not found."); end;
-    if (topotype!=2) & (topotype!=3); error("unsupported topotype"); end
+    isfile(filename) || error("file $filename is not found.")
+    any(topotype .== [2,3,4]) || error("unsupported topotype")
+
+    ## NetCDF
+    ( filename[end-2:end] == ".nc" && topotype != 4 ) && (topotype=4)
+    if topotype == 4
+        var_x, var_y, var_z = VisClaw.getvarname_nctopo(filename)
+        x = NetCDF.ncread(filename, var_x)
+        y = NetCDF.ncread(filename, var_y)
+        topo = permutedims(NetCDF.ncread(filename, var_z), [2,1])
+        
+        bathtopo = VisClaw.Topo(length(x), length(y), x, y, mean(diff(x)), mean(diff(x)), topo)
+        return bathtopo
+    end
 
     ## separator in regular expression
     regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"

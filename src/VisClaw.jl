@@ -18,6 +18,7 @@ using DelimitedFiles: readdlm
 using Interpolations: Interpolations
 using Printf
 using Dates
+using NetCDF: NetCDF
 
 using GeometricalPredicates: GeometricalPredicates
 using Plots: Plots
@@ -30,10 +31,13 @@ export CLAW
 const KWARG = Dict{Symbol,Any}
 const emptyF = Array{Float64}(undef, 0, 0)
 const timedict = Dict(:second => 1.0, :minute => 60.0, :hour => 3600.0, :day => 24*3600.0)
+const varnameset(D,k,v) = haskey(D,k) ? k : v
+
 include("structclaw.jl")
 
 include("amrutils.jl")
 include("replaceunit.jl")
+include("getvarname_nctopo.jl")
 # Load
 include("loaddata.jl")
 include("loadtrack.jl")
@@ -110,6 +114,6 @@ export gmtgaugelocation, gmtgaugelocation!
 export gmttoporange!
 export gmtcoastline, gmtcoastline!
 export gmttrack, gmttrack!
-export gmtgrdimage_tiles, gmtgrdimage_tiles! 
+export gmtgrdimage_tiles, gmtgrdimage_tiles!
 
 end
