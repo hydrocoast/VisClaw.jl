@@ -38,6 +38,7 @@ before_install:
   - curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=${FILE_ID}" -o ${FILE_NAME}
   - tar -zxvf ${FILE_NAME}
   - export CLAW="$HOME/${FILE_NAME//\.tar\.gz/}"
+  - find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/-v5\.7\.0//g" $f; done
   - find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/\/mnt\/HDD8TB\/00_PhD\/00_Research\/AMR\/clawpack/${CLAW//\//\\/}/g" $f; done
 before_script:
   ### repo
