@@ -22,8 +22,8 @@ amrall = loadsurface(simdir)
 rmvalue_coarser!.(amrall.amr)
 
 # projection and region GMT
+proj = getJ("X10d", amrall.amr[1])
 region = getR(amrall.amr[1])
-proj = getJ("X10d", axesratio(amrall.amr[1]))
 
 # masking
 landmask_txt = landmask_asc(topo)
@@ -37,14 +37,13 @@ for i = 1:amrall.nstep
     outpdf = output_prefix*@sprintf("%03d", i)*".pdf"
 
     # land-masked surface grids
-    G = tilegrd_mask.(amrall.amr[i], landmask_txt; length_unit="d")
+    #G = tilegrd_mask.(amrall.amr[i], landmask_txt; length_unit="d")
+    G = tilegrd_mask(amrall, i, landmask_txt; length_unit="d")
 
     # plot
-    GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
-    #GMT.grdimage!(Gland, R=region, J=proj, C="white,gray80", Q=true)
-    GMT.grdimage!.(G, C=cpt, J=proj, R=region, B="", Q=true)
-    GMT.colorbar!(J=proj, R=region, B="xa0.5f0.25 y+l(m)", D="jBR+w8.0/0.3+o-1.5/0.0", V=true)
-    GMT.coast!(J=proj, R=region, B="a10f10 neSW", D=:i, W=:thinnest, V=true, savefig=outpdf)
+    gmtgrdimage_tiles(G, C=cpt, J=proj, R=region, B="+t"*time_str[i], Q=true)
+    GMT.colorbar!(B="xa0.5f0.25 y+l(m)", D="jBR+w8.0/0.3+o-1.5/0.0", V=true)
+    GMT.coast!(B="a10f10 neSW", D=:i, W=:thinnest, V=true, savefig=outpdf)
 end
 
 rm(landmask_txt, force=true)

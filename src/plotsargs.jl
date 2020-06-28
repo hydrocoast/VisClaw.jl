@@ -62,6 +62,11 @@ parse_label(d::Dict) =
 parse_from_keys(d, [:lab, :labels, :label])
 # -----------------------------
 
+# -----------------------------
+parse_B(d::Dict) =
+parse_from_keys(d, [:B, :frame, :axis])
+# -----------------------------
+
 
 function kwarg_default(d::Dict, func::Function, default_value)
 	val, d = func(d)

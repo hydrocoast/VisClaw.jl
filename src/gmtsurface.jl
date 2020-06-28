@@ -113,6 +113,10 @@ function tilegrd(tile::VisClaw.AMRGrid; length_unit::String="", kwargs...)
     return G
 end
 ###################################################
+tilegrd(amrs::VisClaw.AMR, istep::Int64; length_unit::String="", kwargs...) =
+tilegrd.(amrs.amr[istep]; length_unit=length_unit, kwargs...)
+###################################################
+
 
 ###################################################
 """
@@ -147,6 +151,9 @@ function tilegrd_xyz(tile::VisClaw.AMRGrid; kwargs...)
     return G
 end
 ###################################################
+tilegrd_xyz(amrs::VisClaw.AMR, istep::Int64; kwargs...) = tilegrd_xyz.(amrs.amr[istep]; kwargs...)
+###################################################
+
 
 ###################################################
 """
@@ -210,3 +217,5 @@ function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; length_unit::S
     return G
 end
 ###################################################
+tilegrd_mask(amrs::VisClaw.AMR, istep::Int64, maskfile::String=""; length_unit::String="", kwargs...) =
+tilegrd_mask.(amrs.amr[istep], maskfile; length_unit=length_unit, kwargs...)

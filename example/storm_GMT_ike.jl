@@ -26,8 +26,8 @@ amrall = loadstorm(simdir)
 rmvalue_coarser!.(amrall.amr) # to avoid overlapped arrows are plotted
 
 # projection and region GMT
+proj = getJ("X10d", amrall.amr[1])
 region = getR(amrall.amr[1])
-proj = getJ("X10d", axesratio(amrall.amr[1]))
 
 # time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
@@ -38,11 +38,11 @@ for i = 1:amrall.nstep
     outpng = output_prefix*@sprintf("%03d", i)*".png"
 
     # surface grids
-    G = tilegrd.(amrall.amr[i]; length_unit="d")
+    #G = tilegrd.(amrall.amr[i]; length_unit="d")
+    G = tilegrd(amrall, i; length_unit="d")
 
     # plot pressure field
-    GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
-    GMT.grdimage!.(G, C=cpt, B="", Q=true)
+    gmtgrdimage_tiles(G, J=proj, R=region, B="+t"*time_str[i])
     GMT.colorbar!(B="xa10f10 y+lhPa", D="jBR+w8.0/0.3+o-1.5/0.0")
     GMT.coast!(B="a10f10 neSW", D=:i, W="thinnest,gray80")
 

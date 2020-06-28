@@ -97,7 +97,6 @@ function geogrd(geo::VisClaw.Topo; kwargs...)
     yvec = repeat(geo.y, outer=(geo.ncols,1))
 
     G = GMT.surface([xvec[:] yvec[:] geo.elevation[:]]; R=R, I=Δ, kwargs...)
-    #G = GMT.surface([xvec[:] reverse(yvec[:]) geo.elevation[:]]; R=R, I=Δ, kwargs...)
 
     return G
 end
@@ -127,7 +126,6 @@ end
 
 Correct J option
 """
-#function getJ(geo; proj_base="X10d"::String)
 function getJ(proj_base::String, hwratio::Real)
     # find projection specifier
     J1 = match(r"^([a-zA-Z]+)", proj_base)
@@ -158,4 +156,8 @@ function getJ(proj_base::String, hwratio::Real)
     # return value
     return proj
 end
+###################################################
+getJ(proj_base::String, topo::VisClaw.Topo) = getJ(proj_base, VisClaw.axesratio(topo))
+###################################################
+getJ(proj_base::String, amr::Vector{VisClaw.AMRGrid}) = getJ(proj_base, VisClaw.axesratio(amr))
 ###################################################

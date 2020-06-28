@@ -68,6 +68,7 @@ include("gmtgauge.jl")
 include("gmtsurface.jl")
 include("gmtstorm.jl")
 include("gmttrack.jl")
+include("gmtgrdimage.jl")
 
 # General functions
 export geodata, surgedata, gaugedata, fgmaxdata
@@ -109,5 +110,6 @@ export gmtgaugelocation, gmtgaugelocation!
 export gmttoporange!
 export gmtcoastline, gmtcoastline!
 export gmttrack, gmttrack!
+export gmtgrdimage_tiles, gmtgrdimage_tiles! 
 
 end
