@@ -31,7 +31,7 @@ before_install:
   - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/gmt/lib"
   ###  download clawpack output examples
   - cd $HOME
-  - FILE_ID=1v4busQYkisb11gIc-bu-ym225n-xkjyS
+  - FILE_ID=1vjMAtxgN7JiIhDhxQUaO0J370I4uvst0
   - FILE_NAME=clawpack-v5.7.0.tar.gz
   - curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=${FILE_ID}" > /dev/null
   - CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)"

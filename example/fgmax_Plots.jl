@@ -12,9 +12,6 @@ fg = fgmaxdata(simdir)
 fgmax = loadfgmax.(simdir, fg)
 replaceunit!.(fgmax, :hour)
 
-using DelimitedFiles: readdlm
-
-
 pltA = plotsfgmax(fg[1], fgmax[1], :D; c=:amp, clims=(0.0,15.0))
 pltA = plotsfgmax!(pltA, fg[3], fgmax[3], :D; c=:amp, clims=(0.0,15.0))
 
