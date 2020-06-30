@@ -12,13 +12,15 @@ output_prefix = "ike_eta"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
-surgeparams = surgedata(joinpath(simdir, "surge.data"))
-
-# load water surface
+## load track
+track = loadtrack(simdir)
+## load parameters
+surgeparams = surgedata(simdir)
+## load water surface
 amrall = loadsurface(simdir)
 rmvalue_coarser!.(amrall.amr)
 
-# plot
+## plot
 plts = plotsamr(amrall; c=:darkrainbow, clims=(-0.5,2.0),
                 xguide="Longitude", yguide="Latitude",
                 xlims=(-99.0,-80.0), ylims=(16.0,32.0),
@@ -26,17 +28,21 @@ plts = plotsamr(amrall; c=:darkrainbow, clims=(-0.5,2.0),
                 tickfont=Plots.font("sans-serif",10),
                 )
 
-# time in string
+## time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
-# gauge locations (from gauges.data)
+## gauge locations (from gauges.data)
 gauges = gaugedata(simdir)
-# gauge location
+## gauge location
 plts = map(p -> plotsgaugelocation!(p, gauges; color=:white, offset=(0.25,-0.25), font=Plots.font(10, :white)), plts)
 
-# tiles
+## track
+plts = map((p,t) -> plotstrack!(p, track, 1:t; lc=:magenta), plts, 1:amrall.nstep)
+
+
+## tiles
 plts = gridnumber!.(plts, amrall.amr; font=Plots.font(12, :white, :center))
 plts = tilebound!.(plts, amrall.amr)
 
