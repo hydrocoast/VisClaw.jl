@@ -12,6 +12,8 @@ simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 params = geodata(simdir)
 gauges = loadgauge(simdir, eta0=params.eta0, loadvel=true)
 replaceunit!.(gauges, :hour)
+## test
+gtest = loadgauge(simdir, 3; loadeta=false)
 
 ## loadtopo
 topo = loadtopo(simdir)
