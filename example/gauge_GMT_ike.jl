@@ -30,4 +30,6 @@ G = geogrd(topo)
 region=[-95.5 -93.5 28.8 29.8]
 gmtgaugelocation(gauges[1:2]; R=region, marker=:circle, markerfacecolor=:blue)
 gmtgaugelocation!(gauges[3:4]; R=region, marker=:circle, markerfacecolor=:red)
+gmtgaugeannotation!(gauges[1]; offset=(0.0,-0.5))
+gmtgaugeannotation!.(gauges[2:4], ["2","3","4"]; offset=(0.0,-0.5))
 gmtcoastline!(G; R=region, savefig="gauge_location_ike.pdf")
