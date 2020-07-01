@@ -1,6 +1,5 @@
 using VisClaw
 using Printf
-
 using Plots
 
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")

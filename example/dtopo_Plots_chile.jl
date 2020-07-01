@@ -1,7 +1,6 @@
 using VisClaw
 using Printf
 
-### Seafloor deformation (for tsunami simulation)
 using Plots
 gr()
 

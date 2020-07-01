@@ -1,7 +1,5 @@
 using VisClaw
 using Printf
-
-# topography image using GMT
 using GMT: GMT
 
 # -----------------------------

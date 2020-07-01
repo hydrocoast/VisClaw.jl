@@ -1,9 +1,8 @@
 using VisClaw
-
 using Printf
 using GMT: GMT
 
-# arrow style
+## arrow style
 arrow = "0.01/0.15/0.05" # -A LineWidth/HeadLength/HeadSize
 vscale = "e0.03/0.0/12"  # -Se <velscale> / <confidence> / <fontsize>
 arrow_color = "black" # -G
@@ -17,36 +16,36 @@ output_prefix = "ike_storm_GMT"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
-# makecpt
+## makecpt
 #cpt = GMT.makecpt(C=:seis, T="950/1015", D=true)
 cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
 
-# load
+## load
 amrall = loadstorm(simdir)
 rmvalue_coarser!.(amrall.amr) # to avoid overlapped arrows are plotted
 
-# projection and region GMT
+## projection and region GMT
 proj = getJ("X10d", amrall.amr[1])
 region = getR(amrall.amr[1])
 
-# time in string
+## time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd_HH:MM")
 
-# plot
+## plot
 for i = 1:amrall.nstep
     outpng = output_prefix*@sprintf("%03d", i)*".png"
 
-    # surface grids
+    ## surface grids
     #G = tilegrd.(amrall.amr[i]; length_unit="d")
     G = tilegrd(amrall, i; length_unit="d")
 
-    # plot pressure field
+    ## plot pressure field
     gmtgrdimage_tiles(G, J=proj, R=region, B="+t"*time_str[i])
     GMT.colorbar!(B="xa10f10 y+lhPa", D="jBR+w8.0/0.3+o-1.5/0.0")
     GMT.coast!(B="a10f10 neSW", D=:i, W="thinnest,gray80")
 
-    # plot wind field
+    ## plot wind field
     psfile = GMT.fname_out(Dict())[1]
     velofile = txtwind(amrall.amr[i], skip=3)
     GMT.gmt("psvelo $velofile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -P -K -O >> $psfile ")

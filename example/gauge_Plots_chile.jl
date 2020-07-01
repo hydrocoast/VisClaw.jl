@@ -1,16 +1,12 @@
 using VisClaw
 using Printf
-### Waveform plots from gauges
 using Plots
 gr()
-
-sec1h = 3.6e3
-sec1d = 24sec1h
 
 # -----------------------------
 # chile 2010
 # -----------------------------
-## Load observation ##
+## Load observation
 using DelimitedFiles: readdlm
 #gaugeobs = Vector{VisClaw.Gauge}(undef,1)
 # gauge 32412
@@ -20,18 +16,15 @@ using DelimitedFiles: readdlm
 #gaugeobs[1]=VisClaw.Gauge("Gauge 32412 Obs.", 32412, size(obs,1), [], [], obs[:,1], obs[:,2])
 ##
 
-## Load simulation result ##
+## Load simulation result
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 # read
 params = geodata(simdir)
 gauges = loadgauge(simdir, eta0=params.eta0, loadvel=true)
 replaceunit!.(gauges, :hour)
 gmax = gaugemax(gauges[1])
-##
 
-
-
-# plot
+## plot
 plt = plotsgaugewaveform(gauges[1], lw=1.0)
 #plotsgaugewaveform!(plt, gaugeobs[1], lc=:black, lw=0.5, linestyle=:dash)
 plot!(plt; ylims=(-0.15, 0.25),
@@ -46,6 +39,6 @@ plot!(plt; ylims=(-0.15, 0.25),
 pltv = plotsgaugevelocity(gauges[1])
 pltl = plotsgaugelocation(gauges[1])
 
-# save
+## save
 #savefig(plt, "chile2010_waveform_gauge.svg")
 # -----------------------------

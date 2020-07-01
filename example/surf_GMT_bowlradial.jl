@@ -9,18 +9,18 @@ using GMT: GMT
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/bowl-radial/_output")
 output_prefix = "bowlradial_eta_GMT"
 
-# load topo
+## load topo
 topo = loadtopo(simdir)
 Gtopo = geogrd(topo)
 
-# makecpt
+## makecpt
 cpt = GMT.makecpt(C=:polar, T="-1.0/1.0", D=true, V=true)
 
-# load water surface
+## load water surface
 amrall = loadsurface(simdir)
 rmvalue_coarser!.(amrall.amr)
 
-# projection and region GMT
+## projection and region GMT
 proj = getJ("X10", topo)
 region = getR(topo)
 

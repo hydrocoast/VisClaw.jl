@@ -1,6 +1,5 @@
 using VisClaw
 using Printf
-
 using Plots
 gr()
 

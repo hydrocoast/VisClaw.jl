@@ -1,21 +1,19 @@
 using VisClaw
 using Printf
-
-### Topography and bathymetry
 using Plots
 gr()
 
 # -----------------------------
 # ike
 # -----------------------------
-# load
+## load
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 topo = loadtopo(simdir)
 
-# Plot
+## Plot
 plt = plotstopo(topo; linetype=:heatmap, color=:delta, clims=(-6000,6000))
 plt = plotscoastline!(plt, topo; lc=:black)
 
-# save
+## save
 #savefig(plt, "ike_topo.svg")
 # -----------------------------

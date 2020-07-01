@@ -12,13 +12,13 @@ output_prefix = "ike_wind"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
-# load
+## load
 amrall = loadstorm(simdir)
 rmvalue_coarser!.(amrall.amr)
 
 topo = loadtopo(simdir)
 
-# plot amrgrid
+## plot amrgrid
 plts = plotsamr(amrall;
                 c=:darktest, clims=(0.0, 40.0),
                 xguide="Longitude", yguide="Latitude",
@@ -28,20 +28,20 @@ plts = plotsamr(amrall;
                 colorbar_title="m/s",
                 wind=true,
                 )
-# coastlines
+## coastlines
 plts = map(p->plotscoastline!(p, topo; lc=:black), plts)
 
-# time in string
+## time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
-# tiles
+## tiles
 plts = gridnumber!.(plts, amrall.amr; font=Plots.font(12, :white, :center))
 plts = tilebound!.(plts, amrall.amr)
 
-# save
+## save
 #plotssavefig(plts, output_prefix*".svg")
-# gif
+## gif
 #plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------
