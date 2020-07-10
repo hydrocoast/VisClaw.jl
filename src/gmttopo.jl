@@ -11,14 +11,20 @@ end
 function gmttopo(G::GMT.GMTgrid; factor_lims::Float64=0.8, sigdigits_lims::Int64=2,
 	                             C=:geo, T=[], D::Bool=true, J="", R="", kwargs...)
 	## cpt
-	isa(C, GMT.GMTcpt) || ( cpt=makecptfromgrd(G; factor_lims=factor_lims, sigdigits_lims=sigdigits_lims, C=C, T=T, D=D) )
+	cptout = false
+	if !isa(C, GMT.GMTcpt)
+		cptout = true
+		C = makecptfromgrd(G; factor_lims=factor_lims, sigdigits_lims=sigdigits_lims, C=C, T=T, D=D)
+	end
+    # options
 	isempty(J) && ( J=getJ("X10", axesratio(G)) )
 	isempty(R) && ( R=getR(G) )
+
     ## plot
-    GMT.grdimage(G; C=cpt, J=J, R=R, Q=true, kwargs...)
+    GMT.grdimage(G; C=C, J=J, R=R, Q=true, kwargs...)
 
     ## return
-	return cpt
+	if cptout; return C; else return nothing; end
 end
 ####################################################
 gmttopo(topo::VisClaw.Topo; kwargs...) = gmttopo(geogrd(topo); kwargs...)
