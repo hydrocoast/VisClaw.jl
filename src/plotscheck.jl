@@ -28,8 +28,6 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     # xlims, ylims
     xlims, kwdict = VisClaw.parse_xlims(kwdict)
     ylims, kwdict = VisClaw.parse_ylims(kwdict)
-    if xlims == nothing; xlims_load = (-Inf,Inf); end
-    if ylims == nothing; ylims_load = (-Inf,Inf); end
 
     ## make a list
     isdir(simdir) || error("Not found: directory $simdir")
@@ -64,7 +62,7 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
         if ( (i>nfile) || (i<1) ); println("Invalid number"); ex=1; continue; end
 
         # load data
-        amrs = loadfunction(simdir, i; xlims=xlims_load, ylims=ylims_load, kwargs_load...)
+        amrs = loadfunction(simdir, i; xlims=xlims, ylims=ylims, kwargs_load...)
 
         # draw figure
         plt = VisClaw.plotsamr2d(amrs.amr[1], AMRlevel; xlims=xlims, ylims=ylims, kwdict...)
