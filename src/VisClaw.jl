@@ -23,22 +23,22 @@ using NetCDF: NetCDF
 using GeometricalPredicates: GeometricalPredicates
 using Plots: Plots
 
-# define CLAW path from shell
+## define CLAW path from shell
 include("clawpath.jl")
 export CLAW
 
-# define structs and basic functions
+## define structs and basic functions
 const KWARG = Dict{Symbol,Any}
 const emptyF = Array{Float64}(undef, 0, 0)
 const timedict = Dict(:second => 1.0, :minute => 60.0, :hour => 3600.0, :day => 24*3600.0)
 const varnameset(D,k,v) = haskey(D,k) ? k : v
 
 include("structclaw.jl")
-
 include("amrutils.jl")
 include("replaceunit.jl")
 include("getvarname_nctopo.jl")
-# Load
+
+## load
 include("loaddata.jl")
 include("loadtrack.jl")
 include("loadtopo.jl")
@@ -46,14 +46,19 @@ include("loadfgmaxdata.jl")
 include("loadfgmax.jl")
 include("loadfort.jl")
 include("loadgauge.jl")
+
+## print
+include("printtopo.jl")
+
+## convert mesh data
 include("gaugemax.jl")
-# Convert mesh data
 include("rmvalue_coarser.jl")
 
-# Setup
+## setup
 include("plotsargs.jl")
 include("plotstools.jl")
-# Plots
+
+## plot (using Plots)
 include("plots2d.jl")
 include("plotscheck.jl")
 include("plotstopo.jl")
@@ -63,10 +68,9 @@ include("plotsgaugelocation.jl")
 include("plotsfgmax.jl")
 include("plotstrack.jl")
 
+## plot (using GMT)
 using GMT:GMT
-# Setup
 include("gmttools.jl")
-# make figures with GMT
 include("gmttopo.jl")
 include("gmtgauge.jl")
 include("gmtsurface.jl")
@@ -74,7 +78,7 @@ include("gmtstorm.jl")
 include("gmttrack.jl")
 include("gmtgrdimage.jl")
 
-# General functions
+## general functions
 export geodata, surgedata, gaugedata, fgmaxdata
 export topodata, dtopodata
 export loadfgmax
@@ -82,12 +86,13 @@ export loadtopo, loaddeform, loaddtopo
 export loadgauge
 export loadtrack
 export loadsurface, loadcurrent, loadstorm
+export printtopoESRI, printtopo, printdtopo
 export rmvalue_coarser!
 export axesratio
 export replaceunit!
 export gaugemax
 
-# functions with Plots.jl
+## functions with Plots.jl
 export plotsamr
 export plotscheck
 export gridnumber!, tilebound!
@@ -102,7 +107,7 @@ export plotsgaugevelocity, plotsgaugevelocity!
 export plotstrack, plotstrack!
 export plotsgif, plotssavefig
 
-# functions with GMT.jl
+## functions with GMT.jl
 export getR, getR_tile, getJ, geogrd
 export landmask_asc, landmask_grd
 export tilegrd_xyz, tilegrd, tilegrd_mask
