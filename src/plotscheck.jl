@@ -26,8 +26,8 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     # parse keyword args
     kwdict = KWARG(kwargs)
     # xlims, ylims
-    xlims, kwdict = VisClaw.parse_xlims(kwdict)
-    ylims, kwdict = VisClaw.parse_ylims(kwdict)
+    xlims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_xlims, (-Inf,Inf))
+    ylims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_ylims, (-Inf,Inf))
 
     ## make a list
     isdir(simdir) || error("Not found: directory $simdir")
