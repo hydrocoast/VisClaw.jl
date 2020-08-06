@@ -26,12 +26,14 @@ end
 ############################################################
 """
    rmvalue_coarser!(tiles::Vector{VisClaw.AMRGrid})
+   rmvalue_coarser!(amrs::VisClaw.AMR)
 
-replace values at coarser grids (lower levels) to NaN 
+replace values at coarser grids (lower levels) to NaN
 """
 function rmvalue_coarser!(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
+    ntile == 0 && (return)
 
     ## deepest level
     levels = getfield.(tiles,:AMRlevel);
@@ -83,3 +85,4 @@ function rmvalue_coarser!(tiles::Vector{VisClaw.AMRGrid})
     return
 end
 ############################################################
+rmvalue_coarser!(amrs::VisClaw.AMR) = rmvalue_coarser!.(amrs.amr)
