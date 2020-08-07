@@ -64,4 +64,4 @@ end
 
 
 loadgauge(dirname::String, gaugeid::Int64; eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false) =
-loadgauge(dirname, gaugeid:gaugeid; eta0=eta0, labelehead=labelhead, loadeta=loadeta, loadvel=loadvel)
+loadgauge(dirname, gaugeid:gaugeid; eta0=eta0, labelhead=labelhead, loadeta=loadeta, loadvel=loadvel)
