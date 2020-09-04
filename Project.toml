@@ -17,7 +17,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 GMT = "0.21, 0.22, 0.23"
-GR = "0.50, 0.51"
+GR = "0.50, 0.51, 0.52"
 GeometricalPredicates = "0.4"
 Interpolations = "0.12"
 NetCDF = "0.10"
