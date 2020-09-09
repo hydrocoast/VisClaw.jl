@@ -8,10 +8,10 @@ Struct:
  storm data
 """
 mutable struct Storm <: VisClaw.AMRGrid
-    gridnumber::Int64
-    AMRlevel::Int64
-    mx::Int64
-    my::Int64
+    gridnumber::Integer
+    AMRlevel::Integer
+    mx::Integer
+    my::Integer
     xlow::Float64
     ylow::Float64
     dx::Float64
@@ -30,10 +30,10 @@ end
 Struct: Water veloccity
 """
 mutable struct Velocity <: VisClaw.AMRGrid
-    gridnumber::Int64
-    AMRlevel::Int64
-    mx::Int64
-    my::Int64
+    gridnumber::Integer
+    AMRlevel::Integer
+    mx::Integer
+    my::Integer
     xlow::Float64
     ylow::Float64
     dx::Float64
@@ -52,10 +52,10 @@ end
 Struct: Sea Surface Height
 """
 mutable struct SurfaceHeight <: VisClaw.AMRGrid
-    gridnumber::Int64
-    AMRlevel::Int64
-    mx::Int64
-    my::Int64
+    gridnumber::Integer
+    AMRlevel::Integer
+    mx::Integer
+    my::Integer
     xlow::Float64
     ylow::Float64
     dx::Float64
@@ -73,7 +73,7 @@ Struct:
  time-seies of AMR data
 """
 mutable struct AMR <: VisClaw.AbstractAMR
-    nstep::Int64
+    nstep::Integer
     timelap::AbstractVector{Float64}
     amr :: AbstractVector{Vector{VisClaw.AMRGrid}}
     unittime :: Symbol
@@ -89,8 +89,8 @@ Struct:
  topography and bathymetry
 """
 struct Topo <: AbstractTopo
-    ncols :: Int64
-    nrows :: Int64
+    ncols :: Integer
+    nrows :: Integer
     x :: Vector{Float64}
     y :: Vector{Float64}
     dx :: Float64
@@ -108,13 +108,13 @@ Struct:
  seafloor deformation for tsunami computation
 """
 struct DTopo <: AbstractTopo
-    mx :: Int64
-    my :: Int64
+    mx :: Integer
+    my :: Integer
     x :: Vector{Float64}
     y :: Vector{Float64}
     dx :: Float64
     dy :: Float64
-    mt :: Int64
+    mt :: Integer
     t0 :: Float64
     dt :: Float64
     deform :: AbstractArray{Float64}
@@ -128,7 +128,7 @@ end
 Struct: parameters in geoclaw.data
 """
 struct GeoParam
-    cs :: Int64 # coordinate system
+    cs :: Integer # coordinate system
     p0:: Float64 # ambient pressure
     R :: Float64 # earth radious
     eta0 :: Float64 # sea level
@@ -145,9 +145,9 @@ end
 Struct: parameters in surge.data
 """
 struct SurgeParam
-    windindex::Int64
-    slpindex::Int64
-    stormtype::Int64
+    windindex::Integer
+    slpindex::Integer
+    stormtype::Integer
     # Constructor
     VisClaw.SurgeParam() = new(5,7,1)
     VisClaw.SurgeParam(windindex,slpindex,stormtype) = new(windindex,slpindex,stormtype)
@@ -159,11 +159,11 @@ end
 Struct: gauge data
 """
 mutable struct Gauge
-    label :: String # Name
-    id :: Int64 # gauge id
-    nt :: Int64 # number of time step
+    label :: AbstractString # Name
+    id :: Integer # gauge id
+    nt :: Integer # number of time step
     loc :: AbstractVector{Float64} # gauge location
-    AMRlevel :: AbstractVector{Int64}
+    AMRlevel :: AbstractVector{Integer}
     time :: AbstractVector{Float64} # time
     eta :: AbstractVector{Float64} # surface
     u :: AbstractVector{Float64} # u
@@ -180,10 +180,10 @@ end
 Struct: max values at a gauge
 """
 mutable struct Gaugemax
-    label :: String # Name
-    id :: Int64 # gauge id
+    label :: AbstractString # Name
+    id :: Integer # gauge id
     loc :: AbstractVector{Float64} # gauge location
-    AMRlevel :: Int64
+    AMRlevel :: Integer
     eta :: Float64
     vel :: Float64
     t_eta :: Float64
@@ -199,16 +199,16 @@ end
 Struct: Fixed grid
 """
 struct FixedGrid
-    id :: Int64
-    style :: Int64
-    nval :: Int64
+    id :: Integer
+    style :: Integer
+    nval :: Integer
     ## point_style = 2, 4
-    nx :: Int64
-    ny :: Int64
+    nx :: Integer
+    ny :: Integer
     xlims :: Tuple{Float64,Float64}
     ylims :: Tuple{Float64,Float64}
     ## point_style = 0, 1, 4
-    npts :: Int64
+    npts :: Integer
     x :: AbstractVector{Float64}
     y :: AbstractVector{Float64}
     ## point_style = 4
