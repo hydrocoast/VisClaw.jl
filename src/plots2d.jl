@@ -1,13 +1,12 @@
-empI = empty([], Int64)
 ######################################
 """
-    plt = plotsamr2d(tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}; kwargs...)
+    plt = plotsamr2d(tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector; kwargs...)
 
-    plotsamr2d!(plt::Plots.Plot, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}=[]; wind::Bool=false, kwargs...)
+    plotsamr2d!(plt::Plots.Plot, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[]; wind::Bool=false, kwargs...)
 
 Function: plot values of AMR grids in two-dimension
 """
-function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}=empI;
+function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[];
                      wind::Bool=false, kwargs...)
 
     # check arg
@@ -147,26 +146,25 @@ end
 """
 $(@doc plotsamr2d!)
 """
-plotsamr2d(tiles, AMRlevel::AbstractVector{Int64}=empI; kwargs...) =
+plotsamr2d(tiles, AMRlevel::AbstractVector=[]; kwargs...) =
 plotsamr2d!(Plots.plot(), tiles, AMRlevel; kwargs...)
 ######################################
-plotsamr2d!(plt, tiles, AMRlevel::Int64; kwargs...) = plotsamr2d!(plt, tiles, AMRlevel:AMRlevel; kwargs...)
+plotsamr2d!(plt, tiles, AMRlevel::Integer; kwargs...) = plotsamr2d!(plt, tiles, AMRlevel:AMRlevel; kwargs...)
 ######################################
-plotsamr2d(tiles, AMRlevel::Int64; kwargs...) = plotsamr2d(tiles, AMRlevel:AMRlevel; kwargs...)
+plotsamr2d(tiles, AMRlevel::Integer; kwargs...) = plotsamr2d(tiles, AMRlevel:AMRlevel; kwargs...)
 ######################################
 
 
 
 #######################################
 """
-    gridnumber!(plt::Plots.Plot, tiles; AMRlevel::AbstractVector{Int64}=[], font::Plots.Font=Plots.font(12, :hcenter, :black), xlims=(), ylims=())
+    gridnumber!(plt::Plots.Plot, tiles; AMRlevel::AbstractVector=[], font::Plots.Font=Plots.font(12, :hcenter, :black), xlims=(), ylims=())
 
 Function: add the grid numbers of tiles
 """
-function gridnumber!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI,
+function gridnumber!(plt, tiles; AMRlevel::AbstractVector=[],
                      font::Plots.Font=Plots.font(12, :hcenter, :black),
-                     xlims::Tuple=(),
-                     ylims::Tuple=())
+                     xlims=(), ylims=())
 
     # Too fine grids are not plotted
     if isempty(AMRlevel) && isempty(xlims) && isempty(ylims)
@@ -214,11 +212,11 @@ end
 
 #######################################
 """
-    tilebound!(plt, tiles; AMRlevel::T=[], kwargs...) where T <: Union{Int64,AbstractVector{Int64}}
+    tilebound!(plt, tiles; AMRlevel=[], kwargs...)
 
 Function: draw boundaries of tiles
 """
-function tilebound!(plt, tiles; AMRlevel::T=empI, kwargs...) where T <: Union{Int64,AbstractVector{Int64}}
+function tilebound!(plt, tiles; AMRlevel=[], kwargs...)
 
     # parse keyword args
     kwdict = KWARG(kwargs)
@@ -278,12 +276,12 @@ end
 
 #######################################
 """
-    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=[]; kwargs...)
-    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::Int64; kwargs...)
+    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector=[]; kwargs...)
+    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::Integer; kwargs...)
 
 Function: plot AMR data at designated times
 """
-function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwargs...)
+function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector=[]; kwargs...)
     ## plot time-series
     plt = Array{Plots.Plot}(undef, amrs.nstep)
     for i = 1:amrs.nstep
@@ -294,4 +292,4 @@ function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwarg
     return plt
 end
 #############################################
-plotsamr(amrs::VisClaw.AMR, AMRlevel::Int64; kwargs...) = plotsamr(amrs::VisClaw.AMR, AMRlevel:AMRlevel; kwargs...)
+plotsamr(amrs::VisClaw.AMR, AMRlevel::Integer; kwargs...) = plotsamr(amrs::VisClaw.AMR, AMRlevel:AMRlevel; kwargs...)

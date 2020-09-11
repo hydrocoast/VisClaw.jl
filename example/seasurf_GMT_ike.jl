@@ -18,7 +18,7 @@ cpt = GMT.makecpt(C=:jet, T="0.0/2.0", D=true, V=true)
 
 # load water surface
 amrall = loadsurface(simdir)
-rmvalue_coarser!.(amrall.amr)
+coarsegridmask!(amrall)
 
 # projection and region GMT
 proj = getJ("X10d", amrall.amr[1])

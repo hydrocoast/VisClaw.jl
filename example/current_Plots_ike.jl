@@ -17,7 +17,7 @@ pltchk = plotscheck(simdir, 1; testplot=true)
 
 # load water current
 amrall = loadcurrent(simdir)
-rmvalue_coarser!.(amrall.amr)
+coarsegridmask!(amrall)
 
 # plot
 plts = plotsamr(amrall; c=:isolum, clims=(0.0,2.0),

@@ -12,7 +12,7 @@ output_prefix = "chile2010_eta"
 # load water surface
 amrall = loadsurface(simdir)
 replaceunit!(amrall, :minute)
-rmvalue_coarser!.(amrall.amr)
+coarsegridmask!(amrall)
 
 # for CI
 tmp = VisClaw.keytile(amrall.amr[1][1])

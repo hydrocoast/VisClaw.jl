@@ -17,7 +17,7 @@ track = loadtrack(simdir)
 surgeparams = surgedata(simdir)
 ## load water surface
 amrall = loadsurface(simdir)
-rmvalue_coarser!.(amrall.amr)
+coarsegridmask!(amrall)
 
 ## plot
 plts = plotsamr(amrall; c=:darkrainbow, clims=(-0.5,2.0),
