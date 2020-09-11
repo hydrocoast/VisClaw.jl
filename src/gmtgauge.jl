@@ -9,23 +9,23 @@ gaugexy2mat(gauges::Vector{VisClaw.Gauge}) = permutedims(hcat(getfield.(gauges, 
     gmtgaugelocation(gauges::Vector{VisClaw.Gauge}; kwargs...)
     gmtgaugelocation!(gauges::Vector{VisClaw.Gauge}; kwargs...)
 """
-gmtgaugelocation(gauge::VisClaw.Gauge; kwargs...) = GMT.plot([gauge.loc[1] gauge.loc[2]]; kwargs...)
+gmtgaugelocation(gauge::VisClaw.Gauge; kwargs...) = GMT.scatter([gauge.loc[1] gauge.loc[2]]; kwargs...)
 ####################################################
 """
 $(@doc gmtgaugelocation)
 """
-gmtgaugelocation!(gauge::VisClaw.Gauge; kwargs...) = GMT.plot!([gauge.loc[1] gauge.loc[2]]; kwargs...)
+gmtgaugelocation!(gauge::VisClaw.Gauge; kwargs...) = GMT.scatter!([gauge.loc[1] gauge.loc[2]]; kwargs...)
 ####################################################
-gmtgaugelocation(gauges::Vector{VisClaw.Gauge}; kwargs...) = GMT.plot(gaugexy2mat(gauges); kwargs...)
-gmtgaugelocation!(gauges::Vector{VisClaw.Gauge}; kwargs...) = GMT.plot!(gaugexy2mat(gauges); kwargs...)
+gmtgaugelocation(gauges::Vector{VisClaw.Gauge}; kwargs...) = GMT.scatter(gaugexy2mat(gauges); kwargs...)
+gmtgaugelocation!(gauges::Vector{VisClaw.Gauge}; kwargs...) = GMT.scatter!(gaugexy2mat(gauges); kwargs...)
 
 
 ####################################################
 """
     gmtgaugeannotation!(gauge::VisClaw.Gauge; kwargs...)
 """
-gmtgaugeannotation!(gauge::VisClaw.Gauge, annot::String=gauge.label; R="", kwargs...) =
-GMT.text!(GMT.text_record([gauge.loc[1] gauge.loc[2]], annot); R=R, kwargs...)
+gmtgaugeannotation!(gauge::VisClaw.Gauge, annot::AbstractString=gauge.label; R="", offset=(0.0,0.0), kwargs...) =
+GMT.text!(GMT.text_record([gauge.loc[1]+offset[1] gauge.loc[2]+offset[2]], annot); R=R, kwargs...)
 ####################################################
 
 

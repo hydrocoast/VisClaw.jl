@@ -2,7 +2,7 @@
 """
     getR_tile = getR_tile(tile::VisClaw.AMRGrid; length_unit="")
 
-Get x and y ranges of a tile in String for -R option in GMT
+Get x and y ranges of a tile in AbstractString for -R option in GMT
 """
 function getR_tile(tile::VisClaw.AMRGrid; length_unit="")
     xs = tile.xlow
@@ -20,7 +20,7 @@ end
     xyrange = getR(topo::VisClaw.AbstractTopo; length_unit="")
     xyrange = getR(G::GMT.GMTgrid; length_unit="")
 
-Get x and y ranges in String for -R option in GMT
+Get x and y ranges in AbstractString for -R option in GMT
 """
 function getR(tiles::Vector{VisClaw.AMRGrid}; length_unit="")
     xs, xe, ys, ye = VisClaw.getlims(tiles)
@@ -85,7 +85,7 @@ end
 ###################################################
 """
     G = geogrd(geo::VisClaw.Topo; kwargs...)
-    G = geogrd(geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+    G = geogrd(geo::VisClaw.DTopo, itime::Integer=0; kwargs...)
 
 Generate grd (GMT) data
 """
@@ -101,7 +101,7 @@ function geogrd(geo::VisClaw.Topo; kwargs...)
     return G
 end
 ###################################################
-function geogrd(geo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+function geogrd(geo::VisClaw.DTopo, itime::Integer=0; kwargs...)
 
     Δ = geo.dx
     R = VisClaw.getR(geo)
@@ -122,11 +122,11 @@ end
 
 ###################################################
 """
-    proj = getJ(proj_base::String, hwratio::Real)
+    proj = getJ(proj_base::AbstractString, hwratio::Real)
 
 Correct J option
 """
-function getJ(proj_base::String, hwratio::Real)
+function getJ(proj_base::AbstractString, hwratio)
     # find projection specifier
     J1 = match(r"^([a-zA-Z]+)", proj_base)
     J2 = match(r"([a-zA-Z]+).+?([a-zA-Z]+)", proj_base)
@@ -157,7 +157,7 @@ function getJ(proj_base::String, hwratio::Real)
     return proj
 end
 ###################################################
-getJ(proj_base::String, topo::VisClaw.Topo) = getJ(proj_base, VisClaw.axesratio(topo))
+getJ(proj_base::AbstractString, topo::VisClaw.Topo) = getJ(proj_base, VisClaw.axesratio(topo))
 ###################################################
-getJ(proj_base::String, amr::Vector{VisClaw.AMRGrid}) = getJ(proj_base, VisClaw.axesratio(amr))
+getJ(proj_base::AbstractString, amr::Vector{VisClaw.AMRGrid}) = getJ(proj_base, VisClaw.axesratio(amr))
 ###################################################

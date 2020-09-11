@@ -27,13 +27,13 @@ plotstopo(topo::VisClaw.Topo; kwargs...) = plotstopo!(Plots.plot(), topo; kwargs
 
 ####################################################
 """
-    plt = plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+    plt = plotsdtopo(dtopo::VisClaw.DTopo, itime::Integer=0; kwargs...)
 
-    plotsdtopo!(plt::Plots.Plot, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+    plotsdtopo!(plt::Plots.Plot, dtopo::VisClaw.DTopo, itime::Integer=0; kwargs...)
 
 plot dtopo data using Plots
 """
-function plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...)
+function plotsdtopo!(plt, dtopo::VisClaw.DTopo, itime::Integer=0; kwargs...)
 
     ( (itime < 0) || (dtopo.mt < itime) ) && error("Invalid time")
 
@@ -57,7 +57,7 @@ end
 """
 $(@doc plotsdtopo!)
 """
-plotsdtopo(dtopo::VisClaw.DTopo, itime::Int64=0; kwargs...) = plotsdtopo!(Plots.plot(), dtopo, itime; kwargs...)
+plotsdtopo(dtopo::VisClaw.DTopo, itime::Integer=0; kwargs...) = plotsdtopo!(Plots.plot(), dtopo, itime; kwargs...)
 
 
 ####################################################

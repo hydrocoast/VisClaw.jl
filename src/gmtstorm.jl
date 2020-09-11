@@ -1,12 +1,12 @@
 
 ###################################################
 """
-    txtfile = txtwind(tiles::Vector{VisClaw.AMRGrid}; skip=3::Int64, offset1::Int64=0, offset2::Int64=offset1)
+    txtfile = txtwind(tiles::Vector{VisClaw.AMRGrid}; skip=3::Integer, offset1::Integer=0, offset2::Integer=offset1)
 
 output an txt file for psvelo in GMT
 """
-function txtwind(tiles::Vector{VisClaw.AMRGrid}; skip=3::Int64,
-                 offset1::Int64=0, offset2::Int64=offset1)
+function txtwind(tiles::Vector{VisClaw.AMRGrid}; skip=3::Integer,
+                 offset1::Integer=0, offset2::Integer=offset1)
 
     # number of tile
     ntile = length(tiles)

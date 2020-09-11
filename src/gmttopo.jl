@@ -1,5 +1,5 @@
 ####################################################
-function makecptfromgrd(G::GMT.GMTgrid; factor_lims::Float64=0.8, sigdigits_lims::Int64=2,
+function makecptfromgrd(G::GMT.GMTgrid; factor_lims=0.8, sigdigits_lims=2,
 	                                    T=[], kwargs...)
 	isempty(T) && ( T=round.(factor_lims.*extrema(G.z), sigdigits=sigdigits_lims) )
 	return GMT.makecpt(; T=T, kwargs...)
@@ -8,7 +8,7 @@ end
 
 
 ####################################################
-function gmttopo(G::GMT.GMTgrid; factor_lims::Float64=0.8, sigdigits_lims::Int64=2,
+function gmttopo(G::GMT.GMTgrid; factor_lims=0.8, sigdigits_lims=2,
 	                             C=:geo, T=[], D::Bool=true, J="", R="", kwargs...)
 	## cpt
 	cptout = false

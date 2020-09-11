@@ -1,10 +1,10 @@
 """
-    topofile, topotype, ntopo = topodata("simlation/path/_output"::String)
-    topofile, topotype, ntopo = topodata("simlation/path/_output/topo.data"::String)
+    topofile, topotype, ntopo = topodata("simlation/path/_output"::AbstractString)
+    topofile, topotype, ntopo = topodata("simlation/path/_output/topo.data"::AbstractString)
 
 read topo.data
 """
-function topodata(outdir::String)
+function topodata(outdir::AbstractString)
     # filename
     filename = occursin("topo.data", basename(outdir)) ? outdir : joinpath(outdir,"topo.data")
     ## check args
@@ -39,12 +39,12 @@ end
 
 #################################
 """
-    dtopofile, dtopotype, ndtopo = dtopodata("simlation/path/_output"::String)
-    dtopofile, dtopotype, ndtopo = dtopodata("simlation/path/_output/dtopo.data"::String)
+    dtopofile, dtopotype, ndtopo = dtopodata("simlation/path/_output"::AbstractString)
+    dtopofile, dtopotype, ndtopo = dtopodata("simlation/path/_output/dtopo.data"::AbstractString)
 
 read dtopo.data
 """
-function dtopodata(outdir::String)
+function dtopodata(outdir::AbstractString)
     # filename
     filename = occursin("dtopo.data", basename(outdir)) ? outdir : joinpath(outdir,"dtopo.data")
     ## check args
@@ -83,12 +83,12 @@ end
 
 #################################
 """
-    bathtopo = loadtopo(outdir::String)
-    bathtopo = loadtopo(filename::String, topotype=3::Int64)
+    bathtopo = loadtopo(outdir::AbstractString)
+    bathtopo = loadtopo(filename::AbstractString, topotype=3::Integer)
 
 load topography data
 """
-function loadtopo(filename::String, topotype=3::Int64)
+function loadtopo(filename::AbstractString, topotype=3::Integer)
     ## from _output directory
     if isdir(filename)
         topofile, topotype, ntopo = VisClaw.topodata(filename)
@@ -106,7 +106,7 @@ function loadtopo(filename::String, topotype=3::Int64)
         x = NetCDF.ncread(filename, var_x)
         y = NetCDF.ncread(filename, var_y)
         topo = permutedims(NetCDF.ncread(filename, var_z), [2,1])
-        
+
         bathtopo = VisClaw.Topo(length(x), length(y), x, y, mean(diff(x)), mean(diff(x)), topo)
         return bathtopo
     end
@@ -172,14 +172,14 @@ end
 
 #########################################
 """
-    dtopo = loaddtopo(outdir::String)
-    dtopo = loaddtopo(filename::String, topotype=3::Int64)
-    dtopo = loaddeform(outdir::String)
-    dtopo = loaddeform(filename::String, topotype=3::Int64)
+    dtopo = loaddtopo(outdir::AbstractString)
+    dtopo = loaddtopo(filename::AbstractString, topotype=3::Integer)
+    dtopo = loaddeform(outdir::AbstractString)
+    dtopo = loaddeform(filename::AbstractString, topotype=3::Integer)
 
 load spatial distribution of seafloor deformation (dtopo)
 """
-function loaddeform(filename::String, topotype=3::Int64)
+function loaddeform(filename::AbstractString, topotype=3::Integer)
     ## from _output directory
     if isdir(filename)
         dtopofile, topotype, ntopo = VisClaw.dtopodata(filename)

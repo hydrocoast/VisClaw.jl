@@ -1,14 +1,14 @@
 """
-    amr = loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
+    amr = loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:surface,
                     params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
-                    xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf),
+                    xlims=(-Inf,Inf), ylims=(-Inf,Inf),
                     AMRlevel=[])
 
 Function: fort.qxxxx reader
 """
-function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
+function loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:surface,
                    params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
-                   xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf),
+                   xlims=(-Inf,Inf), ylims=(-Inf,Inf),
                    AMRlevel=[])
     # check
     !any(map(sym -> vartype == sym, [:surface, :current, :storm])) && error("kwarg 'vartype' is invalid")
@@ -122,22 +122,22 @@ function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
 end
 #################################
 """
-    amr = loadforta(filename::String, ncol::Int;
-                    xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[])
+    amr = loadforta(filename::AbstractString, ncol::Integer;
+                    xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
 Function: fort.axxxx reader
 """
-loadforta(filename::String, ncol::Int; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadforta(filename::AbstractString, ncol::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadfortq(filename, ncol; vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #################################
 
 #################################
 """
-    timelaps = loadfortt(filename::String)
+    timelaps = loadfortt(filename::AbstractString)
 
 Function: fort.txxxx reader
 """
-function loadfortt(filename::String)
+function loadfortt(filename::AbstractString)
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -151,24 +151,24 @@ end
 
 #######################################
 """
-    amrs = loadsurface(loaddir::String, filesequence::AbstractVector{Int64}; runup::Bool=true,
+    amrs = loadsurface(loaddir::AbstractString, filesequence::AbstractVector{Int64}; runup::Bool=true,
                        xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadsurface(loaddir::String, filestart::Int64, filend::Int64; runup::Bool=true,
+    amrs = loadsurface(loaddir::AbstractString, filestart::Integer, filend::Integer; runup::Bool=true,
                        xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadsurface(loaddir::String, fileid::Int64; runup::Bool=true,
+    amrs = loadsurface(loaddir::AbstractString, fileid::Integer; runup::Bool=true,
                        xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadsurface(loaddir::String; runup::Bool=true,
+    amrs = loadsurface(loaddir::AbstractString; runup::Bool=true,
                        xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
 Function: loadfortq and loadfortt
           time-series of water surface
 """
-function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
+function loadsurface(loaddir::AbstractString, filesequence::AbstractVector{Int64};
                      vartype::Symbol=:surface, runup::Bool=true,
-                     xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf),
+                     xlims=(-Inf,Inf), ylims=(-Inf,Inf),
                      AMRlevel=[])
 
     # check
@@ -237,64 +237,64 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
     return amrs
 end
 #######################################
-loadsurface(loaddir::String, filestart::Int64, filend::Int64; runup::Bool=true, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadsurface(loaddir::AbstractString, filestart::Integer, filend::Integer; runup::Bool=true, xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filestart:filend; runup=runup, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadsurface(loaddir::String, fileid::Int64; runup::Bool=true, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadsurface(loaddir::AbstractString, fileid::Integer; runup::Bool=true, xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, fileid:fileid; runup=runup, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadsurface(loaddir::String; runup::Bool=true, xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadsurface(loaddir::AbstractString; runup::Bool=true, xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, 0:0; runup=runup, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 ######################################
 
 ######################################
 """
-    amrs = loadstorm(loaddir::String, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadstorm(loaddir::AbstractString, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadstorm(loaddir::String, filestart::Int64, filend::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadstorm(loaddir::AbstractString, filestart::Integer, filend::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadstorm(loaddir::String, fileid::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadstorm(loaddir::AbstractString, fileid::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadstorm(loaddir::String; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadstorm(loaddir::AbstractString; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
 Function: loadforta and loadfortt
           storm data
 """
-loadstorm(loaddir::String, filesequence::AbstractVector{Int64}; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::AbstractString, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filesequence, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadstorm(loaddir::String, filestart::Int64, filend::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::AbstractString, filestart::Integer, filend::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filestart:filend, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadstorm(loaddir::String, fileid::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::AbstractString, fileid::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, fileid:fileid, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadstorm(loaddir::String; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadstorm(loaddir::AbstractString; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, 0:0, vartype=:storm, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 ######################################
 
 #######################################
 """
-    amrs = loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadcurrent(loaddir::AbstractString, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadcurrent(loaddir::String, filestart::Int64, filend::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadcurrent(loaddir::AbstractString, filestart::Integer, filend::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadcurrent(loaddir::String, fileid::Int64; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadcurrent(loaddir::AbstractString, fileid::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
-    amrs = loadcurrent(loaddir::String; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
+    amrs = loadcurrent(loaddir::AbstractString; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[])
 
 Function: loadfortq and loadfortt
           ocean current data
 """
-loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::AbstractString, filesequence::AbstractVector{Int64}; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filesequence, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadcurrent(loaddir::String, filestart::Int64, filend::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::AbstractString, filestart::Integer, filend::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, filestart:filend, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadcurrent(loaddir::String, fileid::Int64; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::AbstractString, fileid::Integer; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, fileid:fileid, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################
-loadcurrent(loaddir::String; xlims::Tuple{Number, Number}=(-Inf,Inf), ylims::Tuple{Number, Number}=(-Inf,Inf), AMRlevel=[]) =
+loadcurrent(loaddir::AbstractString; xlims=(-Inf,Inf), ylims=(-Inf,Inf), AMRlevel=[]) =
 loadsurface(loaddir, 0:0, vartype=:current, xlims=xlims, ylims=ylims, AMRlevel=AMRlevel)
 #######################################

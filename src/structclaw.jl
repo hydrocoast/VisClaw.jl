@@ -16,9 +16,9 @@ mutable struct Storm <: VisClaw.AMRGrid
     ylow::Float64
     dx::Float64
     dy::Float64
-    u :: AbstractArray{Float64,2}
-    v :: AbstractArray{Float64,2}
-    slp :: AbstractArray{Float64,2}
+    u::AbstractArray{Float64,2}
+    v::AbstractArray{Float64,2}
+    slp::AbstractArray{Float64,2}
     # Constructor
     VisClaw.Storm(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp)
@@ -74,7 +74,7 @@ Struct:
 """
 mutable struct AMR <: VisClaw.AbstractAMR
     nstep::Integer
-    timelap::AbstractVector{Float64}
+    timelap::AbstractVector
     amr :: AbstractVector{Vector{VisClaw.AMRGrid}}
     unittime :: Symbol
     # Constructor
@@ -91,8 +91,8 @@ Struct:
 struct Topo <: AbstractTopo
     ncols :: Integer
     nrows :: Integer
-    x :: Vector{Float64}
-    y :: Vector{Float64}
+    x :: AbstractVector
+    y :: AbstractVector
     dx :: Float64
     dy :: Float64
     elevation :: AbstractArray{Float64,2}
@@ -110,8 +110,8 @@ Struct:
 struct DTopo <: AbstractTopo
     mx :: Integer
     my :: Integer
-    x :: Vector{Float64}
-    y :: Vector{Float64}
+    x :: AbstractVector
+    y :: AbstractVector
     dx :: Float64
     dy :: Float64
     mt :: Integer
@@ -205,8 +205,8 @@ struct FixedGrid
     ## point_style = 2, 4
     nx :: Integer
     ny :: Integer
-    xlims :: Tuple{Float64,Float64}
-    ylims :: Tuple{Float64,Float64}
+    xlims :: Tuple
+    ylims :: Tuple
     ## point_style = 0, 1, 4
     npts :: Integer
     x :: AbstractVector{Float64}
@@ -261,8 +261,8 @@ end
 """
 Struct: track data container
 """
-struct Track
-    timelap :: AbstractVector{Float64}
+mutable struct Track
+    timelap :: AbstractVector
     lon :: AbstractVector{Float64}
     lat :: AbstractVector{Float64}
     direction :: AbstractVector{Float64}

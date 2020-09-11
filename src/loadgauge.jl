@@ -1,11 +1,11 @@
 #################################
 """
-    gauges = loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false)
+    gauges = loadgauge(dirname::AbstractString; eta0::Float64=0.0, labelhead::AbstractString="Gauge ", loadeta::Bool=true, loadvel::Bool=false)
 
 gauge*.txt reader
 """
-function loadgauge(dirname::String, gaugeid::AbstractVector{Int64}=0:0;
-                   eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false)
+function loadgauge(dirname::AbstractString, gaugeid::AbstractVector{Int64}=0:0;
+                   eta0=0.0, labelhead::AbstractString="Gauge ", loadeta::Bool=true, loadvel::Bool=false)
     # check args
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
@@ -63,5 +63,5 @@ end
 #################################
 
 
-loadgauge(dirname::String, gaugeid::Int64; eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false) =
+loadgauge(dirname::AbstractString, gaugeid::Integer; eta0=0.0, labelhead::AbstractString="Gauge ", loadeta::Bool=true, loadvel::Bool=false) =
 loadgauge(dirname, gaugeid:gaugeid; eta0=eta0, labelhead=labelhead, loadeta=loadeta, loadvel=loadvel)

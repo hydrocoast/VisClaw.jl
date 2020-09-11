@@ -1,11 +1,11 @@
 ###################################
 """
-    fgmaxgrids = fgmaxdata("simlation/path/_output"::String)
-    fgmaxgrids = fgmaxdata("simlation/path/_output/fgmax_grids.data"::String)
+    fgmaxgrids = fgmaxdata("simlation/path/_output"::AbstractString)
+    fgmaxgrids = fgmaxdata("simlation/path/_output/fgmax_grids.data"::AbstractString)
 
 Function: fgmax_grids.data reader
 """
-function fgmaxdata(outdir::String)
+function fgmaxdata(outdir::AbstractString)
     ## definition of filename
     fname = occursin("fgmax_grids.data", basename(outdir)) ? outdir : joinpath(outdir, "fgmax_grids.data")
 

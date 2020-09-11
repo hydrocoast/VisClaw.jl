@@ -4,11 +4,11 @@ tmp4grd = "tmp4grd.txt"
 
 ###################################################
 """
-    filename = landmask_asc(topo::VisClaw.Topo, filename::String=default_masktxt)
+    filename = landmask_asc(topo::VisClaw.Topo, filename::AbstractString=default_masktxt)
 
 output [x y z] data in txt for masking
 """
-function landmask_asc(topo::VisClaw.Topo, filename::String=default_masktxt)
+function landmask_asc(topo::VisClaw.Topo, filename::AbstractString=default_masktxt)
     xv = vec(repeat(topo.x, inner=(topo.nrows,1)))
     yv = vec(repeat(topo.y, outer=(topo.ncols,1)))
     topov = vec(topo.elevation);
@@ -27,12 +27,12 @@ end
 
 ###################################################
 """
-    G = landmask_grd(txtfile::String=default_masktxt; grdfile::String="", kwargs...)
+    G = landmask_grd(txtfile::AbstractString=default_masktxt; grdfile::AbstractString="", kwargs...)
 
 output masking grid
 """
-function landmask_grd(txtfile::String=default_masktxt;
-                      grdfile::String="", kwargs...)
+function landmask_grd(txtfile::AbstractString=default_masktxt;
+                      grdfile::AbstractString="", kwargs...)
     # check
     if !isfile(txtfile); error("Not found: $txtfile"); end
 
@@ -76,11 +76,11 @@ end
 
 ###################################################
 """
-    G = tilegrd(tile::VisClaw.AMRGrid; length_unit::String="", kwargs...)
+    G = tilegrd(tile::VisClaw.AMRGrid; length_unit::AbstractString="", kwargs...)
 
 make a grid file of VisClaw.AMRGrid with landmask
 """
-function tilegrd(tile::VisClaw.AMRGrid; length_unit::String="", kwargs...)
+function tilegrd(tile::VisClaw.AMRGrid; length_unit::AbstractString="", kwargs...)
     # var
     var = VisClaw.keytile(tile)
     # prameters & options
@@ -116,7 +116,7 @@ function tilegrd(tile::VisClaw.AMRGrid; length_unit::String="", kwargs...)
     return G
 end
 ###################################################
-tilegrd(amrs::VisClaw.AMR, istep::Int64; length_unit::String="", kwargs...) =
+tilegrd(amrs::VisClaw.AMR, istep::Integer; length_unit::AbstractString="", kwargs...) =
 tilegrd.(amrs.amr[istep]; length_unit=length_unit, kwargs...)
 ###################################################
 
@@ -154,17 +154,17 @@ function tilegrd_xyz(tile::VisClaw.AMRGrid; kwargs...)
     return G
 end
 ###################################################
-tilegrd_xyz(amrs::VisClaw.AMR, istep::Int64; kwargs...) = tilegrd_xyz.(amrs.amr[istep]; kwargs...)
+tilegrd_xyz(amrs::VisClaw.AMR, istep::Integer; kwargs...) = tilegrd_xyz.(amrs.amr[istep]; kwargs...)
 ###################################################
 
 
 ###################################################
 """
-    G = tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; length_unit::String="", kwargs...)
+    G = tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::AbstractString=""; length_unit::AbstractString="", kwargs...)
 
 make a grid file of VisClaw.AMRGrid with landmask
 """
-function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; length_unit::String="", kwargs...)
+function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::AbstractString=""; length_unit::AbstractString="", kwargs...)
     # var
     var = VisClaw.keytile(tile)
     # prameters & options
@@ -220,5 +220,5 @@ function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; length_unit::S
     return G
 end
 ###################################################
-tilegrd_mask(amrs::VisClaw.AMR, istep::Int64, maskfile::String=""; length_unit::String="", kwargs...) =
+tilegrd_mask(amrs::VisClaw.AMR, istep::Integer, maskfile::AbstractString=""; length_unit::AbstractString="", kwargs...) =
 tilegrd_mask.(amrs.amr[istep], maskfile; length_unit=length_unit, kwargs...)

@@ -1,10 +1,10 @@
 #################################
 """
-    fgmax = loadfgmax(loaddir::String, fg::VisClaw.FixedGrid; nval_save::Int64=fg.nval)
+    fgmax = loadfgmax(loaddir::AbstractString, fg::VisClaw.FixedGrid; nval_save::Integer=fg.nval)
 
 Function: fgmaxXXXX.txt reader
 """
-function loadfgmax(loaddir::String, fg::VisClaw.FixedGrid; nval_save::Int64=fg.nval)
+function loadfgmax(loaddir::AbstractString, fg::VisClaw.FixedGrid; nval_save::Integer=fg.nval)
     # check nval_save
     nval_save > fg.nval && (nval_save=fg.nval)
 

@@ -1,10 +1,10 @@
 ############################################
 """
-    printtopoESRI(topo::VisClaw.Topo, filename::String; nodatavalue::Int64=-9999, center::Bool=true)
+    printtopoESRI(topo::VisClaw.Topo, filename::AbstractString; nodatavalue::Integer=-9999, center::Bool=true)
 
 print topo data as a file (ESRI ASCII format)
 """
-function printtopoESRI(topo::VisClaw.Topo, filename::String="topo.asc"; nodatavalue::Int64=-9999, center::Bool=true)
+function printtopoESRI(topo::VisClaw.Topo, filename::AbstractString="topo.asc"; nodatavalue::Integer=-9999, center::Bool=true)
     nrows, ncols = size(topo.elevation)
     ## print
     open(filename, "w") do fileIO
@@ -34,11 +34,11 @@ const printtopo = printtopoESRI
 
 ############################################
 """
-    printdtopo(dtopo::VisClaw.DTopo, filename::String; center::Bool=true)
+    printdtopo(dtopo::VisClaw.DTopo, filename::AbstractString; center::Bool=true)
 
 print dtopo data as a topotype-3-file
 """
-function printdtopo(dtopo::VisClaw.DTopo, filename::String="dtopo.asc"; center::Bool=true)
+function printdtopo(dtopo::VisClaw.DTopo, filename::AbstractString="dtopo.asc"; center::Bool=true)
     ## print
     open(filename, "w") do fileIO
         ## header

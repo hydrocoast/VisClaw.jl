@@ -1,11 +1,11 @@
 ###################################
 """
-    track = loadtrack("simlation/path/_output"::String)
-    track = loadtrack("simlation/path/_output/fort.track"::String)
+    track = loadtrack("simlation/path/_output"::AbstractString)
+    track = loadtrack("simlation/path/_output/fort.track"::AbstractString)
 
 Function: fort.track reader
 """
-function loadtrack(outdir::String)
+function loadtrack(outdir::AbstractString)
     ## definition of filename
     fname = occursin("fort.track", basename(outdir)) ? outdir : joinpath(outdir, "fort.track")
     ## check

@@ -1,11 +1,11 @@
 ##############################################################################
 """
-    plt = plotscheck("simlation/path/_output"::String, AMRlevel::AbstractVector{Int64}=[]; vartype::Symbol=:surface, runup=true, kwargs...)
-    plt = plotscheck("simlation/path/_output"::String, AMRlevel::Int64; vartype::Symbol=:surface, runup=true, kwargs...)
+    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup=true, kwargs...)
+    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::Integer; vartype::Symbol=:surface, runup=true, kwargs...)
 
 Quick checker of the spatial distribution
 """
-function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartype::Symbol=:surface, runup::Bool=true, testplot::Bool=false, kwargs...)
+function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=empI; vartype::Symbol=:surface, runup::Bool=true, testplot::Bool=false, kwargs...)
 
     !any([vartype==s for s in [:surface, :storm, :current]]) && error("Invalid input argument vartype: $vartype")
     ## define the filepath & filename
@@ -81,6 +81,6 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
     return plt
 end
 ##############################################################################
-plotscheck(simdir::String, AMRlevel::Int64; kwargs...) =
+plotscheck(simdir::AbstractString, AMRlevel::Integer; kwargs...) =
 plotscheck(simdir, AMRlevel:AMRlevel; kwargs...)
 ##############################################################################

@@ -2,12 +2,12 @@
 
 ###################################
 """
-    params = geodata("simlation/path/_output"::String)
-    params = geodata("simlation/path/_output/geoclaw.data"::String)
+    params = geodata("simlation/path/_output"::AbstractString)
+    params = geodata("simlation/path/_output/geoclaw.data"::AbstractString)
 
 Function: geoclaw.data reader
 """
-function geodata(outdir::String)
+function geodata(outdir::AbstractString)
     # definition of filename
     fname = occursin("geoclaw.data", basename(outdir)) ? outdir : joinpath(outdir, "geoclaw.data")
 
@@ -39,12 +39,12 @@ end
 
 ###################################
 """
-    surgeparams = surgedata("simlation/path/_output"::String)
-    surgeparams = surgedata("simlation/path/_output/surge.data"::String)
+    surgeparams = surgedata("simlation/path/_output"::AbstractString)
+    surgeparams = surgedata("simlation/path/_output/surge.data"::AbstractString)
 
 Function: surge.data reader
 """
-function surgedata(outdir::String)
+function surgedata(outdir::AbstractString)
     # definition of filename
     fname = occursin("surge.data", basename(outdir)) ? outdir : joinpath(outdir, "surge.data")
 
@@ -67,12 +67,12 @@ end
 
 ###################################
 """
-    gaugeinfo = gaugedata("simlation/path/_output"::String)
-    gaugeinfo = gaugedata("simlation/path/_output/gauges.data"::String)
+    gaugeinfo = gaugedata("simlation/path/_output"::AbstractString)
+    gaugeinfo = gaugedata("simlation/path/_output/gauges.data"::AbstractString)
 
 Function: gauges.data reader
 """
-function gaugedata(outdir::String)
+function gaugedata(outdir::AbstractString)
     # definition of filename
     fname = occursin("gauges.data", basename(outdir)) ? outdir : joinpath(outdir,"gauges.data")
 

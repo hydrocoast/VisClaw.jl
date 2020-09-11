@@ -2,7 +2,7 @@
 """
     varname_x, varname_y, varname_z = getvarname_nctopo(ncfilename::String)
 """
-function getvarname_nctopo(ncfilename::String)
+function getvarname_nctopo(ncfilename::AbstractString)
     nc = NetCDF.open(ncfilename)
     vardict = nc.vars
 
