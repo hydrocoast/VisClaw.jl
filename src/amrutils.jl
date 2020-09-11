@@ -1,5 +1,14 @@
 ######################################
 """
+    x1, x2, y1, y2 = getlims(tiles::VisClaw.AMRGrid)
+
+get min/max range of a tile
+"""
+function getlims(tile::VisClaw.AMRGrid)
+    return tile.xlow, tile.xlow+(tile.mx-1)*tile.dx, tile.ylow, tile.ylow+(tile.my-1)*tile.dy
+end
+######################################
+"""
     x1, x2, y1, y2 = getlims(tiles::Vector{VisClaw.AMRGrid})
 
 get min/max range of tiles

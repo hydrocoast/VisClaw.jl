@@ -50,9 +50,9 @@ include("loadgauge.jl")
 ## print
 include("printtopo.jl")
 
-## convert mesh data
+## convert data
 include("gaugemax.jl")
-include("rmvalue_coarser.jl")
+include("coarsegridmask.jl")
 
 ## setup
 include("plotsargs.jl")
@@ -87,7 +87,7 @@ export loadgauge
 export loadtrack
 export loadsurface, loadcurrent, loadstorm
 export printtopoESRI, printtopo, printdtopo
-export rmvalue_coarser!
+export coarsegridmask!
 export axesratio
 export replaceunit!
 export gaugemax
