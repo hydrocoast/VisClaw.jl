@@ -41,16 +41,16 @@ function landmask_grd(txtfile::String=default_masktxt;
 
     # (part of GMT.jl surface.jl)
     cmd = GMT.parse_common_opts(d, "", [:R :V_params :a :bi :di :e :f :h :i :r :yx])
-    cmd = cmd[1]*cmd[2]
-    println(cmd)
+    cmd = *(cmd...)
+    #println(cmd)
 
     # (part of GMT.jl psmask.jl)
     cmd = GMT.parse_common_opts(d, cmd, [:I :UVXY :JZ :c :e :p :r :t :yx :params], true)
-    cmd = cmd[1]*cmd[2]
+    cmd = *(cmd...)
     cmd = GMT.parse_these_opts(cmd, d, [[:C :end_clip_path], [:D :dump], [:F :oriented_polygons],
                     [:L :node_grid], [:N :invert], [:Q :cut_number], [:S :search_radius], [:T :tiles]])
-    cmd = cmd[1]*cmd[2]
-    println(cmd)
+    cmd = *(cmd...)
+    #println(cmd)
 
     if isempty(grdfile)
         grdfile = default_maskgrd
