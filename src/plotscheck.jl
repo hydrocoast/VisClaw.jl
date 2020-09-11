@@ -5,7 +5,7 @@
 
 Quick checker of the spatial distribution
 """
-function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=empI; vartype::Symbol=:surface, runup::Bool=true, testplot::Bool=false, kwargs...)
+function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup::Bool=true, testplot::Bool=false, kwargs...)
 
     !any([vartype==s for s in [:surface, :storm, :current]]) && error("Invalid input argument vartype: $vartype")
     ## define the filepath & filename
