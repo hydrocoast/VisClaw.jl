@@ -1,5 +1,4 @@
-function plotssavefig(plts, figname="visclaw.svg"; num_start::Integer=1,
-                    kwargs...)
+function plotssavefig(plts, figname="visclaw.svg"; num_start::Integer=1, kwargs...)
     dn = dirname(figname)
     bn = basename(figname)
 
