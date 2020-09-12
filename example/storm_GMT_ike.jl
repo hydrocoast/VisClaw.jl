@@ -1,58 +1,40 @@
 using VisClaw
-using Printf
 using GMT: GMT
-
-## arrow style
-arrow = "0.01/0.15/0.05" # -A LineWidth/HeadLength/HeadSize
-vscale = "e0.03/0.0/12"  # -Se <velscale> / <confidence> / <fontsize>
-arrow_color = "black" # -G
-scalefile = txtwind_scale(-92.5, 30.0, 30.0, 0.0) # for legend
-
-# -----------------------------
-# ike
-# -----------------------------
-simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-output_prefix = "ike_storm_GMT"
+using Printf
 using Dates: Dates
-timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
-## makecpt
-#cpt = GMT.makecpt(C=:seis, T="950/1015", D=true)
-cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
+simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
+timeorigin = Dates.DateTime(2008, 9, 13, 7)
+truncvel = 5.0e-1
+arrowscale = [-95,30,30,0] # x, y, u, v
+Gus, Gvs = arrowscalegrd(arrowscale...)
 
 ## load
-amrall = loadstorm(simdir)
+amrall = loadstorm(simdir; AMRlevel=1)
 coarsegridmask!(amrall)
 
-## projection and region GMT
+## timelap
+time_dates = @. timeorigin + Dates.Millisecond(1e3*amrall.timelap)
+time_str = Dates.format.(time_dates, "yyyy/mm/dd HH:MM")
+
+## make cpt
+cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
+
+## projection
 proj = getJ("X10d", amrall.amr[1])
 region = getR(amrall.amr[1])
 
-## time in string
-time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
-time_str = Dates.format.(time_dates,"yyyy/mm/dd_HH:MM")
-
-## plot
 for i = 1:amrall.nstep
-    outpng = output_prefix*@sprintf("%03d", i)*".png"
+    outpng = "ike_storm-"*@sprintf("%03d", i)*".png"
 
-    ## surface grids
-    #G = tilegrd.(amrall.amr[i]; length_unit="d")
-    G = tilegrd(amrall, i; length_unit="d")
+    Gp = tilegrd(amrall, i; length_unit="d")
+    Gu, Gv = arrowgrd(amrall, i)
 
-    ## plot pressure field
-    gmtgrdimage_tiles(G, J=proj, R=region, B="+t"*time_str[i])
+    GMT.psbasemap(J=proj, R=region, B="a5f5 neSW", title=time_str[i])
+    map(G -> GMT.grdimage!(G, J=proj, R=region, C=cpt), Gp)
     GMT.colorbar!(B="xa10f10 y+lhPa", D="jBR+w8.0/0.3+o-1.5/0.0")
-    GMT.coast!(B="a10f10 neSW", D=:i, W="thinnest,gray80")
-
-    ## plot wind field
-    psfile = GMT.fname_out(Dict())[1]
-    velofile = txtwind(amrall.amr[i], skip=3)
-    GMT.gmt("psvelo $velofile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -P -K -O >> $psfile ")
-    rm(velofile, force=true)
-    GMT.gmt("psvelo $scalefile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -Y1.2d -P -O >> $psfile ")
-
-    GMT.psconvert("-TG -A -F$outpng  $psfile")
+    GMT.coast!(D=:i, W="thinnest,gray80")
+    GMT.grdvector!(Gu, Gv, I=[1,1], J=proj, R=region, lw=0.5, fill=:black, S="i0.03", arrow=(len=0.15, stop=:arrow, shape=0.5, fill=:black, justify=:center))
+    GMT.grdvector!(Gus, Gvs, J=proj, R=region, lw=0.5, fill=:black, S="i0.03", arrow=(len=0.15, stop=:arrow, shape=0.5, fill=:black, justify=:center), Y=1.3)
+    GMT.pstext!(GMT.text_record([arrowscale[1]+3.5 arrowscale[2]], @sprintf("%0.0f", sqrt(arrowscale[3]^2+arrowscale[4]^2))*" m/s"), R=region, savefig=outpng)
 end
-
-rm(scalefile, force=true)

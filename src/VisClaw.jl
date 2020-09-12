@@ -74,7 +74,7 @@ include("gmttools.jl")
 include("gmttopo.jl")
 include("gmtgauge.jl")
 include("gmtsurface.jl")
-include("gmtstorm.jl")
+include("gmtarrows.jl")
 include("gmttrack.jl")
 include("gmtgrdimage.jl")
 
@@ -111,7 +111,7 @@ export plotsgif, plotssavefig
 export getR, getR_tile, getJ, geogrd
 export landmask_asc, landmask_grd
 export tilegrd_xyz, tilegrd, tilegrd_mask
-export txtwind, txtwind_scale
+export arrowgrd, arrowscalegrd
 export gmttopo
 export gmtgaugewaveform, gmtgaugewaveform!
 export gmtgaugevelocity, gmtgaugevelocity!
