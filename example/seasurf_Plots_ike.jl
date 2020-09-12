@@ -45,8 +45,8 @@ plts = map((p,t) -> plotstrack!(p, track, 1:t; lc=:magenta), plts, 1:amrall.nste
 plts = gridnumber!.(plts, amrall.amr; font=Plots.font(12, :white, :center))
 plts = tilebound!.(plts, amrall.amr)
 
-# save
-plotssavefig(plts, output_prefix*".svg")
-# gif
+## savefig
+plotssavefig(plts, output_prefix*".png")
+## gif
 plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

@@ -9,11 +9,11 @@ gr()
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 output_prefix = "chile2010_velo"
 
-# load water current
+## load current
 amrall = loadcurrent(simdir)
 coarsegridmask!(amrall)
 
-# plot
+## plot
 plts = plotsamr(amrall; c=:isolum, clims=(0.0,0.1),
                 xguide="Longitude", yguide="Latitude",
                 xlims=(-95,-65), ylims=(-50,-20),
@@ -21,15 +21,15 @@ plts = plotsamr(amrall; c=:isolum, clims=(0.0,0.1),
                 tickfont=Plots.font("sans-serif",10),
                 )
 
-# time in string
+## time in string
 time_str = map(x->@sprintf("%03d", x/60.0)*" min", amrall.timelap)
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
-# tiles
+## tiles
 plts = tilebound!.(plts, amrall.amr; lc=:gray)
 
-# save
+## save
 plotssavefig(plts, output_prefix*".png")
-# gif
+## gif
 plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

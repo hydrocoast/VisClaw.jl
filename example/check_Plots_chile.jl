@@ -10,9 +10,9 @@ gr()
 # -----------------------------
 simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 
-# sea surface height
+## sea surface height
 plt = plotscheck(simdir; color=:balance, clims=(-0.5,0.5))
 
-# velocity
+## velocity
 #plt = plotscheck(simdir; vartype=:current, color=:isolum, clims=(0.0,0.1))
 # -----------------------------

@@ -40,7 +40,7 @@ plts = gridnumber!.(plts, amrall.amr; font=Plots.font(12, :black, :center))
 plts = tilebound!.(plts, amrall.amr)
 
 ## save
-plotssavefig(plts, output_prefix*".svg")
+plotssavefig(plts, output_prefix*".png")
 ## gif
 plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

@@ -16,5 +16,5 @@ printdtopo(dtopo)
 
 ## plot
 plt = plotsdtopo(dtopo; linetype=:contourf, color=:coolwarm, clims=(-3.0,3.0))
-savefig(plt, "chile_dtopo.svg")
+savefig(plt, "chile_dtopo.png")
 # -----------------------------

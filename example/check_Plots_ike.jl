@@ -10,9 +10,9 @@ gr()
 # -----------------------------
 simdir = joinpath(CLAW, "geoclaw/examples/storm-surge/ike/_output")
 
-# sea surface height
+## sea surface height
 #plt = plotscheck(simdir; color=:darkrainbow, clims=(-0.5,2.0))
 
-# pressure
+## pressure
 plt = plotscheck(simdir; vartype=:storm, color=:heat_r, clims=(960,1010))
 # -----------------------------

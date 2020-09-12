@@ -23,5 +23,5 @@ plt = plotstopo(topo; linetype=:heatmap, color=:gist_earth, clims=(-5000,5000))
 plt = plotscoastline!(plt, topo; lc=:black)
 
 ## save
-savefig(plt, "chile2010_topo.svg")
+savefig(plt, "chile2010_topo.png")
 # -----------------------------
