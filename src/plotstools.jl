@@ -1,14 +1,11 @@
-function plotssavefig(plts, figname="visclaw.svg"; num_start::Int64=1,
+function plotssavefig(plts, figname="visclaw.svg"; num_start::Integer=1,
                     kwargs...)
     dn = dirname(figname)
     bn = basename(figname)
 
     for i=1:length(plts)
-        if occursin(".", bn)
-            bnnum = replace(bn, "." => "-"*@sprintf("%03d",(i-1)+num_start)*".")
-        else
-            bnnum = bn*"-"*@sprintf("%03d",(i-1)+num_start)
-        end
+        numstr = @sprintf("%03d",(i-1)+num_start)
+        bnnum = occursin(".", bn) ? replace(bn, "." => "-"*numstr*".") : bn*"-"*numstr
         Plots.savefig(plts[i], joinpath(dn,bnnum); kwargs...)
     end
 

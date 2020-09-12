@@ -6,7 +6,7 @@
 
 plot a typhoon/hurricane track using Plots
 """
-function plotstrack!(plt, track::VisClaw.Track, index::AbstractVector{Int64}=1:length(track.lon); kwargs...)
+function plotstrack!(plt, track::VisClaw.Track, index::AbstractVector=1:length(track.lon); kwargs...)
     # parse keyword args
     kwdict = KWARG(kwargs)
 	label, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_label, "")
@@ -19,6 +19,6 @@ end
 """
 $(@doc plotstrack!)
 """
-plotstrack(track::VisClaw.Track, index::AbstractVector{Int64}=1:length(track.lon); kwargs...) =
+plotstrack(track::VisClaw.Track, index::AbstractVector=1:length(track.lon); kwargs...) =
 plotstrack!(Plots.plot(), track, index; kwargs...)
 ####################################################
