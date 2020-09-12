@@ -32,7 +32,7 @@ time_dates = @. timeorigin + Dates.Millisecond(1e3amrall.timelap)
 time_str = Dates.format.(time_dates, "yyyy/mm/dd HH:MM")
 
 for i = 1:amrall.nstep
-    outpng = "ike_etagmt-"*@sprintf("%03d", i)*".png"
+    outpdf = "ike_etagmt-"*@sprintf("%03d", i)*".pdf"
 
     ## land-masked surface grids
     G = tilegrd_mask(amrall, i, landmask_txt; length_unit="d")
@@ -41,7 +41,7 @@ for i = 1:amrall.nstep
     GMT.basemap(J=proj, R=region, title=time_str[i])
     map(g -> GMT.grdimage!(g, J=proj, R=region, C=cpt, Q=true), G)
     GMT.colorbar!(B="xa0.5f0.25 y+l(m)", D="jBR+w8.0/0.3+o-1.5/0.0", V=true)
-    GMT.coast!(B="a10f10 neSW", D=:i, W=:thinnest, V=true, savefig=outpng)
+    GMT.coast!(B="a10f10 neSW", D=:i, W=:thinnest, V=true, savefig=outpdf)
 end
 
 rm(landmask_txt, force=true)

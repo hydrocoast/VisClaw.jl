@@ -29,7 +29,7 @@ Gland = landmask_grd(landmask_txt, R=region, I=topo.dx, S="$(sqrt(2.0)topo.dx)d"
 
 for i = 1:amrall.nstep
     time_str = @sprintf("%03d", amrall.timelap[i])*" min"
-    outpng = "chile_etagmt-"*@sprintf("%03d", i)*".png"
+    outpdf = "chile_etagmt-"*@sprintf("%03d", i)*".pdf"
 
     # land-masked surface grids
     G = tilegrd_mask(amrall, i, landmask_txt; length_unit="d")
@@ -38,7 +38,7 @@ for i = 1:amrall.nstep
     GMT.grdimage(Gland, J=proj, R=region, C="white,gray80", Q=true, title=time_str)
     map(g -> GMT.grdimage!(g, J=proj, R=region, C=cpt, Q=true), G)
     GMT.colorbar!(B="xa0.1f0.1 y+l(m)", D="jBR+w10.0/0.3+o-1.5/0.0", V=true)
-    GMT.coast!(B="a15f15 neSW", D=:i, W=:thinnest, V=true, savefig=outpng)
+    GMT.coast!(B="a15f15 neSW", D=:i, W=:thinnest, V=true, savefig=outpdf)
 end
 
 rm(landmask_txt, force=true)

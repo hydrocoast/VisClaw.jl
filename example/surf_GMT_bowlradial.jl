@@ -25,7 +25,7 @@ region = getR(topo)
 
 for i = 1:amrall.nstep
     time_str = @sprintf("%0.2f", amrall.timelap[i])
-    outpng = "bowlradial_eta_GMT"*@sprintf("%03d", i)*".png"
+    outpdf = "bowlradial_eta_GMT"*@sprintf("%03d", i)*".pdf"
 
     # land-masked surface grids
     G = tilegrd_xyz(amrall, i; J=proj, R=region)
@@ -33,7 +33,7 @@ for i = 1:amrall.nstep
     # plot
     gmtcoastline(Gtopo; J=proj, R=region, title=time_str)
     map(g -> GMT.grdimage!(g, J=proj, R=region, C=cpt, Q=true), G)
-    GMT.colorbar!(J=proj, R=region, C=cpt, B="xa0.2f0.2 y+l(m)", D="jBR+w10.0/0.3+o-1.5/0.0", savefig=outpng)
+    GMT.colorbar!(J=proj, R=region, C=cpt, B="xa0.2f0.2 y+l(m)", D="jBR+w10.0/0.3+o-1.5/0.0", savefig=outpdf)
 end
 
 # -----------------------------
