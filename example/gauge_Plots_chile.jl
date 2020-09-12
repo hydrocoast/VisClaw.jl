@@ -40,5 +40,5 @@ pltv = plotsgaugevelocity(gauges[1])
 pltl = plotsgaugelocation(gauges[1])
 
 ## save
-#savefig(plt, "chile2010_waveform_gauge.svg")
+savefig(plt, "chile2010_waveform_gauge.svg")
 # -----------------------------

@@ -29,7 +29,7 @@ plts = map((p,s)->plot!(p, title=s), plts, time_str)
 plts = tilebound!.(plts, amrall.amr; lc=:gray)
 
 # save
-plotssavefig(plts, output_prefix*".pdf")
+plotssavefig(plts, output_prefix*".png")
 # gif
-#plotsgif(plts, output_prefix*".gif", fps=4)
+plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

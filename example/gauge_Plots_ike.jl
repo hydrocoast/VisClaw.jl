@@ -37,6 +37,6 @@ plt = plot!(plt;
 pltv = plotsgaugevelocity(gauges)
 
 ## save
-#savefig(plt, "ike_waveform_gauge.svg")
+savefig(plt, "ike_waveform_gauge.svg")
 
 # -----------------------------

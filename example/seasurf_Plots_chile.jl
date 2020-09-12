@@ -34,7 +34,7 @@ gauges = gaugedata(simdir)
 plts = map(p -> plotsgaugelocation!(p, gauges; ms=4, color=:black), plts)
 
 # save
-#plotssavefig(plts, output_prefix*".svg")
+plotssavefig(plts, output_prefix*".svg")
 # gif
-#plotsgif(plts, output_prefix*".gif", fps=4)
+plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

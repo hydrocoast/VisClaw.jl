@@ -15,7 +15,7 @@ nf = length(filelist)
 println(@sprintf("%d", nf)*" files are going to be tested...")
 
 using GR: GR
-GR.inline("pdf")
+GR.inline("png")
 
 @testset "VisClaw.jl" begin
     # Write your own tests here.

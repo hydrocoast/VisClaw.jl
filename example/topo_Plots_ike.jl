@@ -15,5 +15,5 @@ plt = plotstopo(topo; linetype=:heatmap, color=:delta, clims=(-6000,6000))
 plt = plotscoastline!(plt, topo; lc=:black)
 
 ## save
-#savefig(plt, "ike_topo.svg")
+savefig(plt, "ike_topo.svg")
 # -----------------------------
