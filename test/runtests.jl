@@ -22,6 +22,8 @@ GR.inline("png")
     # for loop
     for f in filelist
         println(f)
+        @test !isa(try include(joinpath(exdir,f)) catch ex ex end, Exception)
+        #=
         try
             @test_nowarn include(joinpath(exdir,f))
         catch e
@@ -38,5 +40,6 @@ GR.inline("png")
             end
             continue
         end
+        =#
     end
 end
