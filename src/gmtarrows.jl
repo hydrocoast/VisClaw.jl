@@ -19,11 +19,11 @@ end
 
 
 """
-    Gu, Gv = arrowgrd(tiles::Vector{VisClaw.AMRGrid}; cutoff=0.1)
+    Gu, Gv = arrowgrd(tiles::Vector{VisClaw.AMRGrid}; cutoff=0.1, kwargs...)
 
 create u and v grd files from AMR grid tiles
 """
-function arrowgrd(tiles::Vector{VisClaw.AMRGrid}; cutoff=0.1)
+function arrowgrd(tiles::Vector{VisClaw.AMRGrid}; cutoff=0.1, kwargs...)
     ## region
     region = VisClaw.getlims(tiles)
 
@@ -59,12 +59,12 @@ function arrowgrd(tiles::Vector{VisClaw.AMRGrid}; cutoff=0.1)
     vg[ind] .= 0.0
 
     ## makegrd
-    Gu = GMT.xyz2grd([xg yg ug], I=tiles[1].dx, R=region)
-    Gv = GMT.xyz2grd([xg yg vg], I=tiles[1].dy, R=region)
+    Gu = GMT.xyz2grd([xg yg ug], I=tiles[1].dx, R=region, kwargs...)
+    Gv = GMT.xyz2grd([xg yg vg], I=tiles[1].dy, R=region, kwargs...)
 
     ## return
     return Gu, Gv
 end
 
-arrowgrd(amrs::VisClaw.AMR, istep::Integer; cutoff=0.1) =
-arrowgrd(amrs.amr[istep]; cutoff=cutoff)
+arrowgrd(amrs::VisClaw.AMR, istep::Integer; cutoff=0.1, kwargs...) =
+arrowgrd(amrs.amr[istep]; cutoff=cutoff, kwargs...)
