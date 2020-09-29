@@ -164,7 +164,7 @@ mutable struct Gauge
     nt :: Integer # number of time step
     loc :: AbstractVector{Float64} # gauge location
     AMRlevel :: AbstractVector{Integer}
-    time :: AbstractVector{Float64} # time
+    time :: AbstractVector # time
     eta :: AbstractVector{Float64} # surface
     u :: AbstractVector{Float64} # u
     v :: AbstractVector{Float64} # v
@@ -186,8 +186,8 @@ mutable struct Gaugemax
     AMRlevel :: Integer
     eta :: Float64
     vel :: Float64
-    t_eta :: Float64
-    t_vel :: Float64
+    t_eta
+    t_vel
     unittime :: Symbol
     # Constructor
     VisClaw.Gaugemax(label,id,loc,AMRlevel,eta,vel,t_eta,t_vel,unittime) = new(label,id,loc,AMRlevel,eta,vel,t_eta,t_vel,unittime)
@@ -238,12 +238,12 @@ mutable struct FGmax
     M :: AbstractArray{Float64}
     Mflux :: AbstractArray{Float64}
     Dmin :: AbstractArray{Float64}
-    tD :: AbstractArray{Float64}
-    tv :: AbstractArray{Float64}
-    tM :: AbstractArray{Float64}
-    tMflux :: AbstractArray{Float64}
-    tDmin :: AbstractArray{Float64}
-    tarrival :: AbstractArray{Float64}
+    tD :: AbstractArray
+    tv :: AbstractArray
+    tM :: AbstractArray
+    tMflux :: AbstractArray
+    tDmin :: AbstractArray
+    tarrival :: AbstractArray
     unittime :: Symbol
 
     # Constructor

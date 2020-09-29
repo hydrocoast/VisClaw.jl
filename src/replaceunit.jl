@@ -3,6 +3,7 @@
     replaceunit!(fgmax::VisClaw.FGmax, unit::Symbol)
     replaceunit!(gauge::VisClaw.Gauge, unit::Symbol)
     replaceunit!(amrs::VisClaw.AMR, unit::Symbol)
+    replaceunit!(track::VisClaw.Track, unit::Symbol)
 
 Time unit converter
 The second arg unit must be any one of :second, :minute, :hour, or :day.
@@ -59,5 +60,21 @@ function replaceunit!(amrs::VisClaw.AMR, unit::Symbol)
     amrs.timelap = ratio.*amrs.timelap
     # return value
     return amrs
+end
+#################################
+
+#################################
+function replaceunit!(track::VisClaw.Track, unit::Symbol)
+    !haskey(timedict, unit) && error("Invalid specification: unit")
+    !haskey(timedict, track.unittime) && error("Invalid symbol in AMR")
+
+    ratio = timedict[track.unittime]/timedict[unit]
+    if abs(ratio - 1.0) < 1e-5; return track; end
+
+    # convert
+    track.unittime = unit
+    track.timelap = ratio.*track.timelap
+    # return value
+    return track
 end
 #################################

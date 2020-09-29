@@ -36,6 +36,7 @@ const varnameset(D,k,v) = haskey(D,k) ? k : v
 include("structclaw.jl")
 include("amrutils.jl")
 include("replaceunit.jl")
+include("converttodatetime.jl")
 include("getvarname_nctopo.jl")
 
 ## load
@@ -88,7 +89,7 @@ export loadsurface, loadcurrent, loadstorm
 export printtopoESRI, printtopo, printdtopo
 export coarsegridmask!
 export axesratio
-export replaceunit!
+export replaceunit!, converttodatetime!
 export gaugemax
 
 ## functions with Plots.jl

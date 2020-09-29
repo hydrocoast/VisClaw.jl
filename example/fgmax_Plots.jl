@@ -23,3 +23,8 @@ plt = plotsfgmax!(plt, fg[5], fgmax[5], :D; label="max 5")
 plt = plotsfgmax!(plt, fg[2], fgmax[2], :topo; lc=:black, label="topo 2")
 plt = plotsfgmax!(plt, fg[4], fgmax[4], :topo; lc=:black, label="topo 4")
 plt = plotsfgmax!(plt, fg[5], fgmax[5], :topo; lc=:black, label="topo 5")
+
+
+## convert test
+using Dates: Dates
+converttodatetime!.(fgmax, Dates.DateTime(2020,1,1))

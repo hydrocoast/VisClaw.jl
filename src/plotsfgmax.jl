@@ -38,7 +38,8 @@ function plotsfgmax!(plt, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax, var::Symb
 	    (var==:D) && (val[wet] = val[wet] + fgmax.topo[wet])
 		(var==:Dmin) && (val[wet] = val[wet] - fgmax.topo[wet])
 		(var==:Dmin) && (val[land] .= NaN)
-	    val[.!wet] .= NaN
+		isa(val, AbstractArray{Dates.DateTime}) || (val[.!wet] .= NaN)
+	    #val[.!wet] .= NaN
 
 	    # plot
 	    plt = Plots.plot!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, seriestype=seriestype, kwdict...)
@@ -54,8 +55,10 @@ function plotsfgmax!(plt, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax, var::Symb
 		(var==:Dmin) && (val = val - fgmax.topo)
 
 		var_vec = copy(val)
-		val = NaN*zeros(Float64 ,(fg.ny, fg.nx))
-		val[fg.flag] = var_vec
+		if !isa(val, AbstractArray{Dates.DateTime})
+		    val = NaN*zeros(Float64 ,(fg.ny, fg.nx))
+		    val[fg.flag] = var_vec
+		end
 		val = reverse(val, dims=1)
 
 		# plot

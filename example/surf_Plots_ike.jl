@@ -13,11 +13,14 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 ## load track
 track = loadtrack(simdir)
+converttodatetime!(track, timeorigin)
+
 ## load parameters
 surgeparams = surgedata(simdir)
 ## load water surface
 amrall = loadsurface(simdir)
 coarsegridmask!(amrall)
+converttodatetime!(amrall, timeorigin)
 
 ## plot
 plts = plotsamr(amrall; c=:darkrainbow, clims=(-0.5,2.0),
@@ -28,8 +31,7 @@ plts = plotsamr(amrall; c=:darkrainbow, clims=(-0.5,2.0),
                 )
 
 ## time in string
-time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
-time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
+time_str = Dates.format.(amrall.timelap, "yyyy/mm/dd HH:MM")
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
 ## gauge locations (from gauges.data)

@@ -9,6 +9,7 @@ topo = loadtopo(simdir)
 
 ## load track
 track = loadtrack(simdir)
+replaceunit!(track, :hour)
 
 ## plot
 plt = plotstrack(track, lc=:red, lw=1.5, colorbar=false)
