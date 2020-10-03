@@ -10,10 +10,10 @@ function loadgauge(dirname::AbstractString, gaugeid::AbstractVector{Int64}=0:0;
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
     filter!(x->occursin(r"^gauge\d+\.txt$", x), files)
-    if isempty(files); println("No gauge file"); return nothing end;
+    if isempty(files); println("No gauge file"); return empty([], VisClaw.Gauge) end;
     nf = length(files)
 
-    gaugeid == 0:0 ? (gaugeid = 1:nf) : nothing
+    gaugeid == 0:0 && (gaugeid = 1:nf)
 
     nfload = length(gaugeid)
 
