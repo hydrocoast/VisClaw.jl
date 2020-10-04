@@ -16,14 +16,12 @@ replaceunit!(amrall, :minute)
 coarsegridmask!(amrall)
 
 ## for CI
+regions = regiondata(simdir)
 tmp = VisClaw.keytile(amrall.amr[1][1])
 
 ## plot
-plts = plotsamr(amrall; c=:seismic, clims=(-0.5,0.5),
-                xguide="Longitude", yguide="Latitude",
-                guidefont=Plots.font("sans-serif",12),
-                tickfont=Plots.font("sans-serif",10),
-                )
+plts = plotsamr(amrall; c=:seismic, clims=(-0.5,0.5), xguide="Longitude", yguide="Latitude",
+                guidefont=Plots.font("sans-serif",12), tickfont=Plots.font("sans-serif",10))
 
 ## time in string
 time_str = map(x->@sprintf("%03d", x)*" min", amrall.timelap)
