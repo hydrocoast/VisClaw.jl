@@ -1,17 +1,20 @@
 """
     amr = loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:surface,
                     params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
-                    xlims=(-Inf,Inf), ylims=(-Inf,Inf),
+                    xlims=(-Inf,Inf), ylims=(-Inf,Inf), region="",
                     AMRlevel=[])
 
 Function: fort.qxxxx reader
 """
 function loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:surface,
                    params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
-                   xlims=(-Inf,Inf), ylims=(-Inf,Inf),
+                   xlims=(-Inf,Inf), ylims=(-Inf,Inf), region="",
                    AMRlevel=[])
-    # check
+    ## check
     !any(map(sym -> vartype == sym, [:surface, :current, :storm])) && error("kwarg 'vartype' is invalid")
+
+    ## set range
+    if isa(region, VisClaw.AbstractTopo); xlims=extrema(region.x); ylims=extrema(region.y); end
 
     ## file open
     f = open(filename,"r")

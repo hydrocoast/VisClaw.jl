@@ -1,11 +1,11 @@
 ##############################################################################
 """
-    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup=true, kwargs...)
-    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::Integer; vartype::Symbol=:surface, runup=true, kwargs...)
+    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup=true, region="", kwargs...)
+    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::Integer; vartype::Symbol=:surface, runup=true, region="", kwargs...)
 
 Quick checker of the spatial distribution
 """
-function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup::Bool=true, testplot::Bool=false, kwargs...)
+function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup::Bool=true, region="", testplot::Bool=false, kwargs...)
 
     !any([vartype==s for s in [:surface, :storm, :current]]) && error("Invalid input argument vartype: $vartype")
     ## define the filepath & filename
@@ -23,11 +23,13 @@ function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype
         kwargs_load = Dict([])
     end
 
-    # parse keyword args
+    ## parse keyword args
     kwdict = KWARG(kwargs)
-    # xlims, ylims
+    ## xlims, ylims
     xlims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_xlims, (-Inf,Inf))
     ylims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_ylims, (-Inf,Inf))
+    ## set range
+    if isa(region, VisClaw.AbstractTopo); xlims=extrema(region.x); ylims=extrema(region.y); end
 
     ## make a list
     isdir(simdir) || error("Not found: directory $simdir")
@@ -63,6 +65,7 @@ function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype
 
         # load data
         amrs = loadfunction(simdir, i; xlims=xlims, ylims=ylims, kwargs_load...)
+        runup && (coarsegridmask!(amrs))
 
         # draw figure
         plt = VisClaw.plotsamr2d(amrs.amr[1], AMRlevel; xlims=xlims, ylims=ylims, kwdict...)
