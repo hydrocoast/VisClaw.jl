@@ -51,6 +51,7 @@ end
 """
     hwratio = axesratio(tiles::Vector{VisClaw.AMRGrid})
     hwratio = axesratio(topo::VisClaw.AbstractTopo)
+    hwratio = axesratio(region::VisClaw.Region)
     hwratio = axesratio(G::GMT.GMTgrid)
 
 Get height/width ratio
@@ -79,6 +80,8 @@ function axesratio(G::GMT.GMTgrid)
     # return value
     return hwratio
 end
+###################################################
+axesratio(region::VisClaw.Region) = (region.ylims[2]-region.ylims[1])/(region.xlims[2]-region.xlims[1])
 ###################################################
 
 

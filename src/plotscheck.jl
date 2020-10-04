@@ -30,6 +30,7 @@ function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype
     ylims, kwdict = VisClaw.kwarg_default(kwdict, VisClaw.parse_ylims, (-Inf,Inf))
     ## set range
     if isa(region, VisClaw.AbstractTopo); xlims=extrema(region.x); ylims=extrema(region.y); end
+    if isa(region, VisClaw.Region); xlims=region.xlims; ylims=region.ylims; end
 
     ## make a list
     isdir(simdir) || error("Not found: directory $simdir")

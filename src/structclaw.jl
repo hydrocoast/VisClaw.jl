@@ -123,6 +123,21 @@ struct DTopo <: AbstractTopo
 end
 ##########################################################
 
+##########################################################
+"""
+Struct:
+ region
+"""
+struct Region
+    level :: AbstractVector
+    tlims :: Tuple
+    xlims :: Tuple
+    ylims :: Tuple
+    # Constructor
+    VisClaw.Region(level, tlims, xlims, ylims) = new(level, tlims, xlims, ylims)
+end
+##########################################################
+
 ########################################
 """
 Struct: parameters in geoclaw.data

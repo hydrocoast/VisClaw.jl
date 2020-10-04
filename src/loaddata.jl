@@ -130,3 +130,43 @@ function amrdata(outdir::AbstractString)
     return amrparam
 end
 ###################################
+
+###################################
+"""
+    regions = regiondata("simlation/path/_output"::AbstractString)
+    regions = regiondata("simlation/path/_output/region.data"::AbstractString)
+
+Function: region.data reader
+"""
+function regiondata(outdir::AbstractString)
+    ## set filename
+    fname = occursin("regions.data", basename(outdir)) ? outdir : joinpath(outdir, "regions.data")
+
+    ## check whether it exists
+    if !isfile(fname); error("File $fname is not found."); end
+    ## read all lines
+    open(fname,"r") do f
+        global txt = readlines(f)
+    end
+
+    ## parse parameters
+    nregion = parse(Int64, split(txt[occursin.("num_regions",txt)][1],r"\s+")[1])
+    ## preallocate
+    regions = Vector{VisClaw.Region}(undef,nregion)
+
+    ## read gauge info
+    baseline = findfirst(x->occursin("num_regions", x), txt)
+    for i = 1:nregion
+        txtline = split(strip(txt[baseline+i]), r"\s+", keepempty=false)
+        minlevel = parse(Int64,txtline[1])
+        maxlevel = parse(Int64,txtline[2])
+        tl = (parse(Float64,txtline[3]), parse(Float64,txtline[4]))
+        xl = (parse(Float64,txtline[5]), parse(Float64,txtline[6]))
+        yl = (parse(Float64,txtline[7]), parse(Float64,txtline[8]))
+        ## instance
+        regions[i] = VisClaw.Region(minlevel:maxlevel, tl, xl, yl)
+    end
+
+    return regions
+end
+###################################

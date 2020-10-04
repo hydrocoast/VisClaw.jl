@@ -15,6 +15,7 @@ function loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:sur
 
     ## set range
     if isa(region, VisClaw.AbstractTopo); xlims=extrema(region.x); ylims=extrema(region.y); end
+    if isa(region, VisClaw.Region); xlims=region.xlims; ylims=region.ylims; end
 
     ## file open
     f = open(filename,"r")
