@@ -18,6 +18,7 @@ end
 """
     xyrange = getR(tiles::Vector{VisClaw.AMRGrid}; length_unit="")
     xyrange = getR(topo::VisClaw.AbstractTopo; length_unit="")
+    xyrange = getR(region::VisClaw.Region; length_unit="")
     xyrange = getR(G::GMT.GMTgrid; length_unit="")
 
 Get x and y ranges in AbstractString for -R option in GMT
@@ -48,6 +49,13 @@ function getR(G::GMT.GMTgrid; length_unit="")
     return xyrange
 end
 ###################################################
+function getR(region::VisClaw.Region; length_unit="")
+    xyrange="$(region.xlims[1])/$(region.xlims[2])/$(region.ylims[1])/$(region.ylims[2])"
+    isempty(length_unit) || (xyrange = xyrange*"+u"*length_unit)
+    return xyrange
+end
+###################################################
+
 """
     hwratio = axesratio(tiles::Vector{VisClaw.AMRGrid})
     hwratio = axesratio(topo::VisClaw.AbstractTopo)
