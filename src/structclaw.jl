@@ -142,6 +142,17 @@ end
 
 ########################################
 """
+Struct: parameters in amr.data
+"""
+struct AMRParam
+    maxlevel::Integer
+    # Constructor
+    VisClaw.AMRParam(maxlevel) = new(maxlevel)
+end
+########################################
+
+########################################
+"""
 Struct: parameters in surge.data
 """
 struct SurgeParam

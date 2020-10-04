@@ -9,14 +9,14 @@ function fgmaxdata(outdir::AbstractString)
     ## definition of filename
     fname = occursin("fgmax_grids.data", basename(outdir)) ? outdir : joinpath(outdir, "fgmax_grids.data")
 
-    # check
+    ## check
     isfile(fname) || error("File $fname is not found.")
-    # read all lines
+    ## read all lines
     open(fname,"r") do f
         global txt = readlines(f)
     end
 
-    # parse parameters
+    ## parse parameters
     num_fgmax_val = parse(Int64, split(txt[occursin.("num_fgmax_val",txt)][1],r"\s+")[1])
     num_fgmax_grids = parse(Int64, split(txt[occursin.("num_fgmax_grids",txt)][1],r"\s+")[1])
 
@@ -54,7 +54,7 @@ function fgmaxdata(outdir::AbstractString)
                 end
                 baseline += 10 + npts
             end
-            # instance
+            ## instance
             fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, npts, x, y)
 
         ## 1
@@ -107,6 +107,6 @@ function fgmaxdata(outdir::AbstractString)
         end
     end
 
-    # return
+    ## return
     return fg
 end

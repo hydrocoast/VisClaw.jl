@@ -8,16 +8,16 @@
 Function: geoclaw.data reader
 """
 function geodata(outdir::AbstractString)
-    # definition of filename
+    ## set filename
     fname = occursin("geoclaw.data", basename(outdir)) ? outdir : joinpath(outdir, "geoclaw.data")
 
-    # check whether exist
+    ## check whether it exists
     if !isfile(fname); error("File $fname is not found."); end
-    # read all lines
+    ## read all lines
     open(fname,"r") do f
         global txt = readlines(f)
     end
-    # parse parameters
+    ## parse parameters
     # parameters (mandatory?)
     cs = parse(Float64,split(txt[occursin.("coordinate",txt)][1],r"\s+")[1])
     p0 = parse(Float64,split(txt[occursin.("ambient_pressure",txt)][1],r"\s+")[1])
@@ -30,9 +30,9 @@ function geodata(outdir::AbstractString)
     else
         n = 0.0
     end
-    # instance
+    ## instance
     params = VisClaw.GeoParam(cs,p0,R,eta0,n,dmin)
-    # return values
+    ## return values
     return params
 end
 ###################################
@@ -45,22 +45,22 @@ end
 Function: surge.data reader
 """
 function surgedata(outdir::AbstractString)
-    # definition of filename
+    ## set filename
     fname = occursin("surge.data", basename(outdir)) ? outdir : joinpath(outdir, "surge.data")
 
-    # check whether exist
+    ## check whether it exists
     if !isfile(fname); error("File $fname is not found."); end
-    # read all lines
+    ## read all lines
     open(fname,"r") do f
         global txt = readlines(f)
     end
-    # parse parameters
+    ## parse parameters
     windindex = parse(Int64,split(txt[occursin.("wind_index",txt)][1],r"\s+")[1])
     slpindex = parse(Int64,split(txt[occursin.("pressure_index",txt)][1],r"\s+")[1])
     stormtype = parse(Int64,split(txt[occursin.("storm_specification_type",txt)][1],r"\s+")[1])
-    # instance
+    ## instance
     surgeparams = VisClaw.SurgeParam(windindex,slpindex,stormtype)
-    # return values
+    ## return values
     return surgeparams
 end
 ###################################
@@ -73,21 +73,21 @@ end
 Function: gauges.data reader
 """
 function gaugedata(outdir::AbstractString)
-    # definition of filename
+    ## set filename
     fname = occursin("gauges.data", basename(outdir)) ? outdir : joinpath(outdir,"gauges.data")
 
-    # check whether exist
+    ## check whether it exists
     if !isfile(fname); error("File $fname is not found."); end
-    # read all lines
+    ## read all lines
     open(fname,"r") do f
         global txt = readlines(f)
     end
-    # parse parameters
+    ## parse parameters
     ngauges = parse(Int64, split(txt[occursin.("ngauges",txt)][1],r"\s+")[1])
-    # preallocate
+    ## preallocate
     gaugeinfo = Vector{VisClaw.Gauge}(undef,ngauges)
 
-    # read gauge info
+    ## read gauge info
     baseline = findfirst(x->occursin("ngauges", x), txt)
     for i = 1:ngauges
         txtline = split(strip(txt[baseline+i]), r"\s+", keepempty=false)
@@ -99,7 +99,34 @@ function gaugedata(outdir::AbstractString)
         gaugeinfo[i] = VisClaw.Gauge(label,id,0,loc,[],time,[])
     end
 
-    # return values
+    ## return values
     return gaugeinfo
+end
+###################################
+
+###################################
+"""
+    amrparam = amrdata("simlation/path/_output"::AbstractString)
+    amrparam = amrdata("simlation/path/_output/amr.data"::AbstractString)
+
+Function: amr.data reader
+"""
+function amrdata(outdir::AbstractString)
+    ## set filename
+    fname = occursin("amr.data", basename(outdir)) ? outdir : joinpath(outdir, "amr.data")
+
+    ## check whether it exists
+    if !isfile(fname); error("File $fname is not found."); end
+    ## read all lines
+    open(fname,"r") do f
+        global txt = readlines(f)
+    end
+
+    ## parse parameters
+    maxlevel = parse(Int64,split(txt[occursin.("amr_levels_max",txt)][1],r"\s+")[1])
+    ## instance
+    amrparam = VisClaw.AMRParam(maxlevel)
+    ## return values
+    return amrparam
 end
 ###################################

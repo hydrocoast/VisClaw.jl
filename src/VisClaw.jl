@@ -79,7 +79,7 @@ include("gmtarrows.jl")
 include("gmttrack.jl")
 
 ## general functions
-export geodata, surgedata, gaugedata, fgmaxdata
+export geodata, amrdata, surgedata, gaugedata, fgmaxdata
 export topodata, dtopodata
 export loadfgmax
 export loadtopo, loaddeform, loaddtopo
