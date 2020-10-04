@@ -5,18 +5,17 @@
 Function: fgmaxXXXX.txt reader
 """
 function loadfgmax(loaddir::AbstractString, fg::VisClaw.FixedGrid; nval_save::Integer=fg.nval)
-    # check nval_save
+    ## check nval_save
     nval_save > fg.nval && (nval_save=fg.nval)
 
-    # fgmaxXXXX.txt
+    ## fgmaxXXXX.txt
     filename = "fgmax"*@sprintf("%04d",fg.id)*".txt"
-    # load
+    ## load
     dat = readdlm(joinpath(loaddir, filename), Float64)
     dat[dat.<-1e10] .= NaN
 
     ncol = 4 + 2(fg.nval) + 1
-    # assign
-    ##
+    ## assign
     if fg.style == 0 || fg.style == 1
         topo = dat[:,4]
         D = dat[:,5]
