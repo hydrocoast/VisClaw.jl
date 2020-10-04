@@ -12,9 +12,9 @@ Gus, Gvs = arrowscalegrd(arrowscale...)
 ## load
 amrall = loadstorm(simdir; AMRlevel=1)
 coarsegridmask!(amrall)
-
-## timelap
-time_dates = @. timeorigin + Dates.Millisecond(1e3*amrall.timelap)
+converttodatetime!(amrall, timeorigin)
+## time in string
+time_str = Dates.format.(amrall.timelap, "yyyy/mm/dd HH:MM")
 
 ## make cpt
 cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
@@ -24,13 +24,12 @@ proj = getJ("X10d", amrall.amr[1])
 region = getR(amrall.amr[1])
 
 for i = 1:amrall.nstep
-    local time_str = Dates.format(time_dates[i], "yyyy/mm/dd HH:MM")
     outpng = "ike_storm-"*@sprintf("%03d", i)*".png"
 
     Gp = tilegrd(amrall, i; length_unit="d")
     Gu, Gv = arrowgrd(amrall, i)
 
-    GMT.psbasemap(J=proj, R=region, B="a5f5 neSW", title=time_str)
+    GMT.psbasemap(J=proj, R=region, B="a5f5 neSW", title=time_str[i])
     map(G -> GMT.grdimage!(G, J=proj, R=region, C=cpt), Gp)
     GMT.colorbar!(B="xa10f10 y+lhPa", D="jBR+w8.0/0.3+o-1.5/0.0")
     GMT.coast!(D=:i, W="thinnest,gray80")
