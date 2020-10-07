@@ -1,13 +1,12 @@
 ######################################
 """
-    plt = plotsamr2d(tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector; kwargs...)
+    plt = plotsamr2d(tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector; wind::Bool=false, region="", kwargs...)
 
-    plotsamr2d!(plt::Plots.Plot, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[]; wind::Bool=false, kwargs...)
+    plotsamr2d!(plt::Plots.Plot, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[]; wind::Bool=false, region="", kwargs...)
 
 Function: plot values of AMR grids in two-dimension
 """
-function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[];
-                     wind::Bool=false, kwargs...)
+function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[]; wind::Bool=false, region="", kwargs...)
 
     # check arg
     if isa(tiles[1], VisClaw.SurfaceHeight)
@@ -59,6 +58,10 @@ function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
     xlims, kwdict = VisClaw.parse_xlims(kwdict)
     ylims, kwdict = VisClaw.parse_ylims(kwdict)
     # -----------------------------
+    ## set range
+    if isa(region, VisClaw.AbstractTopo); xlims=extrema(region.x); ylims=extrema(region.y); end
+    if isa(region, VisClaw.Region); xlims=region.xlims; ylims=region.ylims; end
+
 
     # Too fine grids are not plotted
     if isempty(AMRlevel) && xlims==nothing && ylims==nothing
@@ -204,7 +207,7 @@ function gridnumber!(plt, tiles; AMRlevel::AbstractVector=[],
         end
 
         ## annotations
-        plt = Plots.plot!(plt, annotations=(mean(x),mean(y), Plots.text(ann, font)))
+        plt = Plots.plot!(plt; annotations=(mean(x),mean(y), Plots.text(ann, font)))
     end
     return plt
 end
