@@ -95,7 +95,7 @@ struct Topo <: AbstractTopo
     y :: AbstractVector
     dx :: Float64
     dy :: Float64
-    elevation :: AbstractArray{Float64,2}
+    elevation :: AbstractArray
     # Constructor
     VisClaw.Topo(ncols, nrows, x, y, dx, dy, elevation) =
              new(ncols, nrows, x, y, dx, dy, elevation)

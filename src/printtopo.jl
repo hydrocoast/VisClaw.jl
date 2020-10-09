@@ -21,11 +21,19 @@ function printtopoESRI(topo::VisClaw.Topo, filename::AbstractString="topo.asc"; 
         @printf(fileIO, "%e    cellsize\n", topo.dx)
         @printf(fileIO, "%d    nodatavalue\n", nodatavalue)
         ## elevation
-        [(if j != ncols
-              @printf(fileIO, "%14.6e ", topo.elevation[i,j])
-          else
-              @printf(fileIO, "%14.6e\n", topo.elevation[i,j])
-          end) for j=1:ncols, i=nrows:-1:1]
+        if isa(topo.elevation, BitArray) || isa(topo.elevation, Array{Int,2}) || isa(topo.elevation, Array{UInt,2})
+            [(if j != ncols
+                @printf(fileIO, "%d ", topo.elevation[i,j])
+            else
+                @printf(fileIO, "%d\n", topo.elevation[i,j])
+            end) for j=1:ncols, i=nrows:-1:1]
+        else
+            [(if j != ncols
+                @printf(fileIO, "%14.6e ", topo.elevation[i,j])
+            else
+                @printf(fileIO, "%14.6e\n", topo.elevation[i,j])
+            end) for j=1:ncols, i=nrows:-1:1]
+        end
     end ## close
     return nothing
 end
