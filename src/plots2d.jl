@@ -1,12 +1,12 @@
 ######################################
 """
-    plt = plotsamr2d(tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector; wind::Bool=false, region="", kwargs...)
+    plt = plotsamr2d(tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
 
-    plotsamr2d!(plt::Plots.Plot, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[]; wind::Bool=false, region="", kwargs...)
+    plotsamr2d!(plt::Plots.Plot, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
 
 Function: plot values of AMR grids in two-dimension
 """
-function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector=[]; wind::Bool=false, region="", kwargs...)
+function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
 
     # check arg
     if isa(tiles[1], VisClaw.SurfaceHeight)
@@ -149,12 +149,7 @@ end
 """
 $(@doc plotsamr2d!)
 """
-plotsamr2d(tiles, AMRlevel::AbstractVector=[]; kwargs...) =
-plotsamr2d!(Plots.plot(), tiles, AMRlevel; kwargs...)
-######################################
-plotsamr2d!(plt, tiles, AMRlevel::Integer; kwargs...) = plotsamr2d!(plt, tiles, AMRlevel:AMRlevel; kwargs...)
-######################################
-plotsamr2d(tiles, AMRlevel::Integer; kwargs...) = plotsamr2d(tiles, AMRlevel:AMRlevel; kwargs...)
+plotsamr2d(tiles; kwargs...) = plotsamr2d!(Plots.plot(), tiles; kwargs...)
 ######################################
 
 
@@ -279,20 +274,18 @@ end
 
 #######################################
 """
-    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector=[]; kwargs...)
-    plts = plotsamr(amrs::VisClaw.AMR, AMRlevel::Integer; kwargs...)
+    plts = plotsamr(amrs::VisClaw.AMR, timeindex=1:amrs.nstep; kwargs...)
 
-Function: plot AMR data at designated times
+Function: plot VisClaw.AMR data. The keyword arguments follow [`plotsamr2d`](@ref)
 """
-function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector=[]; kwargs...)
+function plotsamr(amrs::VisClaw.AMR, timeindex=1:amrs.nstep; kwargs...)
     ## plot time-series
-    plt = Array{Plots.Plot}(undef, amrs.nstep)
-    for i = 1:amrs.nstep
-        if isempty(amrs.amr[i]); plt[i] = Plots.plot(); continue; end
-        plt[i] = VisClaw.plotsamr2d(amrs.amr[i], AMRlevel; kwargs...)
+    plt = Array{Plots.Plot}(undef, length(timeindex))
+    for i = timeindex
+        if isempty(amrs.amr[i]); plt[i-timeindex[1]+1] = Plots.plot(); continue; end
+        plt[i-timeindex[1]+1] = VisClaw.plotsamr2d(amrs.amr[i]; kwargs...)
     end
     ## return plots
     return plt
 end
 #############################################
-plotsamr(amrs::VisClaw.AMR, AMRlevel::Integer; kwargs...) = plotsamr(amrs::VisClaw.AMR, AMRlevel:AMRlevel; kwargs...)
