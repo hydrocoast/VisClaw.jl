@@ -15,6 +15,7 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 ## load
 amrall = loadstorm(simdir)
 coarsegridmask!(amrall)
+converttodatetime!(amrall, timeorigin)
 
 topo = loadtopo(simdir)
 
@@ -32,8 +33,7 @@ plts = plotsamr(amrall;
 plts = map(p->plotscoastline!(p, topo; lc=:black), plts)
 
 ## time in string
-time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
-time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
+time_str = Dates.format.(amrall.timelap, "yyyy/mm/dd HH:MM")
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
 ## tiles
