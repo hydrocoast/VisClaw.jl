@@ -1,8 +1,7 @@
 """
     amr = loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:surface,
                     params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
-                    xlims=(-Inf,Inf), ylims=(-Inf,Inf), region="",
-                    AMRlevel=[])
+                    xlims=(-Inf,Inf), ylims=(-Inf,Inf), region="", AMRlevel=[])
 
 Function: fort.qxxxx reader.
 """
@@ -153,9 +152,6 @@ end
 #######################################
 """
     amrs = loadsurface(loaddir::AbstractString, filesequence::AbstractVector; kwargs...)
-
-    amrs = loadsurface(loaddir::AbstractString, filestart::Integer, filend::Integer; kwargs...)
-
     amrs = loadsurface(loaddir::AbstractString, fileid::Integer; kwargs...)
 
 Function: load time-series of water surface.
@@ -230,9 +226,6 @@ function loadsurface(loaddir::AbstractString, filesequence::AbstractVector=0:0; 
     return amrs
 end
 #######################################
-loadsurface(loaddir::AbstractString, filestart::Integer, filend::Integer; kwargs...) =
-loadsurface(loaddir, filestart:filend; kwargs...)
-#######################################
 loadsurface(loaddir::AbstractString, fileid::Integer; kwargs...) =
 loadsurface(loaddir, fileid:fileid; kwargs...)
 #######################################
@@ -240,9 +233,6 @@ loadsurface(loaddir, fileid:fileid; kwargs...)
 ######################################
 """
     amrs = loadstorm(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...)
-
-    amrs = loadstorm(loaddir::AbstractString, filestart::Integer, filend::Integer; kwargs...)
-
     amrs = loadstorm(loaddir::AbstractString, fileid::Integer; kwargs...)
 
 Function: load time-series of storm data.
@@ -252,9 +242,6 @@ Function: load time-series of storm data.
 loadstorm(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...) =
 loadsurface(loaddir, filesequence; vartype=:storm, kwargs...)
 #######################################
-loadstorm(loaddir::AbstractString, filestart::Integer, filend::Integer; kwargs...) =
-loadsurface(loaddir, filestart:filend; vartype=:storm, kwargs...)
-#######################################
 loadstorm(loaddir::AbstractString, fileid::Integer; kwargs...) =
 loadsurface(loaddir, fileid:fileid; vartype=:storm, kwargs...)
 #######################################
@@ -262,9 +249,6 @@ loadsurface(loaddir, fileid:fileid; vartype=:storm, kwargs...)
 #######################################
 """
     amrs = loadcurrent(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...)
-
-    amrs = loadcurrent(loaddir::AbstractString, filestart::Integer, filend::Integer; kwargs...)
-
     amrs = loadcurrent(loaddir::AbstractString, fileid::Integer; kwargs...)
 
 Function: load time-series of ocean current data.
@@ -273,9 +257,6 @@ Function: load time-series of ocean current data.
 """
 loadcurrent(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...) =
 loadsurface(loaddir, filesequence, vartype=:current, kwargs...)
-#######################################
-loadcurrent(loaddir::AbstractString, filestart::Integer, filend::Integer; kwargs...) =
-loadsurface(loaddir, filestart:filend; vartype=:current, kwargs...)
 #######################################
 loadcurrent(loaddir::AbstractString, fileid::Integer; kwargs...) =
 loadsurface(loaddir, fileid:fileid; vartype=:current, kwargs...)

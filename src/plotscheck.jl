@@ -1,11 +1,10 @@
 ##############################################################################
 """
-    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup=true, region="", kwargs...)
-    plt = plotscheck("simlation/path/_output"::AbstractString, AMRlevel::Integer; vartype::Symbol=:surface, runup=true, region="", kwargs...)
+    plt = plotscheck("simlation/path/_output"::AbstractString; vartype::Symbol=:surface, AMRlevel::AbstractVector=[], runup=true, region="", kwargs...)
 
 Quick checker of the spatial distribution
 """
-function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype::Symbol=:surface, runup::Bool=true, region="", testplot::Bool=false, kwargs...)
+function plotscheck(simdir::AbstractString; vartype::Symbol=:surface, AMRlevel::AbstractVector=[], runup::Bool=true, region="", testplot::Bool=false, kwargs...)
 
     !any([vartype==s for s in [:surface, :storm, :current]]) && error("Invalid input argument vartype: $vartype")
     ## define the filepath & filename
@@ -38,7 +37,7 @@ function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype
     filter!(x->occursin(fnamekw, x), flist)
     isempty(flist) && error("File named $fnamekw was not found")
 
-    # load geoclaw.data
+    ## load geoclaw.data
     params = VisClaw.geodata(simdir)
 
     ## the number of files
@@ -50,41 +49,38 @@ function plotscheck(simdir::AbstractString, AMRlevel::AbstractVector=[]; vartype
     ex=0 # initial value
     cnt=0
     while ex==0
-        # accept input the step number of interest
+        ## accept input the step number of interest
         @printf("checkpoint time (1 to %d) = ", nfile)
         i = testplot ? "1" : readline(stdin)
         if testplot; ex=1; end
 
-        # check whether the input is integer
+        ## check whether the input is integer
         if isempty(i); ex=1; continue; end;
-        # parse to interger
+        ## parse to interger
         i = try; parse(Int64,i)
         catch; "cannot be parsed to integer"; ex=1; continue;
         end
-        # check whether the input is valid number
+        ## check whether the input is valid number
         if ( (i>nfile) || (i<1) ); println("Invalid number"); ex=1; continue; end
 
-        # load data
-        amrs = loadfunction(simdir, i; xlims=xlims, ylims=ylims, kwargs_load...)
+        ## load data
+        amrs = loadfunction(simdir, i; AMRlevel=AMRlevel, xlims=xlims, ylims=ylims, kwargs_load...)
         runup && (coarsegridmask!(amrs))
 
-        # draw figure
-        plt = VisClaw.plotsamr2d(amrs.amr[1], AMRlevel; xlims=xlims, ylims=ylims, kwdict...)
+        ## draw figure
+        plt = VisClaw.plotsamr2d(amrs.amr[1]; AMRlevel=AMRlevel, xlims=xlims, ylims=ylims, kwdict...)
         plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s")
 
-        # show
+        ## show
         #plt = Plots.plot!(plt, show=true)
         display(plt)
         cnt += 1
     end
 
-    # if no plot is done
+    ## if no plot is done
     if cnt==0; plt = nothing; end
 
-    # return value
+    ## return value
     return plt
 end
-##############################################################################
-plotscheck(simdir::AbstractString, AMRlevel::Integer; kwargs...) =
-plotscheck(simdir, AMRlevel:AMRlevel; kwargs...)
 ##############################################################################
