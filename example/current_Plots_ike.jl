@@ -11,9 +11,11 @@ output_prefix = "ike_velo"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
+## for CI ########
 pltchk = plotscheck(simdir; vartype=:current, testplot=true)
 pltchk = plotscheck(simdir; vartype=:storm, testplot=true)
-pltchk = plotscheck(simdir, 1; testplot=true)
+pltchk = plotscheck(simdir; testplot=true)
+##################
 
 ## load current
 amrall = loadcurrent(simdir)
