@@ -16,17 +16,8 @@ Function: plot a gauge location (with scatter plot) using Plots
 """
 function plotsgaugelocation!(plt, gauge::VisClaw.Gauge;
                              offset=(0,0), font::Plots.Font=an_default, annotation_str=@sprintf(" %s",gauge.id), kwargs...)
-    # keyword args
-    d = KWARG(kwargs)
-    # annotation
-    #if annotation_str==" "
-    #    annotation_str=" "*@sprintf("%s",gauge.id)
-    #end
-
     # plot
-    plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]]; d...,
-                         ann=(gauge.loc[1]+offset[1], gauge.loc[2]+offset[2], Plots.text(annotation_str, font)),
-                         label="")
+    plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]]; kwargs..., label="", ann=(gauge.loc[1]+offset[1], gauge.loc[2]+offset[2], Plots.text(annotation_str, font)) )
 
     # return
     return plt
@@ -42,8 +33,6 @@ plotsgaugelocation!(Plots.plot(), gauge; offset=(0,0), font=font, annotation_str
 function plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge};
                              offset=(0,0), font::Plots.Font=an_default,
                              annotation_str=" ", kwargs...)
-    # keyword args
-    d = KWARG(kwargs)
     # get values in all gauges
     ngauges = length(gauges)
     loc_all = getfield.(gauges, :loc)
@@ -67,9 +56,7 @@ function plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge};
                              Plots.text(annotation_str[i], font))
     end
     # plot
-    plt = Plots.scatter!(plt, loc[:,1], loc[:,2]; d...,
-                         ann=annotation_arg,
-                         label="")
+    plt = Plots.scatter!(plt, loc[:,1], loc[:,2]; kwargs..., label="", ann=annotation_arg)
 
     # return
     return plt
