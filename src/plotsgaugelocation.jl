@@ -14,10 +14,9 @@ an_default = Plots.font(10,:left,:top,0.0,:black)
 
 Function: plot a gauge location (with scatter plot) using Plots
 """
-function plotsgaugelocation!(plt, gauge::VisClaw.Gauge;
-                             offset=(0,0), font::Plots.Font=an_default, annotation_str=@sprintf(" %s",gauge.id), kwargs...)
+function plotsgaugelocation!(plt, gauge::VisClaw.Gauge; offset=(0,0), label="", font::Plots.Font=an_default, annotation_str=@sprintf(" %s",gauge.id), kwargs...)
     # plot
-    plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]]; kwargs..., label="", ann=(gauge.loc[1]+offset[1], gauge.loc[2]+offset[2], Plots.text(annotation_str, font)) )
+    plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]]; label=label, ann=(gauge.loc[1]+offset[1], gauge.loc[2]+offset[2], Plots.text(annotation_str, font)), kwargs...)
 
     # return
     return plt
@@ -27,12 +26,10 @@ end
 """
 $(@doc plotsgaugelocation!)
 """
-plotsgaugelocation(gauge::VisClaw.Gauge; offset=(0,0), font::Plots.Font=an_default, annotation_str=@sprintf(" %s",gauge.id), kwargs...) =
-plotsgaugelocation!(Plots.plot(), gauge; offset=(0,0), font=font, annotation_str=annotation_str, kwargs...)
+plotsgaugelocation(gauge::VisClaw.Gauge; offset=(0,0), label="", font::Plots.Font=an_default, annotation_str=@sprintf(" %s",gauge.id), kwargs...) =
+plotsgaugelocation!(Plots.plot(), gauge; offset=(0,0), label=label, font=font, annotation_str=annotation_str, kwargs...)
 ###########################################
-function plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge};
-                             offset=(0,0), font::Plots.Font=an_default,
-                             annotation_str=" ", kwargs...)
+function plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge}; offset=(0,0), label="", font::Plots.Font=an_default, annotation_str=" ", kwargs...)
     # get values in all gauges
     ngauges = length(gauges)
     loc_all = getfield.(gauges, :loc)
@@ -56,11 +53,11 @@ function plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge};
                              Plots.text(annotation_str[i], font))
     end
     # plot
-    plt = Plots.scatter!(plt, loc[:,1], loc[:,2]; kwargs..., label="", ann=annotation_arg)
+    plt = Plots.scatter!(plt, loc[:,1], loc[:,2]; kwargs..., label=label, ann=annotation_arg)
 
     # return
     return plt
 end
 ###########################################
-plotsgaugelocation(gauges::Vector{VisClaw.Gauge}; offset=(0,0), font::Plots.Font=an_default, annotation_str=" ", kwargs...) =
-plotsgaugelocation!(Plots.plot(), gauges::Vector{VisClaw.Gauge}; offset=offset, font=font, annotation_str=annotation_str, kwargs...)
+plotsgaugelocation(gauges::Vector{VisClaw.Gauge}; offset=(0,0), label="", font::Plots.Font=an_default, annotation_str=" ", kwargs...) =
+plotsgaugelocation!(Plots.plot(), gauges::Vector{VisClaw.Gauge}; offset=offset, label=label, font=font, annotation_str=annotation_str, kwargs...)
