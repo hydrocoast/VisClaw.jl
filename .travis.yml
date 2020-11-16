@@ -8,6 +8,9 @@ julia:
 notifications:
   email: false
 before_install:
+  ## Install scipy
+  - export PYTHON=/usr/bin/python3
+  - /usr/bin/python3 -m pip install scipy
   ## Install GMT trunk
   - pwd
   - sudo apt-get install libgconf2-dev libgconf-2-4 libgtk-3-0 libxss1 libnss3 libasound2 libx11-xcb1
@@ -16,7 +19,6 @@ before_install:
   - sudo apt-get install libqt5widgets5 libqt5gui5 libqt5svg5-dev libxt6 libxrender1 libgl1-mesa-glx libqt5dbus5 libqt5network5 libqt5core5a
   - git clone https://github.com/GenericMappingTools/gmt.git $HOME/gmt
   - PATH="$HOME/gmt/bin:$PATH"
-  - export PATH
   - echo 'export PATH="$HOME/gmt/bin:$PATH"' >>~/.bash_profile
   - cd $HOME/gmt
   - git checkout 6.1.1
