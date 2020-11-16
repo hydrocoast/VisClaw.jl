@@ -121,4 +121,11 @@ export gmttoporange!
 export gmtcoastline, gmtcoastline!
 export gmttrack, gmttrack!
 
+
+## uniform-grid interpolation
+using PyCall: PyCall
+include("scipyinterp.jl")
+
+export interpsurface
+
 end
