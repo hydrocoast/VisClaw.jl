@@ -1,6 +1,7 @@
-
+#############################################
 """
-    eta_uniform = interpsurface(amrgrid::Vector{VisClaw.AMRGrid}, topo::VisClaw.Topo)
+    eta_uniformgrid = interpsurface(amrgrid::Vector{VisClaw.AMRGrid}, topo::VisClaw.Topo)
+    eta_uniformgrid = interpsurface(amr::VisClaw.AMR, topo::VisClaw.Topo)
 
 Convert AMR tile data into uniform grid data using the SciPy scattered interpolation.\n
 Interpolation of inundation height (land) is not supported. \n
@@ -50,4 +51,12 @@ function interpsurface(amrgrid::Vector{VisClaw.AMRGrid}, topo::VisClaw.Topo)
 
     return v_all
 
+end
+#############################################
+
+#############################################
+function interpsurface(amrall::VisClaw.AMR, topo::VisClaw.Topo; timestep=1:amrall.nstep)
+    eta_uniformgrid = [interpsurface(amrall.amr[k], topo) for k=timestep]
+    eta_uniformgrid = cat(eta_uniformgrid...; dims=3)
+    return eta_uniformgrid
 end
