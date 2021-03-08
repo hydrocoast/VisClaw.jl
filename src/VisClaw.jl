@@ -53,6 +53,7 @@ include("printtopo.jl")
 
 ## convert data
 include("gaugemax.jl")
+include("gaugeinterp.jl")
 include("coarsegridmask.jl")
 
 ## setup
@@ -90,7 +91,7 @@ export printtopoESRI, printtopo, printdtopo
 export coarsegridmask!
 export axesratio
 export replaceunit!, converttodatetime!
-export gaugemax
+export gaugemax, gaugeinterp
 
 ## functions with Plots.jl
 export plotsamr
