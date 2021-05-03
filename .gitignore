@@ -17,6 +17,7 @@ gmt.*
 *.eps
 *.pdf
 *.cpt
+.DS_Store
 tmp/
 .ipynb_*/
-!example/figure/*.*
+!figure/*.*
