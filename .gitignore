@@ -21,3 +21,4 @@ gmt.*
 tmp/
 .ipynb_*/
 !figure/*.*
+figure/.DS_Store
