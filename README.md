@@ -51,8 +51,8 @@ Topography data also can be easily plotted:
 julia> topo = loadtopo(simdir)
 julia> plt = plotstopo(topo)
 ```
-See [Examples_using_Plots.ipynb](https://github.com/hydrocoast/VisClaw.jl/blob/master/Examples_using_Plots.ipynb)
-and [Examples_using_GMT.ipynb](https://github.com/hydrocoast/VisClaw.jl/blob/master/Examples_using_GMT.ipynb) for more information.
+See [Examples_using_Plots.ipynb](https://github.com/hydrocoast/VisClawJuliaExamples/blob/master/Examples_using_Plots.ipynb)
+and [Examples_using_GMT.ipynb](https://github.com/hydrocoast/VisClawJuliaExamples/blob/master/Examples_using_GMT.ipynb) for more information.
 
 ## Plot gallery
 The following figures are generated with the Julia scripts in `example/` .  
