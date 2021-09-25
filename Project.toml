@@ -1,7 +1,7 @@
 name = "VisClaw"
 uuid = "d5c85fe6-8620-4d3a-96f0-ac478d4f5d38"
 authors = ["Takuya Miyashita <miyashita@hydrocoast.jp>"]
-version = "0.7.2"
+version = "0.7.3"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
