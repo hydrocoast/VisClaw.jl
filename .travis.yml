@@ -3,7 +3,7 @@ language: julia
 os:
   - linux
 julia:
-  - 1.5
+  - 1.9
 notifications:
   email: false
 before_install:
@@ -20,7 +20,7 @@ before_install:
   - PATH="$HOME/gmt/bin:$PATH"
   - echo 'export PATH="$HOME/gmt/bin:$PATH"' >>~/.bash_profile
   - cd $HOME/gmt
-  - git checkout 6.1.1
+  - git checkout 6.3.0
   - wget http://www.soest.hawaii.edu/pwessel/gshhg/gshhg-gmt-2.3.7.tar.gz
   - tar -xvzf gshhg-gmt-2.3.7.tar.gz
   - wget http://www.soest.hawaii.edu/pwessel/dcw/dcw-gmt-1.1.4.tar.gz
