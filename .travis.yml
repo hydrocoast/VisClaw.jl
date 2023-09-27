@@ -32,15 +32,16 @@ before_install:
   - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/gmt/lib"
   ###  download clawpack output examples
   - cd $HOME
-  - FILE_ID=1vjMAtxgN7JiIhDhxQUaO0J370I4uvst0
-  - FILE_NAME=clawpack-v5.7.0.tar.gz
-  - curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=${FILE_ID}" > /dev/null
-  - CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)"
-  - curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=${FILE_ID}" -o ${FILE_NAME}
-  - tar -zxvf ${FILE_NAME}
-  - export CLAW="$HOME/${FILE_NAME//\.tar\.gz/}"
-  - find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/-v5\.7\.0//g" $f; done
-  - find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/\/mnt\/HDD8TB\/00_PhD\/00_Research\/AMR\/clawpack/${CLAW//\//\\/}/g" $f; done
+  - echo $HOME
+  #- FILE_ID=1vjMAtxgN7JiIhDhxQUaO0J370I4uvst0
+  #- FILE_NAME=clawpack-v5.7.0.tar.gz
+  #- curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=${FILE_ID}" > /dev/null
+  #- CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)"
+  #- curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=${FILE_ID}" -o ${FILE_NAME}
+  #- tar -zxvf ${FILE_NAME}
+  #- export CLAW="$HOME/${FILE_NAME//\.tar\.gz/}"
+  #- find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/-v5\.7\.0//g" $f; done
+  #- find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/\/mnt\/HDD8TB\/00_PhD\/00_Research\/AMR\/clawpack/${CLAW//\//\\/}/g" $f; done
 before_script:
   ### repo
   - git clone --depth=50 --branch=${TRAVIS_BRANCH} https://github.com/hydrocoast/VisClaw.jl.git hydrocoast/VisClaw.jl
