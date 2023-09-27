@@ -8,31 +8,21 @@ notifications:
   email: false
 before_install:
   ## Install scipy
-  - export PYTHON=/usr/bin/python
-  - sudo -H python -m pip install numpy scipy
+  - export PYTHON=/usr/bin/python3
+  - sudo -H python3 -m pip install numpy scipy
   ## Install 
   - pwd
   - sudo apt-get install libgconf2-dev libgconf-2-4 libgtk-3-0 libxss1 libnss3 libasound2 libx11-xcb1
   - sudo apt-get install qt5-default qt5-image-formats-plugins qt5-qmake qt5-style-plugins
   - sudo apt-get install libqt5widgets5 libqt5gui5 libqt5svg5-dev libxt6 libxrender1 libgl1-mesa-glx libqt5dbus5 libqt5network5 libqt5core5a
-  ###  download clawpack output examples
+  ##  download clawpack output examples
   - cd $HOME
   - echo $HOME
   - FILE_NAME=clawpack_ci
   - wget -O $HOME/${FILE_NAME}.tar.gz "https://www.dropbox.com/scl/fi/11d07yxpsobwd4vt9ekpm/clawpack_ci.tar.gz?rlkey=u2qvm9wd7ba08csw925s0vylp&dl=1"
   - tar -zxvf ${FILE_NAME}.tar.gz
   - export CLAW="${HOME}/${FILE_NAME}"
-  #- FILE_ID=1vjMAtxgN7JiIhDhxQUaO0J370I4uvst0
-  #- FILE_NAME=clawpack-v5.7.0.tar.gz
-  #- curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=${FILE_ID}" > /dev/null
-  #- CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)"
-  #- curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=${FILE_ID}" -o ${FILE_NAME}
-  #- tar -zxvf ${FILE_NAME}
-  #- export CLAW="$HOME/${FILE_NAME//\.tar\.gz/}"
-  #- find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/-v5\.7\.0//g" $f; done
-  #- find ${CLAW}/ -name "*.data" | while read f; do sed -i -e "s/\/mnt\/HDD8TB\/00_PhD\/00_Research\/AMR\/clawpack/${CLAW//\//\\/}/g" $f; done
   ## Install GMT trunk
-  #- sudo apt-get install build-essential libcurl4-gnutls-dev libnetcdf-dev libgdal1-dev libfftw3-dev libpcre3-dev liblapack-dev ghostscript
   - sudo apt-get install build-essential cmake libcurl4-gnutls-dev libnetcdf-dev libgdal-dev gdal-bin libfftw3-dev libpcre3-dev liblapack-dev ghostscript
   - git clone --depth=10 https://github.com/GenericMappingTools/gmt.git $HOME/gmt
   - PATH="$HOME/gmt/bin:$PATH"
@@ -46,7 +36,6 @@ before_install:
   - tar -xvzf dcw-gmt-1.1.4.tar.gz
   - mkdir build
   - cd build
-  #- cmake --config Release .. -DSUPPORT_EXEC_IN_BINARY_DIR=TRUE -DGMT_OPENMP=ON -DCMAKE_INSTALL_PREFIX=$HOME/gmt -DGSHHG_ROOT=$HOME/gmt/gshhg-gmt-2.3.7
   - cmake --config Release .. -DSUPPORT_EXEC_IN_BINARY_DIR=TRUE -DGMT_ENABLE_OPENMP=ON -DCMAKE_INSTALL_PREFIX=$HOME/gmt -DGSHHG_ROOT=$HOME/gmt/gshhg-gmt-2.3.7
   - make -j && make install
   - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/gmt/lib"
