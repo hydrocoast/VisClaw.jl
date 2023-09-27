@@ -15,7 +15,7 @@ before_install:
   ## Install scipy
   - sudo apt-get install python-is-python3
   - export PYTHON=/usr/bin/python
-  - sudo -H python3 -m pip install numpy scipy
+  - python -m pip install --user numpy scipy
   ##  download clawpack output examples
   - cd $HOME
   - echo $HOME
