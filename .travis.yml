@@ -47,7 +47,7 @@ before_script:
   - git clone https://github.com/hydrocoast/VisClawJuliaExamples.git example
   ### env
   - export JULIA_PROJECT=@.
-  - julia --color=yes -e "VERSION >= v\"0.7.0-DEV.3630\" && using InteractiveUtils; versioninfo()"
+  - julia --color=yes -e "using InteractiveUtils; versioninfo()"
   ### setenv libgmt.so
   - echo "push!(Base.DL_LOAD_PATH, \"${HOME}/gmt/lib\")" >> ${TRAVIS_HOME}/julia/etc/julia/startup.jl
 script:
