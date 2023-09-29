@@ -41,6 +41,7 @@ before_install:
   - export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/gmt/lib"
 before_script:
   ### repo
+  - cd $HOME
   - git clone --depth=50 --branch=${TRAVIS_BRANCH} https://github.com/hydrocoast/VisClaw.jl.git hydrocoast/VisClaw.jl
   - cd hydrocoast/VisClaw.jl
   ### clone examples
