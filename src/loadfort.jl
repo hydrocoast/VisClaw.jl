@@ -151,14 +151,14 @@ end
 
 #######################################
 """
-    amrs = loadsurface(loaddir::AbstractString, filesequence::AbstractVector; kwargs...)
-    amrs = loadsurface(loaddir::AbstractString, fileid::Integer; kwargs...)
+    amrs = loadsurface(outputdir::AbstractString, filesequence::AbstractVector; kwargs...)
+    amrs = loadsurface(outputdir::AbstractString, fileid::Integer; kwargs...)
 
 Function: load time-series of water surface.
           The keyword arguments follow [`loadfortq`](@ref).
           See also: [`loadfortt`](@ref).
 """
-function loadsurface(loaddir::AbstractString, filesequence::AbstractVector=0:0; vartype::Symbol=:surface, kwargs...)
+function loadsurface(outputdir::AbstractString, filesequence::AbstractVector=0:0; vartype::Symbol=:surface, kwargs...)
 
     # check
     !any(map(sym -> vartype == sym, [:surface, :current, :storm])) && error("kwarg 'vartype' is invalid")
@@ -176,13 +176,13 @@ function loadsurface(loaddir::AbstractString, filesequence::AbstractVector=0:0; 
     end
 
     ## make a list
-    isdir(loaddir) || error("Directory $loaddir doesn't exist")
-    flist = readdir(loaddir)
+    isdir(outputdir) || error("Directory $outputdir doesn't exist")
+    flist = readdir(outputdir)
     filter!(x->occursin(fnamekw, x), flist)
     isempty(flist) && error("File named $fnamekw was not found")
 
     # load geoclaw.data
-    params = VisClaw.geodata(loaddir)
+    params = VisClaw.geodata(outputdir)
 
     ## the number of files
     nfile = length(flist)
@@ -210,13 +210,13 @@ function loadsurface(loaddir::AbstractString, filesequence::AbstractVector=0:0; 
     for it = filesequence
         cnt += 1
         if vartype==:surface
-            amr[cnt] = VisClaw.loadfortq(joinpath(loaddir,flist[it]), col; vartype=vartype, kwargs...)
+            amr[cnt] = VisClaw.loadfortq(joinpath(outputdir,flist[it]), col; vartype=vartype, kwargs...)
         elseif vartype==:current
-            amr[cnt] = VisClaw.loadfortq(joinpath(loaddir,flist[it]), col; vartype=vartype, kwargs...)
+            amr[cnt] = VisClaw.loadfortq(joinpath(outputdir,flist[it]), col; vartype=vartype, kwargs...)
         elseif vartype==:storm
-            amr[cnt] = VisClaw.loadforta(joinpath(loaddir,flist[it]), col; kwargs...)
+            amr[cnt] = VisClaw.loadforta(joinpath(outputdir,flist[it]), col; kwargs...)
         end
-        tlap[cnt] = VisClaw.loadfortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
+        tlap[cnt] = VisClaw.loadfortt(joinpath(outputdir,replace(flist[it],r"\.." => ".t")))
     end
 
     ## AMR Array
@@ -226,38 +226,38 @@ function loadsurface(loaddir::AbstractString, filesequence::AbstractVector=0:0; 
     return amrs
 end
 #######################################
-loadsurface(loaddir::AbstractString, fileid::Integer; kwargs...) =
-loadsurface(loaddir, fileid:fileid; kwargs...)
+loadsurface(outputdir::AbstractString, fileid::Integer; kwargs...) =
+loadsurface(outputdir, fileid:fileid; kwargs...)
 #######################################
 
 ######################################
 """
-    amrs = loadstorm(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...)
-    amrs = loadstorm(loaddir::AbstractString, fileid::Integer; kwargs...)
+    amrs = loadstorm(outputdir::AbstractString, filesequence::AbstractVector=0:0; kwargs...)
+    amrs = loadstorm(outputdir::AbstractString, fileid::Integer; kwargs...)
 
 Function: load time-series of storm data.
           The keyword arguments follow [`loadfortq`](@ref).
           See also: [`loadfortt`](@ref).
 """
-loadstorm(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...) =
-loadsurface(loaddir, filesequence; vartype=:storm, kwargs...)
+loadstorm(outputdir::AbstractString, filesequence::AbstractVector=0:0; kwargs...) =
+loadsurface(outputdir, filesequence; vartype=:storm, kwargs...)
 #######################################
-loadstorm(loaddir::AbstractString, fileid::Integer; kwargs...) =
-loadsurface(loaddir, fileid:fileid; vartype=:storm, kwargs...)
+loadstorm(outputdir::AbstractString, fileid::Integer; kwargs...) =
+loadsurface(outputdir, fileid:fileid; vartype=:storm, kwargs...)
 #######################################
 
 #######################################
 """
-    amrs = loadcurrent(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...)
-    amrs = loadcurrent(loaddir::AbstractString, fileid::Integer; kwargs...)
+    amrs = loadcurrent(outputdir::AbstractString, filesequence::AbstractVector=0:0; kwargs...)
+    amrs = loadcurrent(outputdir::AbstractString, fileid::Integer; kwargs...)
 
 Function: load time-series of ocean current data.
           The keyword arguments follow [`loadfortq`](@ref).
           See also: [`loadfortt`](@ref).
 """
-loadcurrent(loaddir::AbstractString, filesequence::AbstractVector=0:0; kwargs...) =
-loadsurface(loaddir, filesequence, vartype=:current, kwargs...)
+loadcurrent(outputdir::AbstractString, filesequence::AbstractVector=0:0; kwargs...) =
+loadsurface(outputdir, filesequence, vartype=:current, kwargs...)
 #######################################
-loadcurrent(loaddir::AbstractString, fileid::Integer; kwargs...) =
-loadsurface(loaddir, fileid:fileid; vartype=:current, kwargs...)
+loadcurrent(outputdir::AbstractString, fileid::Integer; kwargs...) =
+loadsurface(outputdir, fileid:fileid; vartype=:current, kwargs...)
 #######################################

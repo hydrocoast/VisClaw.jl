@@ -1,17 +1,17 @@
 #################################
 """
-    fgmax = loadfgmax(loaddir::AbstractString, fg::VisClaw.FixedGrid; nval_save::Integer=fg.nval)
+    fgmax = loadfgmax(outputdir::AbstractString, fg::VisClaw.FixedGrid; nval_save::Integer=fg.nval)
 
 Function: fgmaxXXXX.txt reader
 """
-function loadfgmax(loaddir::AbstractString, fg::VisClaw.FixedGrid; nval_save::Integer=fg.nval)
+function loadfgmax(outputdir::AbstractString, fg::VisClaw.FixedGrid; nval_save::Integer=fg.nval)
     ## check nval_save
     nval_save > fg.nval && (nval_save=fg.nval)
 
     ## fgmaxXXXX.txt
     filename = "fgmax"*@sprintf("%04d",fg.id)*".txt"
     ## load
-    dat = readdlm(joinpath(loaddir, filename), Float64)
+    dat = readdlm(joinpath(outputdir, filename), Float64)
     dat[dat.<-1e10] .= NaN
 
     ncol = 4 + 2(fg.nval) + 1
