@@ -17,7 +17,7 @@ This allows to draw figures and animations using the Julia language.
 
 
 ## Requirements
-- [Julia](https://github.com/JuliaLang/julia) v1.3.0 or later
+- [Julia](https://github.com/JuliaLang/julia) v1.6.0 or later
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
 ## Installation  
