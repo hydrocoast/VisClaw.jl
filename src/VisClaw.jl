@@ -4,8 +4,8 @@ VisClaw.jl is a Julia package for plotting simulation results of the clawpack.\n
 https://github.com/hydrocoast/VisClaw.jl
 
 ### Examples
-- $(dirname(dirname(pathof(VisClaw))))/Examples_using_Plots.ipynb
-- $(dirname(dirname(pathof(VisClaw))))/Examples_using_GMT.ipynb
+- pathof(VisClaw)/Examples_using_Plots.ipynb
+- pathof(VisClaw)/Examples_using_GMT.ipynb
 
 ### Author
 Takuya Miyashita (miyashita@hydrocoast.jp)\n

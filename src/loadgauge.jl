@@ -28,9 +28,17 @@ function loadgauge(outputdir::AbstractString, gaugeid::AbstractVector{Int64}=0:0
         close(f)
         id = parse(Int64,header1[13:17])
         loc = [parse(Float64,header1[30:46]), parse(Float64,header1[48:64])]
+        # label
+        label = labelhead*@sprintf("%d",id)
+
+        if length(readlines(filename))<5
+            nt = 0
+            gauges[k] = VisClaw.Gauge(label,id,nt,loc)
+            @warn @sprintf("No gauge data was found in Gauge %d. This may cause some errors when plotting.", id)
+            continue
+        end
 
         # read time-series of vars in the certain colmns
-        #dataorg = readdlm(filename, skipstart=3) # v5.7.0
         dataorg = readdlm(filename, comments=true, comment_char='#')
         AMRlevel = convert.(Int64,dataorg[:,1])
         time = convert.(Float64,dataorg[:,2])
@@ -50,9 +58,6 @@ function loadgauge(outputdir::AbstractString, gaugeid::AbstractVector{Int64}=0:0
         else
             eta = empty([0.0])
         end
-
-        # label
-        label = labelhead*@sprintf("%d",id)
 
         # instance
         gauges[k] = VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta,u,v)

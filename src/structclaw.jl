@@ -196,6 +196,7 @@ mutable struct Gauge
     v :: AbstractVector{Float64} # v
     unittime :: Symbol
     # Constructor
+    VisClaw.Gauge(label,id,nt,loc) = new(label,id,nt,loc,[],[],[],[],[], :second)
     VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta,[],[], :second)
     VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta,u,v) = new(label,id,nt,loc,AMRlevel,time,eta,u,v, :second)
 end
