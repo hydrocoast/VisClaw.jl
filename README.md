@@ -7,9 +7,9 @@
 [![Coveralls](https://coveralls.io/repos/github/hydrocoast/VisClaw.jl/badge.svg?branch=master)](https://coveralls.io/github/hydrocoast/VisClaw.jl?branch=master)
 
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ex1.svg", width="250">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ex2.svg", width="250">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ex3.svg", width="250">
+<img src="/figure/ex1.svg", width="250">
+<img src="/figure/ex2.svg", width="250">
+<img src="/figure/ex3.svg", width="250">
 </p>  
 
 VisClaw.jl is a Julia package of the Clawpack visualization tools (see http://www.clawpack.org).   
@@ -61,25 +61,25 @@ The following figures are generated with the Julia scripts in `example/` .
 
 #### sea surface elevation
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/chile2010_eta_GMT.gif", width="375">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ike_eta_GMT.gif", width="425">
+<img src="/figure/chile2010_eta_GMT.gif", width="375">
+<img src="/figure/ike_eta_GMT.gif", width="425">
 </p>  
 
 
 #### topography and bathymetry
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/chile2010_topo.png", width="350">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ike_topo.png", width="450">
+<img src="/figure/chile2010_topo.png", width="350">
+<img src="/figure/ike_topo.png", width="450">
 </p>  
 
 #### seafloor deformation (dtopo)
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/chile2010_dtopo.png", width="400">
+<img src="/figure/chile2010_dtopo.png", width="400">
 </p>  
 
 #### wind and pressure fields
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ike_storm_GMT.gif", width="400">
+<img src="/figure/ike_storm_GMT.gif", width="400">
 </p>  
 
 
@@ -87,31 +87,31 @@ The following figures are generated with the Julia scripts in `example/` .
 
 #### sea surface elevation
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/chile2010_eta.gif", width="400">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ike_eta.gif", width="400">
+<img src="/figure/chile2010_eta.gif", width="400">
+<img src="/figure/ike_eta.gif", width="400">
 </p>  
 
 #### flow velocity
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/chile2010_velo.gif", width="400">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ike_velo.gif", width="400">
+<img src="/figure/chile2010_velo.gif", width="400">
+<img src="/figure/ike_velo.gif", width="400">
 </p>  
 
 #### topography and bathymetry
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/chile2010_topo.svg", width="400">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ike_topo.svg", width="400">
+<img src="/figure/chile2010_topo.svg", width="400">
+<img src="/figure/ike_topo.svg", width="400">
 </p>  
 
 #### wave gauge
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/chile2010_waveform_gauge.svg", width="400">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/ike_waveform_gauge.svg", width="400">
+<img src="/figure/chile2010_waveform_gauge.svg", width="400">
+<img src="/figure/ike_waveform_gauge.svg", width="400">
 </p>  
 
 #### fixed grid monitoring (fgmax)
 <p align="center">
-<img src="https://github.com/hydrocoast/VisClaw.jl/blob/master/figure/fgmax4vars.svg", width="700">
+<img src="/figure/fgmax4vars.svg", width="700">
 </p>  
 
 
