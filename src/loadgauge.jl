@@ -26,8 +26,12 @@ function loadgauge(outputdir::AbstractString, gaugeid::AbstractVector{Int64}=0:0
         f = open(filename,"r")
         header1 = readline(f)
         close(f)
-        id = parse(Int64,header1[13:17])
-        loc = [parse(Float64,header1[30:46]), parse(Float64,header1[48:64])]
+        header1sep = split(header1,r"\s+")
+        id = parse(Int64,header1sep[3])
+        loc = [parse(Float64,header1sep[5]), parse(Float64,header1sep[6])]
+        #id = parse(Int64,header1[13:17])
+        #loc = [parse(Float64,header1[30:46]), parse(Float64,header1[48:64])]
+
         # label
         label = labelhead*@sprintf("%d",id)
 
