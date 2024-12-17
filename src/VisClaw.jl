@@ -43,6 +43,7 @@ include("getvarname_nctopo.jl")
 include("loaddata.jl")
 include("loadtrack.jl")
 include("loadtopo.jl")
+include("loadfgoutdata.jl")
 include("loadfgmaxdata.jl")
 include("loadfgmax.jl")
 include("loadfort.jl")
@@ -80,7 +81,7 @@ include("gmtarrows.jl")
 include("gmttrack.jl")
 
 ## general functions
-export geodata, amrdata, surgedata, gaugedata, fgmaxdata, regiondata
+export geodata, amrdata, surgedata, gaugedata, fgmaxdata, fgoutdata, regiondata
 export topodata, dtopodata
 export loadfgmax
 export loadtopo, loaddeform, loaddtopo
