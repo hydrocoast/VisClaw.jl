@@ -80,6 +80,11 @@ include("gmtsurface.jl")
 include("gmtarrows.jl")
 include("gmttrack.jl")
 
+## plot (using Makie)
+using CairoMakie: CairoMakie
+include("makiesurface3d.jl")
+
+
 ## general functions
 export geodata, amrdata, surgedata, gaugedata, fgmaxdata, fgoutdata, regiondata
 export topodata, dtopodata
