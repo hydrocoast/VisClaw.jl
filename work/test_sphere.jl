@@ -35,15 +35,12 @@ for i = 1:amrall.nstep
     CairoMakie.heatmap!(gax, topo.x, topo.y, topo.elevation', colormap=cmaptopo, colorrange=(-5000, 5000))
     for j = 1:length(amrall.amr[i])
         tile = amrall.amr[i][j]
-        x = collect(LinRange(tile.xlow, tile.xlow+(tile.mx)*tile.dx, tile.mx+1))
-        y = collect(LinRange(tile.ylow, tile.ylow+(tile.my)*tile.dy, tile.my+1))
-        z = tile.eta
-        z = vcat(z, z[end,:]')
-        z = hcat(z, z[:,end])
-        z = z'
-        CairoMakie.heatmap!(gax, x, y, z, colormap=cmapwater, colorrange=(-0.1, 0.1))
+        x = collect(LinRange(tile.xlow, tile.xlow+(tile.mx-1)*tile.dx, tile.mx))
+        y = collect(LinRange(tile.ylow, tile.ylow+(tile.my-1)*tile.dy, tile.my))
+        z = tile.eta'
+        CairoMakie.heatmap!(gax, x, y, z, colormap=cmapwater, colorrange=(-0.2, 0.2))
     end
-    Colorbar(fig[1,2], limits = (-1.0, 1.0), colormap = cmapwater, flipaxis = false)
+    Colorbar(fig[1,2], limits = (-0.2, 0.2), colormap = cmapwater, flipaxis = false)
 
     save(@sprintf("chile%03d_sphere.png",i), fig)
 
