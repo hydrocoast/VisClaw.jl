@@ -83,6 +83,8 @@ include("gmttrack.jl")
 ## plot (using Makie)
 using CairoMakie: CairoMakie
 include("makiesurface3d.jl")
+include("makieheatmap.jl")
+include("makiecheck.jl")
 
 
 ## general functions
@@ -128,6 +130,10 @@ export gmttoporange!
 export gmtcoastline, gmtcoastline!
 export gmttrack, gmttrack!
 
+## functions with Makie.jl
+export makiesurface3d!
+export makieheatmap!
+export makiecheck
 
 ## uniform-grid interpolation
 using PyCall: PyCall

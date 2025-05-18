@@ -1,14 +1,14 @@
 ######################################
 """
-    makiesurface3d!(ax, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
+    makieheatmap!(ax, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
 
-Function: plot values of AMR grids in a 3D surface plot
+Function: variables of AMR grids in heatmap plot
 Arguments:
 - `ax`: the axis to plot on
 - `AMRlevel`: the level of the AMR grid to plot
 - `region`: the region to plot
 """ 
-function makiesurface3d!(ax, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
+function makieheatmap!(ax, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
     # check arg
     if isa(tiles[1], VisClaw.SurfaceHeight)
         var = :eta
@@ -50,8 +50,8 @@ function makiesurface3d!(ax, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[]
         end
 
         ## plot
-        CairoMakie.surface!(ax, x, y, val'; kwargs...)
+        CairoMakie.heatmap!(ax, x, y, val'; kwargs...)
 
     end
-
+    #return ax
 end
