@@ -45,11 +45,17 @@ function makiecheck(simdir::AbstractString, colorrange::Tuple=(-0.1, 0.1); varty
         ## load data
         amrs = loadfunction(simdir, i; AMRlevel=AMRlevel)
 
+        if haskey(kwargs, :colormap)
+            cmap = kwargs[:colormap]
+        else
+            cmap = :viridis # default colormap
+        end
+
         ## plot
         CairoMakie.empty!(fig)
         ax = CairoMakie.Axis(fig[1,1], title=@sprintf("%8.1f s",amrs.timelap[1]))
         VisClaw.makieheatmap!(ax, amrs.amr[1]; colorrange=colorrange, wind=TFwind, kwargs...)
-        CairoMakie.Colorbar(fig[1,2], limits=colorrange, flipaxis=false)
+        CairoMakie.Colorbar(fig[1,2], limits=colorrange, colormap=cmap, flipaxis=true)
 
         ## show the figure
         CairoMakie.display(fig)

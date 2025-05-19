@@ -85,6 +85,7 @@ using CairoMakie: CairoMakie
 include("makiesurface3d.jl")
 include("makieheatmap.jl")
 include("makiecheck.jl")
+include("makiewindarrows.jl")
 
 
 ## general functions
@@ -134,6 +135,7 @@ export gmttrack, gmttrack!
 export makiesurface3d!
 export makieheatmap!
 export makiecheck
+export makiewindarrows!
 
 ## uniform-grid interpolation
 using PyCall: PyCall
