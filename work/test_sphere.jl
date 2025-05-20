@@ -2,17 +2,23 @@ include("../src/VisClaw.jl")
 using Revise
 using Printf
 
-# -----------------------------
 # chile 2010
-# -----------------------------
-simdir = joinpath(VisClaw.CLAW,"geoclaw/examples/tsunami/chile2010/_output")
+#simdir = joinpath(VisClaw.CLAW,"geoclaw/examples/tsunami/chile2010/_output")
+#fig_prefix = "chile2010"
+#lon0, lat0 = -90, -30
+
+# OWI jebi
+simdir = "/Users/miyashita/Research/AMR/simamr_meteotsunami_jp/owi_jebi/_output"
+fig_prefix = "owi_jebi"
+lon0, lat0 = 135, 35
 
 # load topo
 topo = VisClaw.loadtopo(simdir)
 
 # load water surface
 amrall = VisClaw.loadsurface(simdir)
-VisClaw.replaceunit!(amrall, :minute)
+#VisClaw.replaceunit!(amrall, :minute)
+VisClaw.replaceunit!(amrall, :hour)
 
 using GeoMakie, CairoMakie
 cmaptopo = :bukavu # or :gist_earth, :bukavu
@@ -29,20 +35,12 @@ for i = 1:amrall.nstep
     time_min = amrall.timelap[i]
 
     CairoMakie.empty!(fig)
-    lon0 = -90 - 2.0(i-1)
-    lat0 = -30 + 1.5(i-1)
-    gax = GeoAxis(fig[1, 1], dest="+proj=ortho +lon_0=$(lon0) +lat_0=$(lat0)")
+    gax = GeoAxis(fig[1, 1], dest="+proj=ortho +lon_0=$(lon0) +lat_0=$(lat0)", title=@sprintf("%03d hours", amrall.timelap[i]))
     CairoMakie.heatmap!(gax, topo.x, topo.y, topo.elevation', colormap=cmaptopo, colorrange=(-5000, 5000))
-    for j = 1:length(amrall.amr[i])
-        tile = amrall.amr[i][j]
-        x = collect(LinRange(tile.xlow, tile.xlow+(tile.mx-1)*tile.dx, tile.mx))
-        y = collect(LinRange(tile.ylow, tile.ylow+(tile.my-1)*tile.dy, tile.my))
-        z = tile.eta'
-        CairoMakie.heatmap!(gax, x, y, z, colormap=cmapwater, colorrange=(-0.2, 0.2))
-    end
-    Colorbar(fig[1,2], limits = (-0.2, 0.2), colormap = cmapwater, flipaxis = false)
+    VisClaw.makieheatmap!(gax, amrall.amr[i]; colormap=cmapwater, colorrange=(-0.2, 0.2))
+    Colorbar(fig[1,2], limits = (-0.2, 0.2), colormap = cmapwater, flipaxis = true)
 
-    save(@sprintf("chile%03d_sphere.png",i), fig)
+    save(fig_prefix*@sprintf("_ortho_%03d.svg",i-1), fig)
 
 end
 
