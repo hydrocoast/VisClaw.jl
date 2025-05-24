@@ -23,7 +23,7 @@ topo = VisClaw.loadtopo(simdir)
 
 fig = CairoMakie.Figure()
 ax1 = CairoMakie.Axis(fig[1, 1])
-VisClaw.makietopo!(ax1,topo)
+VisClaw.makietopo!(ax1,topo; colormap=:topo, colorrange=(-5000,5000))
 VisClaw.makiegaugelocation!(ax1, gauges)
 
 ax2 = CairoMakie.Axis(fig[1, 2])
