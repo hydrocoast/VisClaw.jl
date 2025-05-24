@@ -1,5 +1,5 @@
-include("../src/VisClaw.jl")
-using Revise
+#include("../src/VisClaw.jl")
+#using Revise
 using Printf
 
 # chile 2010
@@ -40,7 +40,7 @@ for i = 1:amrall.nstep
     VisClaw.makieheatmap!(gax, amrall.amr[i]; colormap=cmapwater, colorrange=(-0.2, 0.2))
     Colorbar(fig[1,2], limits = (-0.2, 0.2), colormap = cmapwater, flipaxis = true)
 
-    save(fig_prefix*@sprintf("_ortho_%03d.svg",i-1), fig)
+    save(fig_prefix*@sprintf("_ortho_%03d.png",i-1), fig)
 
 end
 
