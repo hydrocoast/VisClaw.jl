@@ -5,9 +5,6 @@ using Dates
 using GeoMakie
 using CairoMakie
 
-# -----------------------------
-# ike
-# -----------------------------
 # OWI jebi
 simdir = "/Users/miyashita/Research/AMR/simamr_meteotsunami_jp/owi_jebi/_output"
 fig_prefix = "owi_jebi"
@@ -21,7 +18,7 @@ VisClaw.replaceunit!.(gauges, :hour)
 ## loadtopo
 topo = VisClaw.loadtopo(simdir)
 
-fig = CairoMakie.Figure()
+fig = CairoMakie.Figure(size=(900, 450))
 ax1 = CairoMakie.Axis(fig[1, 1])
 VisClaw.makietopo!(ax1,topo; colormap=:topo, colorrange=(-5000,5000))
 VisClaw.makiegaugelocation!(ax1, gauges)
@@ -30,26 +27,6 @@ ax2 = CairoMakie.Axis(fig[1, 2])
 #VisClaw.makiegaugewaveform!(ax2, gauges[1])
 #VisClaw.makiegaugevelocity!(ax2, gauges[1])
 VisClaw.makiegaugewaveform!.(ax2, gauges)
-VisClaw.makiegaugevelocity!.(ax2, gauges)
+#VisClaw.makiegaugevelocity!.(ax2, gauges)
 
 
-#=
-pltgl = plotsgaugelocation(gauges)
-pltgl = plotscoastline!(pltgl, topo; xlims=(-95.5, -93.5), ylims=(28.5, 30.0), axis_ratio=:equal, lc=:black, colorbar=false)
-
-
-## plot
-plt = plotsgaugewaveform(gauges, lw=1.0)
-plt = plot!(plt; ylabel="Surface (m)",
-            legendfont=Plots.font("sans-serif",10),
-            guidefont=Plots.font("sans-serif",10),
-            tickfont=Plots.font("sans-serif",10),
-            legend=:topleft,
-            )
-pltv = plotsgaugevelocity(gauges)
-
-## save
-savefig(plt, "ike_waveform_gauge.png")
-=#
-
-# -----------------------------
