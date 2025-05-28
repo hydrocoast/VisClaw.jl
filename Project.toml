@@ -4,6 +4,7 @@ authors = ["Takuya Miyashita <miyashita@hydrocoast.jp>"]
 version = "0.7.8"
 
 [deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 GMT = "5752ebe1-31b9-557e-87aa-f909b540aa54"
@@ -21,7 +22,7 @@ DelimitedFiles = "1"
 GMT = "1"
 GR = "0.72, 0.73"
 GeometricalPredicates = "0.4"
-Interpolations = "0.14, 0.15"
+Interpolations = "0.14, 0.15, 0.16"
 NetCDF = "0.11, 0.12"
 Plots = "1"
 PyCall = "1"
@@ -30,6 +31,8 @@ julia = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+
 
 [targets]
-test = ["Test"]
+test = ["Test", "Revise"]
