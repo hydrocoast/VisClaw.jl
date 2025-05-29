@@ -18,28 +18,29 @@ fgmax = VisClaw.loadfgmax.(simdir, fg)
 fgo = VisClaw.fgoutdata(simdir)
 fgout = VisClaw.loadfgout.(simdir, fgo)
 
-
 using CairoMakie
+
+clims = (-0.25, 0.25)
+cmap = :viridis
+fig = CairoMakie.Figure()
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[1,1]), fgo[1], fgout[1], 1; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[1,2]), fgo[1], fgout[1], 2; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[1,3]), fgo[1], fgout[1], 3; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[2,1]), fgo[1], fgout[1], 4; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[2,2]), fgo[1], fgout[1], 5; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[2,3]), fgo[1], fgout[1], 6; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[3,1]), fgo[1], fgout[1], 7; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[3,2]), fgo[1], fgout[1], 8; colorrange=clims, colormap=cmap)
+VisClaw.makieheatmap!(CairoMakie.Axis(fig[3,3]), fgo[1], fgout[1], 9; colorrange=clims, colormap=cmap)
+CairoMakie.Colorbar(fig[3,4], limits=clims, colormap=cmap, flipaxis=true)
+fig
+
+#=
 fig = CairoMakie.Figure()
 ax = CairoMakie.Axis(fig[1,1])
 VisClaw.makieheatmap!(ax, fgo[1], fgout[1], 5; colorrange=(0.0, 1.0), colormap=:viridis)
 CairoMakie.Colorbar(fig[1,2], limits=(0.0, 0.5), colormap=:viridis, flipaxis=true)
-
 fig
-
-
-
-#=
-outputdir = joinpath(VisClaw.CLAW,"geoclaw/examples/tsunami/chile2010_fgmax-fgout/_output")
-filename= "fgout0001.q0005"
-dat = readdlm(joinpath(outputdir, filename), Float64; skipstart=9)
-
-D = reshape(dat[:,1],(fgout[1].nx, fgout[1].ny))
-eta = reshape(dat[:,4],(fgout[1].nx, fgout[1].ny))
-dry = D .< 1e-3
-eta[dry] .= NaN
-
-heatmap(eta; colormap=:viridis, colorrange=(-0.5, 0.5))
 =#
 
 #=
