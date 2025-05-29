@@ -46,6 +46,7 @@ include("loadtopo.jl")
 include("loadfgoutdata.jl")
 include("loadfgmaxdata.jl")
 include("loadfgmax.jl")
+include("loadfgout.jl")
 include("loadfort.jl")
 include("loadgauge.jl")
 
@@ -93,7 +94,7 @@ include("makiegauge.jl")
 ## general functions
 export geodata, amrdata, surgedata, gaugedata, fgmaxdata, fgoutdata, regiondata
 export topodata, dtopodata
-export loadfgmax
+export loadfgmax, loadfgout
 export loadtopo, loaddeform, loaddtopo
 export loadgauge
 export loadtrack

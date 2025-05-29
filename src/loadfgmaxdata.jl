@@ -55,7 +55,7 @@ function fgmaxdata(outdir::AbstractString)
                 baseline += 10 + npts
             end
             ## instance
-            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, npts, x, y)
+            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, NaN, NaN, 1, npts, x, y)
 
         ## 1
         elseif point_style == 1
@@ -65,7 +65,7 @@ function fgmaxdata(outdir::AbstractString)
             x = LinRange(x1, x2, npts)
             y = LinRange(y1, y2, npts)
             # instance
-            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, npts, x, y)
+            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, NaN, NaN, 1, npts, x, y)
             baseline += 12
 
         ## 2
@@ -74,7 +74,7 @@ function fgmaxdata(outdir::AbstractString)
             x1, y1 = parse.(Float64, split(strip(txt[baseline+10]), r"\s+")[1:2])
             x2, y2 = parse.(Float64, split(strip(txt[baseline+11]), r"\s+")[1:2])
             # instance
-            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, nx, ny, (x1,x2), (y1,y2))
+            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val,  NaN, NaN, 1, nx, ny, (x1,x2), (y1,y2))
             baseline += 12
 
         ## 3
@@ -99,7 +99,7 @@ function fgmaxdata(outdir::AbstractString)
             y = y[ind]
 
             ## instance
-            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val,
+            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgmax_val, NaN, NaN, 1,
                                       topoflag.ncols, topoflag.nrows,
                                       extrema(topoflag.x), extrema(topoflag.y),
                                       npts, x, y, flag)

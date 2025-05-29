@@ -228,7 +228,10 @@ Struct: Fixed grid
 struct FixedGrid
     id :: Integer
     style :: Integer
-    nval :: Integer
+    nval :: Integer    
+    tstart :: Float64
+    tend :: Float64
+    nout :: Integer
     ## point_style = 2, 4
     nx :: Integer
     ny :: Integer
@@ -243,13 +246,17 @@ struct FixedGrid
 
     # Constructor
     ## point_style = 0, 1
-    VisClaw.FixedGrid(id,style,nval,npts,x,y) = new(id,style,nval,0,0,(NaN,NaN),(NaN,NaN),npts,x,y,[])
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,npts,x,y) = 
+                  new(id,style,nval,tstart,tend,nout,0,0,(NaN,NaN),(NaN,NaN),npts,x,y,[])
     ## point_style = 2
-    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims) = new(id,style,nval,nx,ny,xlims,ylims,0,[NaN],[NaN],[])
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims) = 
+                  new(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,0,[NaN],[NaN],[])
     ## point_style = 3
-    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims,npts,x,y) = new(id,style,nval,nx,ny,xlims,ylims,npts,x,y,[])
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y) = 
+                  new(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y,[])
     ## point_style = 4
-    VisClaw.FixedGrid(id,style,nval,nx,ny,xlims,ylims,npts,x,y,flag) = new(id,style,nval,nx,ny,xlims,ylims,npts,x,y,flag)
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y,flag) = 
+                  new(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y,flag)
 
 end
 ########################################
@@ -282,6 +289,14 @@ mutable struct FGmax
               new(topo,D,v,M,Mflux,Dmin,tD,tv,tM,tMflux,tDmin,tarrival,:second)
 end
 ########################################
+
+"""
+Struct: fgout values
+"""
+mutable struct FGout
+    eta :: AbstractArray{Float64}
+    VisClaw.FGout(eta) = new(eta)
+end
 
 
 ########################################

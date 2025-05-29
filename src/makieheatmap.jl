@@ -58,17 +58,28 @@ end
 
 
 
-function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgout::VisClaw.FGmax; kwargs...)
+function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax; kwargs...)
     x = LinRange(fg.xlims[1], fg.xlims[2], fg.nx)
     y = LinRange(fg.ylims[1], fg.ylims[2], fg.ny)
 
     if fg.style == 2
-        D = fgout.D
-        topo = fgout.topo
+        D = fgmax.D
+        topo = fgmax.topo
         dry = D .< 1e-3
         eta = D .+ topo
         eta[dry] .= NaN
         CairoMakie.heatmap!(ax, x, y, eta'; kwargs...)
+    else
+        error("makieheatmap! for FixedGrid is not implemented for style $(fg.style)")
+    end
+    #return ax
+end
+
+function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgout::VisClaw.FGout, iout::Integer; kwargs...)
+    x = LinRange(fg.xlims[1], fg.xlims[2], fg.nx)
+    y = LinRange(fg.ylims[1], fg.ylims[2], fg.ny)
+    if fg.style == 2
+        CairoMakie.heatmap!(ax, x, y, permutedims(fgout.eta[:,:,iout],(2,1)); kwargs...)
     else
         error("makieheatmap! for FixedGrid is not implemented for style $(fg.style)")
     end
