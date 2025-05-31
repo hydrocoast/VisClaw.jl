@@ -31,6 +31,8 @@ function fgoutdata(outdir::AbstractString)
         tstart = parse(Float64, split(txt_fg[occursin.("tstart",txt_fg)][1],r"\s+")[1])
         tend = parse(Float64, split(txt_fg[occursin.("tend",txt_fg)][1],r"\s+")[1])
         nout = parse(Int64, split(txt_fg[occursin.("nout",txt_fg)][1],r"\s+")[1])
+        output_format = parse(Int64, split(txt_fg[occursin.("output_format",txt_fg)][1],r"\s+")[1])
+
         ## check point style
         (point_style !== 2) && error("point_style $point_style is not supported yet.")
 
@@ -47,7 +49,10 @@ function fgoutdata(outdir::AbstractString)
             x2, y2 = parse.(Float64, split(txt_fg[occursin.("x2, y2",txt_fg)][1],r"\s+")[1:2])
             num_fgout_val = length(split(replace(txt_fg[occursin.("# q_out_vars",txt_fg)][1], "# q_out_vars" => ""), r"\s+") )-1
             # instance
-            fg[i] = VisClaw.FixedGrid(FGid, point_style, num_fgout_val, tstart, tend, nout, nx, ny, (x1,x2), (y1,y2))
+            fg[i] = VisClaw.FixedGrid(
+                    FGid, point_style, num_fgout_val, 
+                    tstart, tend, nout, output_format, 
+                    nx, ny, (x1,x2), (y1,y2))
             baseline += 12
 
         ## 3

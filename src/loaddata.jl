@@ -170,3 +170,48 @@ function regiondata(outdir::AbstractString)
     return regions
 end
 ###################################
+
+
+###################################
+"""
+    clawparam = clawdata("simlation/path/_output"::AbstractString)
+    clawparam = clawdata("simlation/path/_output/claw.data"::AbstractString)
+
+Function: claw.data reader
+"""
+function clawdata(outdir::AbstractString)
+    ## set filename
+    fname = occursin("claws.data", basename(outdir)) ? outdir : joinpath(outdir, "claws.data")
+
+    ## check whether it exists
+    if !isfile(fname); error("File $fname is not found."); end
+    ## read all lines
+    open(fname,"r") do f
+        global txt = readlines(f)
+    end
+
+    ## parse parameters
+    num_dim = parse(Int64, split(txt[occursin.("num_dim",txt)][1],r"\s+")[1])
+    lower = parse.(Float64, split(txt[occursin.("lower",txt)][1],r"\s+")[1:2])
+    upper = parse.(Float64, split(txt[occursin.("upper",txt)][1],r"\s+")[1:2])
+    num_cells = parse.(Int64, split(txt[occursin.("num_cells",txt)][1],r"\s+")[1:2])
+    t0 = parse(Float64, split(txt[occursin.("t0",txt)][1],r"\s+")[1])
+    tfinal = parse(Float64, split(txt[occursin.("tfinal",txt)][1],r"\s+")[1])
+    output_format = parse(Int64, split(txt[occursin.("output_format",txt)][1],r"\s+")[1])
+
+    xlims = (lower[1], upper[1])
+    ylims = (lower[2], upper[2])
+    nx = num_cells[1]
+    ny = num_cells[2]
+    ## check whether the number of dimensions is correct
+    if num_dim != 2
+        error("The number of dimensions must be 2, but got $num_dim.")
+    end
+
+    ## instance
+    clawparam = VisClaw.ClawParam(num_dim, xlims, ylims, nx, ny, t0, tfinal, output_format)
+
+    ## return values
+    return clawparam
+end
+###################################

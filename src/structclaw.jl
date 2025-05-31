@@ -16,9 +16,9 @@ mutable struct Storm <: VisClaw.AMRGrid
     ylow::Float64
     dx::Float64
     dy::Float64
-    u::AbstractArray{Float64,2}
-    v::AbstractArray{Float64,2}
-    slp::AbstractArray{Float64,2}
+    u::AbstractArray{AbstractFloat,2}
+    v::AbstractArray{AbstractFloat,2}
+    slp::AbstractArray{AbstractFloat,2}
     # Constructor
     VisClaw.Storm(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp)
@@ -38,9 +38,9 @@ mutable struct Velocity <: VisClaw.AMRGrid
     ylow::Float64
     dx::Float64
     dy::Float64
-    u :: AbstractArray{Float64,2}
-    v :: AbstractArray{Float64,2}
-    vel :: AbstractArray{Float64,2}
+    u :: AbstractArray{AbstractFloat,2}
+    v :: AbstractArray{AbstractFloat,2}
+    vel :: AbstractArray{AbstractFloat,2}
     # Constructor
     VisClaw.Velocity(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel)
@@ -60,7 +60,7 @@ mutable struct SurfaceHeight <: VisClaw.AMRGrid
     ylow::Float64
     dx::Float64
     dy::Float64
-    eta::AbstractArray{Float64,2}
+    eta::AbstractArray{AbstractFloat,2}
     # Constructor
     VisClaw.SurfaceHeight(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta)
@@ -191,9 +191,9 @@ mutable struct Gauge
     loc :: AbstractVector{Float64} # gauge location
     AMRlevel :: AbstractVector{Integer}
     time :: AbstractVector # time
-    eta :: AbstractVector{Float64} # surface
-    u :: AbstractVector{Float64} # u
-    v :: AbstractVector{Float64} # v
+    eta :: AbstractVector{AbstractFloat} # surface
+    u :: AbstractVector{AbstractFloat} # u
+    v :: AbstractVector{AbstractFloat} # v
     unittime :: Symbol
     # Constructor
     VisClaw.Gauge(label,id,nt,loc) = new(label,id,nt,loc,[],[],[],[],[], :second)
@@ -211,8 +211,8 @@ mutable struct Gaugemax
     id :: Integer # gauge id
     loc :: AbstractVector{Float64} # gauge location
     AMRlevel :: Integer
-    eta :: Float64
-    vel :: Float64
+    eta :: AbstractFloat
+    vel :: AbstractFloat
     t_eta
     t_vel
     unittime :: Symbol
@@ -232,6 +232,7 @@ struct FixedGrid
     tstart :: Float64
     tend :: Float64
     nout :: Integer
+    output_format :: Integer
     ## point_style = 2, 4
     nx :: Integer
     ny :: Integer
@@ -246,17 +247,17 @@ struct FixedGrid
 
     # Constructor
     ## point_style = 0, 1
-    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,npts,x,y) = 
-                  new(id,style,nval,tstart,tend,nout,0,0,(NaN,NaN),(NaN,NaN),npts,x,y,[])
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,output_format,npts,x,y) = 
+                  new(id,style,nval,tstart,tend,nout,output_format,0,0,(NaN,NaN),(NaN,NaN),npts,x,y,[])
     ## point_style = 2
-    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims) = 
-                  new(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,0,[NaN],[NaN],[])
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,output_format,nx,ny,xlims,ylims) = 
+                  new(id,style,nval,tstart,tend,nout,output_format,nx,ny,xlims,ylims,0,[NaN],[NaN],[])
     ## point_style = 3
-    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y) = 
-                  new(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y,[])
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,output_format,nx,ny,xlims,ylims,npts,x,y) = 
+                  new(id,style,nval,tstart,tend,nout,output_format,nx,ny,xlims,ylims,npts,x,y,[])
     ## point_style = 4
-    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y,flag) = 
-                  new(id,style,nval,tstart,tend,nout,nx,ny,xlims,ylims,npts,x,y,flag)
+    VisClaw.FixedGrid(id,style,nval,tstart,tend,nout,output_format,nx,ny,xlims,ylims,npts,x,y,flag) = 
+                  new(id,style,nval,tstart,tend,nout,output_format,nx,ny,xlims,ylims,npts,x,y,flag)
 
 end
 ########################################
@@ -294,7 +295,7 @@ end
 Struct: fgout values
 """
 mutable struct FGout
-    eta :: AbstractArray{Float64}
+    eta :: AbstractArray{AbstractFloat}
     VisClaw.FGout(eta) = new(eta)
 end
 
@@ -315,3 +316,22 @@ mutable struct Track
     VisClaw.Track(timelap,lon,lat,direction) = new(timelap,lon,lat,direction,:second)
 end
 ########################################
+
+
+"""
+Struct: claw parameters (retrieved from claw.data)
+"""
+struct ClawParam
+    num_dim :: Integer
+    xlims :: Tuple
+    ylims :: Tuple
+    nx :: Integer
+    ny :: Integer
+    tstart :: Float64
+    tend :: Float64
+    output_format :: Integer
+
+    # Constructor
+    VisClaw.ClawParam(num_dim, xlims, ylims, nx, ny, tstart, tend, output_format) =
+                  new(num_dim, xlims, ylims, nx, ny, tstart, tend, output_format)
+end

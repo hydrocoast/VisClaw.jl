@@ -35,6 +35,13 @@ VisClaw.makieheatmap!(CairoMakie.Axis(fig[3,3]), fgo[1], fgout[1], 9; colorrange
 CairoMakie.Colorbar(fig[3,4], limits=clims, colormap=cmap, flipaxis=true)
 fig
 
+
+figm = CairoMakie.Figure()
+ax = CairoMakie.Axis(figm[1,1])
+VisClaw.makieheatmap!(ax, fg[1], fgmax[1]; colorrange=(0.0, 1.0), colormap=:viridis)
+CairoMakie.Colorbar(figm[1,2], limits=(0.0, 0.5), colormap=:viridis, flipaxis=true)
+figm
+
 #=
 fig = CairoMakie.Figure()
 ax = CairoMakie.Axis(fig[1,1])
@@ -43,12 +50,3 @@ CairoMakie.Colorbar(fig[1,2], limits=(0.0, 0.5), colormap=:viridis, flipaxis=tru
 fig
 =#
 
-#=
-using CairoMakie
-fig = CairoMakie.Figure()
-ax = CairoMakie.Axis(fig[1,1])
-VisClaw.makieheatmap!(ax, fg[1], fgmax[1]; colorrange=(0.0, 1.0), colormap=:viridis)
-CairoMakie.Colorbar(fig[1,2], limits=(0.0, 0.5), colormap=:viridis, flipaxis=true)
-
-fig
-=#
