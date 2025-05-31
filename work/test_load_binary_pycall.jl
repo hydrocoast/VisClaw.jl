@@ -14,21 +14,33 @@ fg = fg[1]  # just take the first one
 x = LinRange(fg.xlims[1], fg.xlims[2], fg.nx)
 y = LinRange(fg.ylims[1], fg.ylims[2], fg.ny)
 
-
-using CairoMakie
-
-np = pyimport("numpy")
+nall = fg.nval*fg.nx*fg.ny
 
 fileb = joinpath(simdir, "fgout0001.b0003")
+
+
+dat = Vector{Float32}(undef, nall)
+# Read the data into arrays
+open(fileb, "r") do io
+    for k in 1:nall
+        dat[k] = read(io, Float32)
+    end
+end
+
+
+#=
+np = pyimport("numpy")
 dat = np.fromfile(file=fileb, dtype=np.float32)
+=#
 
 dat = reshape(dat, (fg.nval, fg.nx, fg.ny))
-
 D = dat[1, :, :]  # just take the first variable
 eta = dat[4, :, :]  # just take the second variable
 dry = D .< 1e-3
 eta[dry] .= NaN  # set dry cells to NaN
 
+
+using CairoMakie
 cmap = :balance # or :viridis, :plasma, :inferno, :magma, :cividis
 clims = (-0.25,0.25)
 
@@ -36,7 +48,6 @@ fig = CairoMakie.Figure()
 ax = CairoMakie.Axis(fig[1, 1])
 CairoMakie.heatmap!(ax, x, y, eta, colormap=cmap, colorrange=clims)
 CairoMakie.Colorbar(fig[1,2], colormap=cmap, limits=clims, flipaxis=true)
-
 
 fig
 

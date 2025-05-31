@@ -23,6 +23,27 @@ function makiecheck(simdir::AbstractString, colorrange::Tuple=(-0.1, 0.1); varty
     ## the number of files
     nfile = length(flist)
 
+    if haskey(kwargs, :colormap)
+        cmap = kwargs[:colormap]
+        filter!(p -> first(p)!==:colormap, kwargs)
+    else
+        cmap = :viridis # default colormap
+    end
+    if haskey(kwargs, :colorrange)
+        colorrange = kwargs[:colorrange]
+        filter!(p -> first(p)!==:colorrange, kwargs)
+    else
+        if vartype==:surface
+            colorrange = (-0.5, 0.5) # default color range for surface
+        elseif vartype==:current
+            colorrange = (0.0, 0.20) # default color range for current
+        elseif vartype==:storm
+            colorrange = (980.0, 1020.0) # default color range for storm pressure
+        elseif vartype==:wind
+            colorrange = (0.0, 30.0) # default color range for wind speed
+        end
+    end
+
     fig = CairoMakie.Figure()
     ### draw figures until nothing or invalid number is input
     println(">> Press ENTER with a blank to finish")
@@ -44,12 +65,6 @@ function makiecheck(simdir::AbstractString, colorrange::Tuple=(-0.1, 0.1); varty
 
         ## load data
         amrs = loadfunction(simdir, i; AMRlevel=AMRlevel)
-
-        if haskey(kwargs, :colormap)
-            cmap = kwargs[:colormap]
-        else
-            cmap = :viridis # default colormap
-        end
 
         ## plot
         CairoMakie.empty!(fig)
