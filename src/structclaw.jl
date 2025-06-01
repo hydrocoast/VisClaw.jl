@@ -330,8 +330,10 @@ struct ClawParam
     tstart :: Float64
     tend :: Float64
     output_format :: Integer
+    num_ghost :: Integer # number of ghost cells, default is 0
 
     # Constructor
-    VisClaw.ClawParam(num_dim, xlims, ylims, nx, ny, tstart, tend, output_format) =
-                  new(num_dim, xlims, ylims, nx, ny, tstart, tend, output_format)
+    VisClaw.ClawParam() = new(2, (), (), 0, 0, 0.0, 0.0, 1, 2)
+    VisClaw.ClawParam(num_dim, xlims, ylims, nx, ny, tstart, tend, output_format, num_ghost) =
+                  new(num_dim, xlims, ylims, nx, ny, tstart, tend, output_format, num_ghost)
 end

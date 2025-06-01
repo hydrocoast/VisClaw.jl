@@ -44,6 +44,9 @@ function makiecheck(simdir::AbstractString, colorrange::Tuple=(-0.1, 0.1); varty
         end
     end
 
+    ## parameters (output format and number of ghost cells)
+    clawparams = VisClaw.clawdata(simdir)
+
     fig = CairoMakie.Figure()
     ### draw figures until nothing or invalid number is input
     println(">> Press ENTER with a blank to finish")
@@ -64,7 +67,7 @@ function makiecheck(simdir::AbstractString, colorrange::Tuple=(-0.1, 0.1); varty
         if ( (i>nfile) || (i<1) ); println("Invalid number"); ex=1; continue; end
 
         ## load data
-        amrs = loadfunction(simdir, i; AMRlevel=AMRlevel)
+        amrs = loadfunction(simdir, i; AMRlevel=AMRlevel, clawparams=clawparams, kwargs...)
 
         ## plot
         CairoMakie.empty!(fig)

@@ -1,15 +1,33 @@
 """
     amr = loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:surface,
-                    params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
+                    geoparams::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
                     xlims=(-Inf,Inf), ylims=(-Inf,Inf), region="", AMRlevel=[])
 
 Function: fort.qxxxx reader.
 """
-function loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:surface,
-                   params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true,
+function loadfortq(filename::AbstractString, ncol::Integer;
+                   vartype::Symbol=:surface,
+                   clawparams::VisClaw.ClawParam=VisClaw.ClawParam(), 
+                   geoparams::VisClaw.GeoParam=VisClaw.GeoParam(), 
+                   runup::Bool=true,
                    xlims=(-Inf,Inf), ylims=(-Inf,Inf), region="", AMRlevel=[])
     ## check
     !any(map(sym -> vartype == sym, [:surface, :current, :storm])) && error("kwarg 'vartype' is invalid")
+
+    output_format = clawparams.output_format
+    ngh = clawparams.num_ghost
+    ## output_format
+    if output_format < 1 && output_format > 3
+        error("kwarg 'output_format' must be 1, 2, or 3")
+    end
+    if output_format == 2; dtype = Float32
+    elseif output_format == 3; dtype = Float64
+    end
+
+    ## unsupported combination of vartype and output_format
+    if vartype==:storm && (output_format == 2 || output_format == 3)
+        error("vartype=:storm is currently not supported for binary output format")
+    end
 
     ## set range
     if isa(region, VisClaw.AbstractTopo); xlims=extrema(region.x); ylims=extrema(region.y); end
@@ -19,6 +37,11 @@ function loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:sur
     f = open(filename,"r")
     txtorg = readlines(f)
     close(f) #close
+    ## file open if binary
+    if output_format == 2 || output_format == 3
+        filename_bin = replace(filename, "fort.q" => "fort.b")
+        fbin = open(filename_bin, "r")
+    end
 
     ## count the number of lines and grids
     nlineall = length(txtorg)
@@ -48,76 +71,154 @@ function loadfortq(filename::AbstractString, ncol::Integer; vartype::Symbol=:sur
         ylow = parse(Float64, split(header[6],r"\s+")[1])
         dx = parse(Float64, split(header[7],r"\s+")[1])
         dy = parse(Float64, split(header[8],r"\s+")[1])
-        ## read variables
-        body = txtorg[l+9:l+9+(mx+1)*my-1]
 
-        # the next tile
-        l = l+9+(mx+1)*my
-        ## check AMRlevel
-        if !isempty(AMRlevel); if isempty(findall(AMRlevel .== AMRlevel_load)); i += 1; continue; end; end
+        if output_format == 1
+            ## read variables
+            body = txtorg[l+9:l+9+(mx+1)*my-1]
 
-        ## check whether the tile is on the domain
-        if (xlow+dx*mx < xlims[1]) | (xlims[2] < xlow); i += 1; continue; end
-        if (ylow+dy*my < ylims[1]) | (ylims[2] < ylow); i += 1; continue; end
+            # the next tile
+            l = l+9+(mx+1)*my
+            ## check AMRlevel
+            if !isempty(AMRlevel); if isempty(findall(AMRlevel .== AMRlevel_load)); i += 1; continue; end; end
+            ## check whether the tile is on the domain
+            if (xlow+dx*mx < xlims[1]) | (xlims[2] < xlow); i += 1; continue; end
+            if (ylow+dy*my < ylims[1]) | (ylims[2] < ylow); i += 1; continue; end
 
-        if vartype==:surface
-            elev = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
-            depth = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
-            # wet condition
-            land = (elev-depth) .>= params.dmin
+            if vartype==:surface
+                elev = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
+                depth = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
+                # wet condition
+                land = (elev-depth) .>= geoparams.dmin
 
-            # sea surface anomaly
-            (params.eta0 != 0.0) && (elev[.!land] = elev[.!land].-params.eta0)
+                # sea surface anomaly
+                (geoparams.eta0 != 0.0) && (elev[.!land] = elev[.!land].-geoparams.eta0)
 
-            # inundation depth if wet
-            runup && (elev[land] = depth[land])
+                # inundation depth if wet
+                runup && (elev[land] = depth[land])
 
-            # NaN if dry
-            elev[depth.<=0.0] .= NaN
+                # NaN if dry
+                elev[depth.<=0.0] .= NaN
 
-            ## array
-            amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,elev)
+                ## array
+                amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,elev)
 
-        elseif vartype==:current
-            ucol = ncol
-            vcol = ncol+1
-            # read
-            depth = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
-            u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
-            v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
-            # replace to NaN
-            mask = depth.<=0.0
-            depth[mask] .= NaN
-            u[mask] .= NaN
-            v[mask] .= NaN
-            # calc
-            u = u./depth
-            v = v./depth
-            vel = sqrt.(u.^2 .+ v.^2)
-            ## array
-            amr[i] = VisClaw.Velocity(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,u,v,vel)
+            elseif vartype==:current
+                ucol = ncol
+                vcol = ncol+1
+                # read
+                depth = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
+                u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
+                v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
+                # replace to NaN
+                mask = depth.<=0.0
+                depth[mask] .= NaN
+                u[mask] .= NaN
+                v[mask] .= NaN
+                # calc
+                u = u./depth
+                v = v./depth
+                vel = sqrt.(u.^2 .+ v.^2)
+                ## array
+                amr[i] = VisClaw.Velocity(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,u,v,vel)
 
-        elseif vartype==:storm
-            ucol = ncol
-            vcol = ncol+1
-            pcol = ncol+2
-            u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
-            v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
-            p = [parse(Float64, body[(i-1)*(mx+1)+j][26*(pcol-1)+1:26*pcol]) for i=1:my, j=1:mx]
-            p = p./1e+2
+            elseif vartype==:storm
+                ucol = ncol
+                vcol = ncol+1
+                pcol = ncol+2
+                u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
+                v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
+                p = [parse(Float64, body[(i-1)*(mx+1)+j][26*(pcol-1)+1:26*pcol]) for i=1:my, j=1:mx]
+                p = p./1e+2
 
-            # u[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
-            # v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
+                # u[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
+                # v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
 
-            ## array
-            amr[i] = VisClaw.Storm(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,u,v,p)
+                ## array
+                amr[i] = VisClaw.Storm(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,u,v,p)
+            end
+            ## print
+            #@printf("%d, ",gridnumber)
+
+        else # output_format == 2 || output_format == 3
+            # the next tile
+            l += 9
+
+            nall = 4*(mx+2ngh)*(my+2ngh)
+            dat = Vector{dtype}(undef, nall)
+            for k = 1:nall
+                dat[k] = read(fbin, dtype)
+            end
+
+            ## check AMRlevel
+            if !isempty(AMRlevel); if isempty(findall(AMRlevel .== AMRlevel_load)); i += 1; continue; end; end
+            ## check whether the tile is on the domain
+            if (xlow+dx*mx < xlims[1]) | (xlims[2] < xlow); i += 1; continue; end
+            if (ylow+dy*my < ylims[1]) | (ylims[2] < ylow); i += 1; continue; end
+
+
+            ## assign to the AMR array
+            dat = permutedims(reshape(dat, (4, mx+2ngh, my+2ngh)), (1, 3, 2))  # (var, y, x)
+            depth = dat[1, :, :]  # total water depth
+            if vartype==:surface
+                elev = dat[4, :, :]  # just take the second variable
+
+                # wet condition
+                land = (elev-depth) .>= geoparams.dmin
+
+                # sea surface anomaly
+                (geoparams.eta0 != 0.0) && (elev[.!land] = elev[.!land].-geoparams.eta0)
+
+                # inundation depth if wet
+                runup && (elev[land] = depth[land])
+
+                # NaN if dry
+                elev[depth.<=0.0] .= NaN
+
+                ## remove ghost cells
+                elev = elev[ngh+1:ngh+my, ngh+1:ngh+mx]
+
+                ## array
+                amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,elev)
+
+            elseif vartype==:current
+                u = dat[2, :, :]  # just take the second variable
+                v = dat[3, :, :]  # just take the third variable
+
+                # replace to NaN
+                mask = depth.<=0.0
+                depth[mask] .= NaN
+                u[mask] .= NaN
+                v[mask] .= NaN
+                # calc
+                u = u./depth
+                v = v./depth
+
+                ## remove ghost cells
+                u = u[ngh+1:ngh+my, ngh+1:ngh+mx]
+                v = v[ngh+1:ngh+my, ngh+1:ngh+mx]
+
+                vel = sqrt.(u.^2 .+ v.^2) # velocity magnitude
+                ## array
+                amr[i] = VisClaw.Velocity(gridnumber,AMRlevel_load,mx,my,xlow,ylow,dx,dy,u,v,vel)
+            #=
+            elseif vartype==:storm
+                u = dat[2, :, :]  # just take the second variable
+                v = dat[3, :, :]  # just take the third variable
+                p = dat[4, :, :]  # just take the fourth variable
+                p = p./1e+2  # convert to hPa
+            =#
+            end
         end
-        ## print
-        #@printf("%d, ",gridnumber)
 
         ## counter; go to the next grid
         i += 1
     end
+
+    ## file open if binary
+    if output_format == 2 || output_format == 3
+        close(fbin) #close
+    end
+
     amr = amr[filter(i -> isassigned(amr, i), 1:length(amr))]
     ## return
     return amr
@@ -182,7 +283,8 @@ function loadsurface(outputdir::AbstractString, filesequence::AbstractVector=0:0
     isempty(flist) && error("File named $fnamekw was not found")
 
     # load geoclaw.data
-    params = VisClaw.geodata(outputdir)
+    #geoparams = VisClaw.geodata(outputdir)
+    clawparams = VisClaw.clawdata(outputdir)
 
     ## the number of files
     nfile = length(flist)
@@ -210,11 +312,11 @@ function loadsurface(outputdir::AbstractString, filesequence::AbstractVector=0:0
     for it = filesequence
         cnt += 1
         if vartype==:surface
-            amr[cnt] = VisClaw.loadfortq(joinpath(outputdir,flist[it]), col; vartype=vartype, kwargs...)
+            amr[cnt] = VisClaw.loadfortq(joinpath(outputdir,flist[it]), col; vartype=vartype, clawparams=clawparams, kwargs...)
         elseif vartype==:current
-            amr[cnt] = VisClaw.loadfortq(joinpath(outputdir,flist[it]), col; vartype=vartype, kwargs...)
+            amr[cnt] = VisClaw.loadfortq(joinpath(outputdir,flist[it]), col; vartype=vartype, clawparams=clawparams, kwargs...)
         elseif vartype==:storm
-            amr[cnt] = VisClaw.loadforta(joinpath(outputdir,flist[it]), col; kwargs...)
+            amr[cnt] = VisClaw.loadforta(joinpath(outputdir,flist[it]), col; clawparams=clawparams, kwargs...)
         end
         tlap[cnt] = VisClaw.loadfortt(joinpath(outputdir,replace(flist[it],r"\.." => ".t")))
     end

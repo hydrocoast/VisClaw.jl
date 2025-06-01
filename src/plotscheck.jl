@@ -38,7 +38,8 @@ function plotscheck(simdir::AbstractString; vartype::Symbol=:surface, AMRlevel=[
     isempty(flist) && error("File named $fnamekw was not found")
 
     ## load geoclaw.data
-    params = VisClaw.geodata(simdir)
+    geoparams = VisClaw.geodata(simdir)
+    clawparams = VisClaw.clawdata(simdir)
 
     ## the number of files
     nfile = length(flist)
@@ -64,7 +65,7 @@ function plotscheck(simdir::AbstractString; vartype::Symbol=:surface, AMRlevel=[
         if ( (i>nfile) || (i<1) ); println("Invalid number"); ex=1; continue; end
 
         ## load data
-        amrs = loadfunction(simdir, i; AMRlevel=AMRlevel, xlims=xlims, ylims=ylims, kwargs_load...)
+        amrs = loadfunction(simdir, i; AMRlevel=AMRlevel, xlims=xlims, ylims=ylims, clawparams=clawparams, geoparams=geoparams, kwargs_load...)
         runup && (coarsegridmask!(amrs))
 
         ## draw figure
