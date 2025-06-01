@@ -22,7 +22,6 @@ cmapwater = :balance
 colorrange = (-0.25,0.25)
 
 
-#=
 fig = CairoMakie.Figure()
 figdir = "tmp_fig"
 isdir(figdir) || (mkdir(figdir))
@@ -38,7 +37,7 @@ for i = 1:amrall.nstep
     figname = fig_prefix*@sprintf("_%03d_2d.png",i)
     CairoMakie.save(joinpath(figdir,figname), fig)
 end
-=#
+
 
 fig = CairoMakie.Figure()
 figdir = "tmp_fig_current"
