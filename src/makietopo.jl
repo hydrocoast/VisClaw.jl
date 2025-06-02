@@ -2,7 +2,7 @@
 ### topo
 ### ======================================
 """
-    ax = makietopo(topo::VisClaw.Topo; kwargs...)
+    fig = makietopo(topo::VisClaw.Topo; kwargs...)
     makietopo!(ax, topo::VisClaw.Topo; kwargs...)
 
 Function: variables of AMR grids in heatmap plot
@@ -18,16 +18,19 @@ end
 """
 $(@doc makietopo!)
 """
-makietopo(topo::VisClaw.Topo; kwargs...) = 
-makietopo!(CairoMakie.Axis(CairoMakie.Figure()), topo; kwargs...)
-
+function makietopo(topo::VisClaw.Topo; kwargs...)
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1, 1])
+    makietopo!(ax, topo; kwargs...)
+    return fig, ax
+end
 
 
 ### ======================================
 ### dtopo
 ### ======================================
 """
-    ax = makiedtopo(topo::VisClaw.DTopo, itime::Integer=0; kwargs...)
+    fig = makiedtopo(topo::VisClaw.DTopo, itime::Integer=0; kwargs...)
     makiedtopo!(ax, topo::VisClaw.DTopo, itime::Integer=0; kwargs...)
 
 Function: variables of AMR grids in heatmap plot
@@ -48,8 +51,12 @@ end
 """
 $(@doc makiedtopo!)
 """
-makiedtopo(dtopo::VisClaw.Topo, itime=0; kwargs...) = 
-makiedtopo!(CairoMakie.Axis(CairoMakie.Figure()), dtopo, itime; kwargs...)
+function makiedtopo(dtopo::VisClaw.DTopo, itime=0; kwargs...)
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1, 1])
+    makiedtopo!(ax, dtopo, itime; kwargs...)
+    return fig
+end
 
 
 

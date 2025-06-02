@@ -4,7 +4,6 @@ VisClaw.jl is a Julia package for plotting simulation results of the clawpack.\n
 https://github.com/hydrocoast/VisClaw.jl
 
 ### Examples
-- pathof(VisClaw)/Examples_using_Plots.ipynb
 - pathof(VisClaw)/Examples_using_GMT.ipynb
 
 ### Author
@@ -22,7 +21,6 @@ using NetCDF: NetCDF
 using Requires
 
 using GeometricalPredicates: GeometricalPredicates
-using Plots: Plots
 
 ## define CLAW path from shell
 include("clawpath.jl")
@@ -59,27 +57,16 @@ include("gaugemax.jl")
 include("gaugeinterp.jl")
 include("coarsegridmask.jl")
 
-## setup
-include("plotsargs.jl")
-include("plotstools.jl")
-
-## plot (using Plots)
-include("plots2d.jl")
-include("plotscheck.jl")
-include("plotstopo.jl")
-include("plotsgaugewaveform.jl")
-include("plotsgaugevelocity.jl")
-include("plotsgaugelocation.jl")
-include("plotsfgmax.jl")
-include("plotstrack.jl")
 
 ## plot (using Makie)
 using CairoMakie: CairoMakie
 include("makiesurface3d.jl")
 include("makieheatmap.jl")
+include("tilenumber.jl")
 include("makietopo.jl")
 include("makiewindarrows.jl")
 include("makiegauge.jl")
+include("makietrack.jl")
 include("quickview.jl")
 
 
@@ -106,21 +93,9 @@ export makietopo!, makietopo, makiedtopo!, makiedtopo
 export makiegaugewaveform!, makiegaugewaveform
 export makiegaugevelocity!, makiegaugevelocity
 export makiegaugelocation!, makiegaugelocation
+export makietrack!, makietrack
+export tilenumber!, tilebound!
 
-## functions with Plots.jl
-export plotsamr
-export plotscheck
-export gridnumber!, tilebound!
-export plotscoastline, plotscoastline!
-export plotsfgmax, plotsfgmax!
-export plotstopo, plotstopo!
-export plotsdtopo, plotsdtopo!
-export plotstoporange, plotstoporange!
-export plotsgaugelocation, plotsgaugelocation!
-export plotsgaugewaveform, plotsgaugewaveform!
-export plotsgaugevelocity, plotsgaugevelocity!
-export plotstrack, plotstrack!
-export plotsgif, plotssavefig
 
 @require GMT="5752ebe1-31b9-557e-87aa-f909b540aa54" begin
     using .GMT: GMT
