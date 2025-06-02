@@ -1,5 +1,5 @@
 """
-    ax = makiegaugewaveform(gauge::VisClaw.Gauge; kwargs...)
+    fig, ax = makiegaugewaveform(gauge::VisClaw.Gauge; kwargs...)
     makiegaugewaveform!(ax, gauge::VisClaw.Gauge; kwargs...)
 
 Function: line plot of gauge data
@@ -7,33 +7,45 @@ Arguments:
 - `ax`: the axis to plot on
 - `gauge`: gauge data    
 """
-function makiegaugewaveform!(ax, gauge::VisClaw.Gauge; kwargs...)
-    # Create a line plot with the specified parameters
-    CairoMakie.lines!(ax, gauge.time, gauge.eta; kwargs...)
-    return ax
+makiegaugewaveform!(ax, gauge::VisClaw.Gauge; kwargs...) = CairoMakie.lines!(ax, gauge.time, gauge.eta; kwargs...)
+##
+function makiegaugewaveform!(ax, gauges::AbstractArray{VisClaw.Gauge}; kwargs...)
+    for gauge in gauges; makiegaugewaveform!(ax, gauge; kwargs...); end
 end
+
+
 """
 $(@doc makiegaugewaveform!)
 """
-makiegaugewaveform(gauge::VisClaw.Gauge; kwargs...) = 
-makiegaugewaveform!(CairoMakie.Axis(CairoMakie.Figure()), gauge; kwargs...)
+function makiegaugewaveform(gauge::VisClaw.Gauge; kwargs...)
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1,1])
+    makiegaugewaveform!(ax, gauge; kwargs...)
+    return fig, ax
+end
+function makiegaugewaveform(gauges::AbstractArray{VisClaw.Gauge}; kwargs...)
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1,1])
+    makiegaugewaveform!(ax, gauges; kwargs...)
+    return fig, ax
+end
 
 
 """
-    ax = makiegaugevelocity(gauge::VisClaw.Gauge; kwargs...)
+    fig, ax = makiegaugevelocity(gauge::VisClaw.Gauge; kwargs...)
     makiegaugevelocity!(ax, gauge::VisClaw.Gauge; kwargs...)
 """
-function makiegaugevelocity!(ax, gauge::VisClaw.Gauge; kwargs...)
-    # Create a line plot with the specified parameters
-    CairoMakie.lines!(ax, gauge.time, sqrt.(gauge.u.^2 + gauge.v.^2); kwargs...)
-    return ax
-end
+makiegaugevelocity!(ax, gauge::VisClaw.Gauge; kwargs...) = CairoMakie.lines!(ax, gauge.time, sqrt.(gauge.u.^2 + gauge.v.^2); kwargs...)
 
 """
 $(@doc makiegaugevelocity!)
 """
-makiegaugevelocity(gauge::VisClaw.Gauge; kwargs...) =
-makiegaugevelocity!(CairoMakie.Axis(CairoMakie.Figure()), gauge; kwargs...)
+function makiegaugevelocity(gauge::VisClaw.Gauge; kwargs...)
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1,1])
+    makiegaugevelocity!(ax, gauge; kwargs...)
+    return fig, ax
+end
 
 
 """
@@ -47,23 +59,25 @@ Arguments:
 - `gauge`: gauge data
 - `gauges`: vector of gauge data
 """
-function makiegaugelocation!(ax, gauge::VisClaw.Gauge; kwargs...)
-    CairoMakie.scatter!(ax, gauge.loc[1], gauge.loc[2]; kwargs...)
-    return ax
-end
-function makiegaugelocation!(ax, gauges::AbstractVector{VisClaw.Gauge}; kwargs...)
-    CairoMakie.scatter!(ax, first.(getfield.(gauges, :loc)), last.(getfield.(gauges, :loc)); kwargs...)
-    return ax
-end
+makiegaugelocation!(ax, gauge::VisClaw.Gauge; kwargs...) = CairoMakie.scatter!(ax, gauge.loc[1], gauge.loc[2]; kwargs...)
+makiegaugelocation!(ax, gauges::AbstractVector{VisClaw.Gauge}; kwargs...) = CairoMakie.scatter!(ax, first.(getfield.(gauges, :loc)), last.(getfield.(gauges, :loc)); kwargs...)
 
 
 """
 $(@doc makiegaugelocation!)
 """
-makiegaugelocation(gauge::VisClaw.Gauge; kwargs...) =
-makiegaugelocation!(CairoMakie.Axis(CairoMakie.Figure()), gauge; kwargs...)
+function makiegaugelocation(gauge::VisClaw.Gauge; kwargs...)
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1,1])
+    makiegaugelocation!(ax, gauge; kwargs...)
+    return fig, ax
+end
 """
 $(@doc makiegaugelocation!)
 """
-makiegaugelocation(gauges::AbstractVector{VisClaw.Gauge}; kwargs...) =
-makiegaugelocation!(CairoMakie.Axis(CairoMakie.Figure()), gauges; kwargs...)
+function makiegaugelocation(gauges::AbstractVector{VisClaw.Gauge}; kwargs...)
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1,1])
+    makiegaugelocation!(ax, gauges; kwargs...)
+    return fig, ax
+end

@@ -20,13 +20,15 @@ topo = VisClaw.loadtopo(simdir)
 
 fig = CairoMakie.Figure(size=(900, 450))
 ax1 = CairoMakie.Axis(fig[1, 1])
-VisClaw.makietopo!(ax1,topo; colormap=:topo, colorrange=(-5000,5000))
+VisClaw.makietopo!(ax1, topo; colormap=:topo, colorrange=(-5000,5000))
 VisClaw.makiegaugelocation!(ax1, gauges)
+CairoMakie.Colorbar(fig[1,2], limits = (-5000, 5000), colormap = :topo, flipaxis = false)
 
-ax2 = CairoMakie.Axis(fig[1, 2])
-#VisClaw.makiegaugewaveform!(ax2, gauges[1])
-#VisClaw.makiegaugevelocity!(ax2, gauges[1])
-VisClaw.makiegaugewaveform!.(ax2, gauges)
-#VisClaw.makiegaugevelocity!.(ax2, gauges)
-
+ax2 = CairoMakie.Axis(fig[1,3], xlabel="Time (hour)", ylabel="Water level (m)")
+VisClaw.makiegaugewaveform!(ax2, gauges)
+#=
+for g in gauges
+    VisClaw.makiegaugewaveform!(ax2, g)
+end
+=#
 
