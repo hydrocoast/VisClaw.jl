@@ -19,8 +19,8 @@ using Printf
 using Dates
 using NetCDF: NetCDF
 using Requires
-
 using GeometricalPredicates: GeometricalPredicates
+using CairoMakie: CairoMakie
 
 ## define CLAW path from shell
 include("clawpath.jl")
@@ -59,7 +59,6 @@ include("coarsegridmask.jl")
 
 
 ## plot (using Makie)
-using CairoMakie: CairoMakie
 include("makiesurface3d.jl")
 include("makieheatmap.jl")
 include("tilenumber.jl")
@@ -98,9 +97,8 @@ export tilenumber!, tilebound!
 
 
 @require GMT="5752ebe1-31b9-557e-87aa-f909b540aa54" begin
-    using .GMT: GMT
     ## plot (using GMT)
-    using GMT:GMT
+    using .GMT: GMT
     include("gmttools.jl")
     include("gmttopo.jl")
     include("gmtgauge.jl")
