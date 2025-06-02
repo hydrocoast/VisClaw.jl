@@ -55,6 +55,26 @@ function makieheatmap!(ax, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], 
     end
 end
 
+function makieheatmap(tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], wind::Bool=false, region="", kwargs...)
+    ## create a figure and axis
+    fig = CairoMakie.Figure()
+    ax = CairoMakie.Axis(fig[1,1])
+    makieheatmap!(ax, tiles; AMRlevel=AMRlevel, wind=wind, region=region, kwargs...)
+    return fig, ax
+end
+
+
+function makieheatmap(amrseries::VisClaw.AMR, index_time::AbstractVector=1:amrseries.nstep; kwargs...)
+    tiles = amrseries.amr[index_time]
+    nfig = length(tiles)
+    figs = Vector{CairoMakie.Figure}(undef, nfig)
+    ax = Vector{CairoMakie.Axis}(undef, nfig)
+    for i = 1:nfig
+        figs[i], ax[i] = makieheatmap(tiles[i]; kwargs...)
+    end
+    return figs, ax
+end
+
 
 
 function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax; kwargs...)

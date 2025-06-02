@@ -13,7 +13,6 @@ Arguments:
 function makietopo!(ax, topo::VisClaw.Topo; kwargs...)
     # Create a heatmap with the specified parameters
     CairoMakie.heatmap!(ax, topo.x, topo.y, topo.elevation'; kwargs...)
-    return ax
 end
 """
 $(@doc makietopo!)
@@ -46,7 +45,6 @@ function makiedtopo!(ax, dtopo::VisClaw.DTopo, itime=0; kwargs...)
     else;               z = dtopo.deform[:,:,itime]
     end
     CairoMakie.heatmap!(ax, dtopo.x, dtopo.y, z'; kwargs...)
-    return ax
 end
 """
 $(@doc makiedtopo!)
@@ -55,7 +53,7 @@ function makiedtopo(dtopo::VisClaw.DTopo, itime=0; kwargs...)
     fig = CairoMakie.Figure()
     ax = CairoMakie.Axis(fig[1, 1])
     makiedtopo!(ax, dtopo, itime; kwargs...)
-    return fig
+    return fig, ax
 end
 
 

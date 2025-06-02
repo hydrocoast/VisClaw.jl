@@ -85,7 +85,7 @@ export gaugemax, gaugeinterp
 
 ## functions with Makie.jl
 export makiesurface3d!
-export makieheatmap!
+export makieheatmap!, makieheatmap
 export quickview, quickviewfgout
 export makiewindarrows!
 export makietopo!, makietopo, makiedtopo!, makiedtopo

@@ -17,8 +17,7 @@ This allows to draw figures and animations using the Julia language.
 
 
 ## Requirements
-- [Julia](https://github.com/JuliaLang/julia) v1.6.0 or later
-- [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
+- [Julia](https://github.com/JuliaLang/julia)
 
 ## Installation  
 - If you want to plot using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl),
@@ -35,13 +34,13 @@ pkg> add VisClaw
 (e.g. chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and  
 ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
 
-- This package uses either GMT.jl or Plots.jl to plot results of the numerical simulation.
-Plots.jl is more suitable for a quick check.
-The following codes generate a spatial distribution of the sea surface height using Plots:
+- This package uses either Makie.jl or GMT.jl to plot results of the numerical simulation.
+Makie.jl is more suitable for a quick check.
+The following codes generate a spatial distribution of the sea surface height using Makie.jl (CairoMakie.jl):
 ```julia
 julia> using VisClaw
 julia> simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output")
-julia> plt = plotscheck(simdir; color=:balance, clims=(-0.5,0.5))
+julia> fig = quickview(simdir; colormap=:balance, colorrange=(-0.5,0.5))
 >> Press ENTER with a blank to finish
 >> Input a file sequence number you want to plot:
 checkpoint time (1 to 19) =
@@ -49,10 +48,9 @@ checkpoint time (1 to 19) =
 Topography data also can be easily plotted:
 ```julia
 julia> topo = loadtopo(simdir)
-julia> plt = plotstopo(topo)
+julia> fig = makietopo(topo)
 ```
-See [Examples_using_Plots.ipynb](https://github.com/hydrocoast/VisClawJuliaExamples/blob/master/Examples_using_Plots.ipynb)
-and [Examples_using_GMT.ipynb](https://github.com/hydrocoast/VisClawJuliaExamples/blob/master/Examples_using_GMT.ipynb) for more information.
+See [Examples_using_Makie.ipynb](https://github.com/hydrocoast/VisClawJuliaExamples/blob/master/Examples_using_Makie.ipynb) and  [Examples_using_GMT.ipynb](https://github.com/hydrocoast/VisClawJuliaExamples/blob/master/Examples_using_GMT.ipynb) for more information.
 
 ## Plot gallery
 The following figures are generated with the Julia scripts in `example/` .  
@@ -82,37 +80,8 @@ The following figures are generated with the Julia scripts in `example/` .
 <img src="/figure/ike_storm_GMT.gif", width="400">
 </p>  
 
+### using Makie.jl
 
-### using Plots.jl
-
-#### sea surface elevation
-<p align="center">
-<img src="/figure/chile2010_eta.gif", width="400">
-<img src="/figure/ike_eta.gif", width="400">
-</p>  
-
-#### flow velocity
-<p align="center">
-<img src="/figure/chile2010_velo.gif", width="400">
-<img src="/figure/ike_velo.gif", width="400">
-</p>  
-
-#### topography and bathymetry
-<p align="center">
-<img src="/figure/chile2010_topo.svg", width="400">
-<img src="/figure/ike_topo.svg", width="400">
-</p>  
-
-#### wave gauge
-<p align="center">
-<img src="/figure/chile2010_waveform_gauge.svg", width="400">
-<img src="/figure/ike_waveform_gauge.svg", width="400">
-</p>  
-
-#### fixed grid monitoring (fgmax)
-<p align="center">
-<img src="/figure/fgmax4vars.svg", width="700">
-</p>  
 
 
 ## License
