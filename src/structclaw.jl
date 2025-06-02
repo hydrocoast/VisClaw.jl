@@ -291,14 +291,6 @@ mutable struct FGmax
 end
 ########################################
 
-"""
-Struct: fgout values
-"""
-mutable struct FGout
-    eta :: AbstractArray{AbstractFloat}
-    VisClaw.FGout(eta) = new(eta)
-end
-
 
 ########################################
 """

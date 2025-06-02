@@ -19,6 +19,7 @@ using Interpolations: Interpolations
 using Printf
 using Dates
 using NetCDF: NetCDF
+using Requires
 
 using GeometricalPredicates: GeometricalPredicates
 using Plots: Plots
@@ -72,23 +73,14 @@ include("plotsgaugelocation.jl")
 include("plotsfgmax.jl")
 include("plotstrack.jl")
 
-## plot (using GMT)
-using GMT:GMT
-include("gmttools.jl")
-include("gmttopo.jl")
-include("gmtgauge.jl")
-include("gmtsurface.jl")
-include("gmtarrows.jl")
-include("gmttrack.jl")
-
 ## plot (using Makie)
 using CairoMakie: CairoMakie
 include("makiesurface3d.jl")
 include("makieheatmap.jl")
-include("makiecheck.jl")
 include("makietopo.jl")
 include("makiewindarrows.jl")
 include("makiegauge.jl")
+include("quickview.jl")
 
 
 ## general functions
@@ -105,6 +97,16 @@ export axesratio
 export replaceunit!, converttodatetime!
 export gaugemax, gaugeinterp
 
+## functions with Makie.jl
+export makiesurface3d!
+export makieheatmap!
+export quickview, quickviewfgout
+export makiewindarrows!
+export makietopo!, makietopo, makiedtopo!, makiedtopo
+export makiegaugewaveform!, makiegaugewaveform
+export makiegaugevelocity!, makiegaugevelocity
+export makiegaugelocation!, makiegaugelocation
+
 ## functions with Plots.jl
 export plotsamr
 export plotscheck
@@ -120,34 +122,29 @@ export plotsgaugevelocity, plotsgaugevelocity!
 export plotstrack, plotstrack!
 export plotsgif, plotssavefig
 
-## functions with GMT.jl
-export getR, getR_tile, getJ, geogrd
-export landmask_asc, landmask_grd
-export tilegrd_xyz, tilegrd, tilegrd_mask
-export arrowgrd, arrowscalegrd
-export gmttopo
-export gmtgaugewaveform, gmtgaugewaveform!
-export gmtgaugevelocity, gmtgaugevelocity!
-export gmtgaugelocation, gmtgaugelocation!
-export gmtgaugeannotation!
-export gmttoporange!
-export gmtcoastline, gmtcoastline!
-export gmttrack, gmttrack!
-
-## functions with Makie.jl
-export makiesurface3d!
-export makieheatmap!
-export makiecheck
-export makiewindarrows!
-export makietopo!, makietopo, makiedtopo!, makiedtopo
-export makiegaugewaveform!, makiegaugewaveform
-export makiegaugevelocity!, makiegaugevelocity
-export makiegaugelocation!, makiegaugelocation
-
-## uniform-grid interpolation
-using PyCall: PyCall
-include("scipyinterp.jl")
-
-export interpsurface
+@require GMT="5752ebe1-31b9-557e-87aa-f909b540aa54" begin
+    using .GMT: GMT
+    ## plot (using GMT)
+    using GMT:GMT
+    include("gmttools.jl")
+    include("gmttopo.jl")
+    include("gmtgauge.jl")
+    include("gmtsurface.jl")
+    include("gmtarrows.jl")
+    include("gmttrack.jl")
+    ## functions with GMT.jl
+    export getR, getR_tile, getJ, geogrd
+    export landmask_asc, landmask_grd
+    export tilegrd_xyz, tilegrd, tilegrd_mask
+    export arrowgrd, arrowscalegrd
+    export gmttopo
+    export gmtgaugewaveform, gmtgaugewaveform!
+    export gmtgaugevelocity, gmtgaugevelocity!
+    export gmtgaugelocation, gmtgaugelocation!
+    export gmtgaugeannotation!
+    export gmttoporange!
+    export gmtcoastline, gmtcoastline!
+    export gmttrack, gmttrack!
+end
 
 end

@@ -53,7 +53,6 @@ function makieheatmap!(ax, tiles::AbstractVector{VisClaw.AMRGrid}; AMRlevel=[], 
         CairoMakie.heatmap!(ax, x, y, val'; kwargs...)
 
     end
-    #return ax
 end
 
 
@@ -72,16 +71,23 @@ function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgmax::VisClaw.FGmax; kwargs..
     else
         error("makieheatmap! for FixedGrid is not implemented for style $(fg.style)")
     end
-    #return ax
 end
 
-function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgout::VisClaw.FGout, iout::Integer; kwargs...)
+function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgout::AbstractArray, iout::Integer; kwargs...)
     x = LinRange(fg.xlims[1], fg.xlims[2], fg.nx)
     y = LinRange(fg.ylims[1], fg.ylims[2], fg.ny)
     if fg.style == 2
-        CairoMakie.heatmap!(ax, x, y, permutedims(fgout.eta[:,:,iout],(2,1)); kwargs...)
+        CairoMakie.heatmap!(ax, x, y, permutedims(fgout[:,:,iout],(2,1)); kwargs...)
     else
         error("makieheatmap! for FixedGrid is not implemented for style $(fg.style)")
     end
-    #return ax
+end
+function makieheatmap!(ax, fg::VisClaw.FixedGrid, fgout::Matrix; kwargs...)
+    x = LinRange(fg.xlims[1], fg.xlims[2], fg.nx)
+    y = LinRange(fg.ylims[1], fg.ylims[2], fg.ny)
+    if fg.style == 2
+        CairoMakie.heatmap!(ax, x, y, permutedims(fgout,(2,1)); kwargs...)
+    else
+        error("makieheatmap! for FixedGrid is not implemented for style $(fg.style)")
+    end
 end

@@ -11,4 +11,4 @@ using Printf
 simdir = joinpath(VisClaw.CLAW,"geoclaw/examples/storm-surge/ike/_output")
 
 using CairoMakie
-fig = VisClaw.makiecheck(simdir)
+fig = VisClaw.quickview(simdir)
