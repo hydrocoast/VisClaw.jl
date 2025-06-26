@@ -1,7 +1,7 @@
 name = "VisClaw"
 uuid = "d5c85fe6-8620-4d3a-96f0-ac478d4f5d38"
 authors = ["Takuya Miyashita <miyashita@hydrocoast.jp>"]
-version = "1.0.0"
+version = "1.0.1"
 
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
