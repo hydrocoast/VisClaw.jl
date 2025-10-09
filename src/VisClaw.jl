@@ -27,11 +27,23 @@ include("clawpath.jl")
 export CLAW
 
 using PyCall
-clawpack = PyCall.pyimport("clawpack")
-const clawpack_version_major, 
-      clawpack_version_minor, 
-      clawpack_version_patch = parse.(Int64,split(clawpack.__version__,"."))
-println("clawpack version: ", clawpack.__version__)
+# Clawpack default version
+const DEFAULT_CLAWPACK_VERSION = "5.13.0"
+# set clawpack version string
+clawpack_version_str = DEFAULT_CLAWPACK_VERSION
+try
+    # try to import the clawpack Python module
+    clawpack = pyimport("clawpack")
+    clawpack_version_str = clawpack.__version__
+catch e
+    @warn "Python clawpack module not found. Using default version $(DEFAULT_CLAWPACK_VERSION)."
+end
+# separate version string into major, minor, patch
+const clawpack_version_major,
+      clawpack_version_minor,
+      clawpack_version_patch = parse.(Int, split(clawpack_version_str, "."))
+println("Clawpack version: ", clawpack_version_str)
+
 
 ## define structs and basic functions
 const KWARG = Dict{Symbol,Any}
