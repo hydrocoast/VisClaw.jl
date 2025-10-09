@@ -16,6 +16,7 @@ function loadfortq(filename::AbstractString, ncol::Integer;
 
     output_format = clawparams.output_format
     ngh = clawparams.num_ghost
+    neq = clawparams.num_eqn
     ## output_format
     if output_format < 1 && output_format > 3
         error("kwarg 'output_format' must be 1, 2, or 3")
@@ -143,7 +144,7 @@ function loadfortq(filename::AbstractString, ncol::Integer;
             # the next tile
             l += 9
 
-            nall = 4*(mx+2ngh)*(my+2ngh)
+            nall = (neq+1)*(mx+2ngh)*(my+2ngh)
             dat = Vector{dtype}(undef, nall)
             for k = 1:nall
                 dat[k] = read(fbin, dtype)
@@ -157,10 +158,10 @@ function loadfortq(filename::AbstractString, ncol::Integer;
 
 
             ## assign to the AMR array
-            dat = permutedims(reshape(dat, (4, mx+2ngh, my+2ngh)), (1, 3, 2))  # (var, y, x)
+            dat = permutedims(reshape(dat, (neq+1, mx+2ngh, my+2ngh)), (1, 3, 2))  # (var, y, x)
             depth = dat[1, :, :]  # total water depth
             if vartype==:surface
-                elev = dat[4, :, :]  # just take the second variable
+                elev = dat[neq+1, :, :]  # just take the second variable
 
                 # wet condition
                 land = (elev-depth) .>= geoparams.dmin

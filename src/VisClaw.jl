@@ -26,6 +26,13 @@ using CairoMakie: CairoMakie
 include("clawpath.jl")
 export CLAW
 
+using PyCall
+clawpack = PyCall.pyimport("clawpack")
+const clawpack_version_major, 
+      clawpack_version_minor, 
+      clawpack_version_patch = parse.(Int64,split(clawpack.__version__,"."))
+println("clawpack version: ", clawpack.__version__)
+
 ## define structs and basic functions
 const KWARG = Dict{Symbol,Any}
 const emptyF = Array{Float64}(undef, 0, 0)

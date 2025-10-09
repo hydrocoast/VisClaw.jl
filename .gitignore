@@ -13,6 +13,7 @@
 *.eps
 *.pdf
 *.cpt
+*.jld2
 *.DS_Store
 gmt.*
 .vscode/

@@ -196,9 +196,9 @@ function clawdata(outdir::AbstractString)
     upper = parse.(Float64, split(txt[occursin.("upper",txt)][1],r"\s+")[1:2])
     num_cells = parse.(Int64, split(txt[occursin.("num_cells",txt)][1],r"\s+")[1:2])
     t0 = parse(Float64, split(txt[occursin.("t0",txt)][1],r"\s+")[1])
-    tfinal = parse(Float64, split(txt[occursin.("tfinal",txt)][1],r"\s+")[1])
     output_format = parse(Int64, split(txt[occursin.("output_format",txt)][1],r"\s+")[1])
     num_ghost = parse(Int64, split(txt[occursin.("num_ghost",txt)][1],r"\s+")[1])
+    num_eqn = parse(Int64, split(txt[occursin.("num_eqn",txt)][1],r"\s+")[1])
 
     xlims = (lower[1], upper[1])
     ylims = (lower[2], upper[2])
@@ -210,7 +210,7 @@ function clawdata(outdir::AbstractString)
     end
 
     ## instance
-    clawparam = VisClaw.ClawParam(num_dim, xlims, ylims, nx, ny, t0, tfinal, output_format, num_ghost)
+    clawparam = VisClaw.ClawParam(num_dim, xlims, ylims, nx, ny, t0, output_format, num_ghost, num_eqn)
 
     ## return values
     return clawparam

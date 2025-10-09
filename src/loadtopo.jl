@@ -17,18 +17,32 @@ function topodata(outdir::AbstractString)
 
     baseline = findfirst(x->occursin("ntopofiles", x), ascdata)
     ntopo = parse(Int64, split(ascdata[baseline], r"\s+", keepempty=false)[1])
+    #println("baseline: ", baseline, ", ntopo: ", ntopo)
+
 
     if ntopo == 1
-        topofile = replace(ascdata[baseline+2], r"[\'\s]" => "")
-        topotype = parse(Int64, split(ascdata[baseline+3], r"\s+", keepempty=false)[1])
+        if clawpack_version_minor > 12
+            topofile = replace(ascdata[baseline+3], r"[\'\s]" => "")
+            topotype = parse(Int64, split(ascdata[baseline+4], r"\s+", keepempty=false)[1])
+            #println("topofile: ", topofile)
+            #println("topotype: ", topotype)
+        else
+            topofile = replace(ascdata[baseline+2], r"[\'\s]" => "")
+            topotype = parse(Int64, split(ascdata[baseline+3], r"\s+", keepempty=false)[1])
+        end
     else
         # preallocate
         topofile = Vector{String}(undef, ntopo)
         topotype = Vector{Int64}(undef, ntopo)
         # filename
         for i = 1:ntopo
-            topofile[i] = replace(ascdata[baseline-1+3i], r"[\'\s]" => "")
-            topotype[i] = parse(Int64, split(ascdata[baseline+3i], r"\s+", keepempty=false)[1])
+            if clawpack_version_minor > 12
+                topofile[i] = replace(ascdata[baseline+3i], r"[\'\s]" => "")
+                topotype[i] = parse(Int64, split(ascdata[baseline+3i+1], r"\s+", keepempty=false)[1])
+            else
+                topofile[i] = replace(ascdata[baseline-1+3i], r"[\'\s]" => "")
+                topotype[i] = parse(Int64, split(ascdata[baseline+3i], r"\s+", keepempty=false)[1]) 
+            end
         end
     end
 
@@ -97,7 +111,46 @@ function loadtopo(filename::AbstractString, topotype=3::Integer)
 
     ## check args
     isfile(filename) || error("file $filename is not found.")
-    any(topotype .== [2,3,4]) || error("unsupported topotype")
+    any(topotype .== [1,2,3,4]) || error("unsupported topotype")
+
+    if topotype == 1
+        # read
+        f = open(filename,"r")
+        ascdata = readlines(f)
+        close(f)
+
+        nx = 50
+        ny = 50
+        xNW, yNW, zNW = parse.(Float64, split(ascdata[1], r"\s+", keepempty=false))
+        xNE, yNE, zNE = parse.(Float64, split(ascdata[2], r"\s+", keepempty=false))
+        xSW, ySW, zSW = parse.(Float64, split(ascdata[3], r"\s+", keepempty=false))
+        xSE, ySE, zSE = parse.(Float64, split(ascdata[4], r"\s+", keepempty=false))
+        println("zNW, zNE, zSW, zSE = ", zNW, ", ", zNE, ", ", zSW, ", ", zSE)
+        println("xlength = ", xNE-xNW, ", ylength = ", yNW-ySW)
+
+        x = collect(LinRange(xNW, xNE, nx))
+        y = collect(LinRange(ySW, yNW, ny))
+        dx = x[2]-x[1]
+        dy = y[2]-y[1]
+        topo = zeros(ny, nx)
+        for i = 1:ny
+            for j = 1:nx
+                topo[i,j] = zSW # test
+                s = (x[j]-xSW)/(xSE-xSW)
+                t = (y[i]-ySW)/(yNW-ySW)
+                #println("i,j,s,t = ", i, ", ", j, ", ", s, ", ", t)
+                #=
+                topo[i,j] = + (1-s)*(1-t)*zSW
+                            + (1-s)*(1-t)*zNW
+                            + s*(1-t)*zSE
+                            + s*t*zNE
+                =#
+                          
+            end
+        end
+        bathtopo = VisClaw.Topo(nx, ny, x, y, dx, dy, topo)
+        return bathtopo
+    end
 
     ## NetCDF
     ( filename[end-2:end] == ".nc" && topotype != 4 ) && (topotype=4)

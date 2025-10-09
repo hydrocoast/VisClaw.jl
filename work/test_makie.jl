@@ -6,7 +6,8 @@ using Printf
 # -----------------------------
 # chile 2010
 # -----------------------------
-simdir = joinpath(VisClaw.CLAW,"geoclaw/examples/tsunami/chile2010/_output")
+simdir = joinpath(VisClaw.CLAW,"../sofugan_bouss/radial_flat/_output")
+#simdir = joinpath(VisClaw.CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 
 # load topo
 topo = VisClaw.loadtopo(simdir)
