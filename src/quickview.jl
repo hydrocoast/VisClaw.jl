@@ -80,7 +80,7 @@ function quickview(simdir::AbstractString; vartype::Symbol=:surface, AMRlevel=[]
         ## plot
         CairoMakie.empty!(fig)
         ax = CairoMakie.Axis(fig[1,1], title=@sprintf("%8.1f s",amrs.timelap[1]))
-        VisClaw.makieheatmap!(ax, amrs.amr[1]; colorrange=colorrange, wind=TFwind, plotkwargs...)
+        VisClaw.makieheatmap!(ax, amrs.amr[1]; colorrange=colorrange, colormap=cmap, wind=TFwind, plotkwargs...)
         CairoMakie.Colorbar(fig[1,2], limits=colorrange, colormap=cmap, flipaxis=true)
 
         ## show the figure
