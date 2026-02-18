@@ -29,15 +29,17 @@ function quickview(simdir::AbstractString; vartype::Symbol=:surface, AMRlevel=[]
     ## the number of files
     nfile = length(flist)
 
-    if haskey(kwargs, :colormap)
-        cmap = kwargs[:colormap]
-        filter!(p -> first(p)!==:colormap, kwargs)
+    plotkwargs = Dict{Symbol,Any}(kwargs)
+
+    if haskey(plotkwargs, :colormap)
+        cmap = plotkwargs[:colormap]
+        pop!(plotkwargs, :colormap)
     else
         cmap = :viridis # default colormap
     end
-    if haskey(kwargs, :colorrange)
-        colorrange = kwargs[:colorrange]
-        filter!(p -> first(p)!==:colorrange, kwargs)
+    if haskey(plotkwargs, :colorrange)
+        colorrange = plotkwargs[:colorrange]
+        pop!(plotkwargs, :colorrange)
     else
         if vartype==:surface
             colorrange = (-0.5, 0.5) # default color range for surface
@@ -73,12 +75,12 @@ function quickview(simdir::AbstractString; vartype::Symbol=:surface, AMRlevel=[]
         if ( (i>nfile) || (i<1) ); println("Invalid number"); ex=1; continue; end
 
         ## load data
-        amrs = loadfunction(simdir, i; AMRlevel=AMRlevel, clawparams=clawparams, kwargs...)
+        amrs = loadfunction(simdir, i; AMRlevel=AMRlevel, clawparams=clawparams, plotkwargs...)
 
         ## plot
         CairoMakie.empty!(fig)
         ax = CairoMakie.Axis(fig[1,1], title=@sprintf("%8.1f s",amrs.timelap[1]))
-        VisClaw.makieheatmap!(ax, amrs.amr[1]; colorrange=colorrange, wind=TFwind, kwargs...)
+        VisClaw.makieheatmap!(ax, amrs.amr[1]; colorrange=colorrange, wind=TFwind, plotkwargs...)
         CairoMakie.Colorbar(fig[1,2], limits=colorrange, colormap=cmap, flipaxis=true)
 
         ## show the figure
@@ -100,15 +102,17 @@ function quickviewfgout(simdir::AbstractString, fgno::Integer=1; kwargs...)
     fg = fg[fgno]
     
     ## kwargs defaults
-    if haskey(kwargs, :colormap)
-        cmap = kwargs[:colormap]
-        filter!(p -> first(p)!==:colormap, kwargs)
+    plotkwargs = Dict{Symbol,Any}(kwargs)
+
+    if haskey(plotkwargs, :colormap)
+        cmap = plotkwargs[:colormap]
+        pop!(plotkwargs, :colormap)
     else
         cmap = :viridis # default colormap
     end
-    if haskey(kwargs, :colorrange)
-        colorrange = kwargs[:colorrange]
-        filter!(p -> first(p)!==:colorrange, kwargs)
+    if haskey(plotkwargs, :colorrange)
+        colorrange = plotkwargs[:colorrange]
+        pop!(plotkwargs, :colorrange)
     else
         colorrange = (-0.5, 0.5) # default color range for surface
     end
@@ -139,7 +143,7 @@ function quickviewfgout(simdir::AbstractString, fgno::Integer=1; kwargs...)
         ## plot
         CairoMakie.empty!(fig)
         ax = CairoMakie.Axis(fig[1,1], title=@sprintf("fgout no.%d,  %03d/%03d",fg.id, i, fg.nout))
-        VisClaw.makieheatmap!(ax, fg, fgout; colorrange=colorrange, colormap=cmap, kwargs...)
+        VisClaw.makieheatmap!(ax, fg, fgout; colorrange=colorrange, colormap=cmap, plotkwargs...)
         CairoMakie.Colorbar(fig[1,2], limits=colorrange, colormap=cmap, flipaxis=true)
 
         ## show the figure
