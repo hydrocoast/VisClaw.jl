@@ -79,7 +79,7 @@ function quickview(simdir::AbstractString; vartype::Symbol=:surface, AMRlevel=[]
 
         ## plot
         CairoMakie.empty!(fig)
-        ax = CairoMakie.Axis(fig[1,1], title=@sprintf("%8.1f s",amrs.timelap[1]))
+        ax = CairoMakie.Axis(fig[1,1], title=@sprintf("%8.1f s",amrs.timelap[1]), aspect=CairoMakie.DataAspect())
         VisClaw.makieheatmap!(ax, amrs.amr[1]; colorrange=colorrange, colormap=cmap, wind=TFwind, plotkwargs...)
         CairoMakie.Colorbar(fig[1,2], limits=colorrange, colormap=cmap, flipaxis=true)
 
@@ -142,7 +142,7 @@ function quickviewfgout(simdir::AbstractString, fgno::Integer=1; kwargs...)
 
         ## plot
         CairoMakie.empty!(fig)
-        ax = CairoMakie.Axis(fig[1,1], title=@sprintf("fgout no.%d,  %03d/%03d",fg.id, i, fg.nout))
+        ax = CairoMakie.Axis(fig[1,1], title=@sprintf("fgout no.%d,  %03d/%03d",fg.id, i, fg.nout), aspect=CairoMakie.DataAspect())
         VisClaw.makieheatmap!(ax, fg, fgout; colorrange=colorrange, colormap=cmap, plotkwargs...)
         CairoMakie.Colorbar(fig[1,2], limits=colorrange, colormap=cmap, flipaxis=true)
 
